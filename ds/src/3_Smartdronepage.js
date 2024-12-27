@@ -19,7 +19,7 @@ import { API_BASE_URL } from './Components/constants.js';
 
 const theme = createTheme();
 
-function Planner() {
+function Smartdrone() {
 
   const mapRef = useRef(null);
   const tableRef = useRef(null);
@@ -356,4 +356,4 @@ function Planner() {
   );
 }
 
-export default Planner;
+export default Smartdrone;

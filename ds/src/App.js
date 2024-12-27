@@ -2,8 +2,11 @@
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import "./Styles/App.css";
-import Main from "./Mainpage.js";
-import Planner from "./Planner.js"; // planner.js 임포트
+import Main from "./1_Mainpage.js";
+import Clebine from "./2_Clebinepage.js";
+import Smartdrone from "./3_Smartdronepage.js";
+import Management from "./4_Managementpage.js";
+
 
 
 const theme = createTheme();
@@ -17,7 +20,9 @@ function App() {
         {/* 라우트 설정 */}
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/planner" element={<Planner />} />
+          <Route path="/clebinepage" element={<Clebine />} />
+          <Route path="/Smartdronepage" element={<Smartdrone />} />
+          <Route path="/managementpage" element={<Management />} />
          
         </Routes>
       </div>

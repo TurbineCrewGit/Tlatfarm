@@ -25,8 +25,10 @@ const MenuBar = () => {
         </button>
         <nav>
           <ul>
-            <li><Link to="/">홈</Link></li>
-            <li><Link to="/planner">플래너</Link></li>
+            <li><Link to="/">Main</Link></li>
+            <li><Link to="/Clebinepage">Clebine</Link></li>
+            <li><Link to="/Smartdronepage">Smartdrone</Link></li>
+            <li><Link to="/Managementpage">농작물관리리</Link></li>
           
             
           </ul>
