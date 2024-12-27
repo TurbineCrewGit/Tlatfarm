@@ -2,7 +2,7 @@
 @import "./Menubar.css";
 @import "./Utilities.css";
 @import "./Dashboard.css";
-
+@import url("https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200");
 
 /* 기본 레이아웃 */
 .App {
@@ -15,11 +15,16 @@
 
 .header{
   height: 15vh;
-  background-color: rgb(29, 29, 29);
+  background: #D4D9DD url(./image/bg01.jpg);
+  /*background-color: rgb(29, 29, 29);*/
   margin: 0;
   display: flex; /* Flexbox 활성화 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center;
+}
+
+hr{
+  margin-top: 0px;
 }
 
 .main {

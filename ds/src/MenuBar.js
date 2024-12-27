@@ -28,7 +28,7 @@ const MenuBar = () => {
             <li><Link to="/">Main</Link></li>
             <li><Link to="/Clebinepage">Clebine</Link></li>
             <li><Link to="/Smartdronepage">Smartdrone</Link></li>
-            <li><Link to="/Managementpage">농작물관리리</Link></li>
+            <li><Link to="/Managementpage">농작물관리</Link></li>
           
             
           </ul>
