@@ -27,6 +27,7 @@ function Main() {
 
                     {/* 메뉴바 */}
                     <MenuBar />
+                    
                 </header>
 
                 <hr className="custom_hr"></hr>
