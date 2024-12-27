@@ -12,7 +12,9 @@
   color: var(--text-color);
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
-
+/* div {
+  background: #3B4346 url("images/bg01.jpg");
+} */
 .header{
   height: 15vh;
   background: #D4D9DD url(./image/bg01.jpg);
@@ -21,7 +23,17 @@
   display: flex; /* Flexbox 활성화 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center;
+  background: #3B4346 url("images/bg01.jpg");
 }
+#mainDiv {
+  background: #3B4346 url("images/bg01.jpg")
+}
+
+.custom_hr {
+  border-color:#3B4346  !important; /* 기본 테두리 제거 */
+  width: 100vw !important; /* 너비 설정 */
+}
+
 
 hr{
   margin-top: 0px;
@@ -38,6 +50,7 @@ hr{
   font-size: calc(10px + 2vmin);
   color: var(--text-color);
   transition: background var(--transition-speed) ease;
+
 }
 
 .title{
