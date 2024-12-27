@@ -27,12 +27,7 @@ const MenuBar = () => {
           <ul>
             <li><Link to="/">홈</Link></li>
             <li><Link to="/planner">플래너</Link></li>
-            <li><Link to="/dashboard">대시보드</Link></li>
-            <li><Link to="/trading">거래</Link></li>
-            <li><Link to="/resources">자원 관리</Link></li>
-            <li><Link to="/analysis">분석</Link></li>
-            <li><Link to="/alerts">경고</Link></li>
-            <li><Link to="/settings">설정</Link></li>
+          
             
           </ul>
         </nav>

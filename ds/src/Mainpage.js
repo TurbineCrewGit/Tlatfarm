@@ -2,7 +2,7 @@ import React from "react";
 import "./Styles/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import MenuBar from './MenuBar';
+import MenuBar from './MenuBar.js';
 import ThemeToggle from "./Components/ThemeToggle.js";
 
 
