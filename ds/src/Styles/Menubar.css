@@ -1,0 +1,62 @@
+.menu-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.menu-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 3000;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+  /* 애니메이션 강제 적용 */
+}
+
+.menu-bar.open {
+  transform: translateX(0);
+  /* 메뉴 열릴 때 애니메이션 강제 적용 */
+}
+
+.close-button {
+  text-align: left;
+  width: fit-content;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.menu-bar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-bar nav ul li {
+  margin: 20px 0;
+}
+
+.menu-bar nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.menu-bar nav ul li a:hover {
+  text-decoration: underline;
+}
