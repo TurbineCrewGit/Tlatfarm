@@ -21,7 +21,7 @@ function Main() {
                     <img
                         src={flowImage}
                         alt="Flow" 
-                        style={{ width: '220px', height: 'auto' }} 
+                        style={{ width: '450px', height: 'auto' }} 
                     />
                 </a>
 
