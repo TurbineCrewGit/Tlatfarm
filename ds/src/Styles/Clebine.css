@@ -14,7 +14,7 @@
 }
 
 /* 두 줄로 배치 */
-.grid-container {
+.main-container {
     display: flex;
     flex-wrap: wrap; /* 항목들이 두 줄로 감싸지도록 설정 */
     gap: 10px;
@@ -23,15 +23,15 @@
 }
 
 /* 첫 번째 줄 - 3개 섹션 (각 33.33%) */
-.grid-container .section:nth-child(1),
-.grid-container .section:nth-child(2),
-.grid-container .section:nth-child(3) {
+.main-container .section:nth-child(1),
+.main-container .section:nth-child(2),
+.main-container .section:nth-child(3) {
     flex: 0 0 calc(33.33% - 10px); /* 첫 번째 줄에는 3개의 섹션이 33.33%씩 차지, gap을 고려하여 10px 빼기 */
 }
 
 /* 두 번째 줄 - 2개 섹션 (각 50%) */
-.grid-container .section:nth-child(4),
-.grid-container .section:nth-child(5) {
+.main-container .section:nth-child(4),
+.main-container .section:nth-child(5) {
     flex: 0 0 calc(50% - 10px); /* 두 번째 줄에는 2개의 섹션이 50%씩 차지, gap을 고려하여 10px 빼기 */
 }
 

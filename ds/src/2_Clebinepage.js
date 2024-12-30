@@ -42,7 +42,7 @@ function Clebine() {
         }} />
 
 
-        <main className="grid-container">
+        <main className="main-container">
           <div className="section" style={{background: "skyblue"}}>
             <img src={graph} alt="graph" width='400px' />
             <span>설명</span>
