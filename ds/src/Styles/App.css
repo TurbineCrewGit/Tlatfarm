@@ -5,6 +5,10 @@
 
 
 /* 기본 레이아웃 */
+body {
+  background: #3B4346 url("images/bg01.jpg");
+}
+
 .App {
   text-align: center;
   font-family: 'Inter', sans-serif;
@@ -37,7 +41,6 @@
 .planner {
   background: #3B4346 url("images/bg01.jpg") !important
 }
-
 
 .main {
   /* background-color: var(--main-background); */

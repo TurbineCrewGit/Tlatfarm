@@ -1,0 +1,70 @@
+.planner {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* 전체 화면 높이 */
+    margin: 0; /* planner의 여백 제거 */
+    padding: 0; /* planner의 패딩 제거 */
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* 헤더의 패딩은 필요에 따라 조정 */
+}
+
+.grid-container {
+    flex-wrap: wrap; /* 여러 줄로 나누기 */
+    flex: 1; /* 남은 공간을 차지 */
+    margin: 0; /* grid-container의 여백 제거 */
+    padding: 0; /* grid-container의 패딩 제거 */
+    display: flex; /* 플렉스 박스 레이아웃 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center;
+}
+
+.section {
+    background-color: antiquewhite;
+    display: flex;
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 계산 */
+    border: 3px solid black; /* 테두리 두께, 스타일, 색상 지정 */
+    padding: 0; /* 섹션 내부 여백 제거 */
+    height: calc(100vh / 3); /* 섹션 높이를 화면의 1/3로 설정 */
+    border-radius: 8px;
+    color: black;
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center;
+    margin: 5px; /* 섹션 간의 간격을 주기 위해 마진 추가 */
+    flex: 1 0 calc(33.33% - 20px); /* 마진을 고려한 너비 설정 */
+}
+
+.file-upload-section {
+    margin-top: -15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* 파일 업로드 영역의 패딩 */
+}
+
+.file-upload-box {
+    border: 2px solid black; /* 테두리 스타일 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    padding: 20px; /* 내부 여백 */
+    display: flex; /* 플렉스 박스 레이아웃 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    background-color: antiquewhite;
+}
+
+.upload-button-container {
+    background-color: antiquewhite; /* 배경색 설정 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    margin-top: 5px; /* 버튼과 파일 선택기 사이의 간격 */
+}
+
+#addBtn {
+    width: 60px;
+    height: 30px;
+}
