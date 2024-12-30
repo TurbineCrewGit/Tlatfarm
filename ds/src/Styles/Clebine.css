@@ -110,8 +110,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: black;
 }
 
+  .upload-button:hover, .add-button:hover {
+    background-color: #e0e0e0;
+  }
 .upload-button:hover, .add-button:hover {
     background-color: #e0e0e0;
     color: black;
@@ -125,3 +129,23 @@
 .selected-file {
     color: gray;
 }
+
+.file-upload-container {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: flex-start;
+    gap: 10px; /* 요소들 사이 간격 */
+  }
+
+  .file-name {
+    font-size: 14px;
+    color: gray;
+  }
+
+
+.button-container {
+    display: flex;
+    justify-content: flex-start; /* 버튼들을 가로로 정렬 */
+    gap: 10px; /* 버튼들 사이 간격 */
+  }
