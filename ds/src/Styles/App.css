@@ -24,6 +24,7 @@
   justify-content: center;
   background: #3B4346 url("images/bg01.jpg");
 }
+
 #mainDiv {
   background: #3B4346 url("images/bg01.jpg")
 }
@@ -33,9 +34,13 @@
   width: 100vw !important; /* 너비 설정 */
 }
 
+.planner {
+  background: #3B4346 url("images/bg01.jpg") !important
+}
+
 
 .main {
-  background-color: var(--main-background);
+  /* background-color: var(--main-background); */
   padding-top: 30px;
   min-height: 85vh;
   overflow: auto;
