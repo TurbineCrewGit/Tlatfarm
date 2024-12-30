@@ -12,7 +12,7 @@ const theme = createTheme();
 
 function Clebine() {
   const [tableData, setTableData] = useState([
-    { id: '1', powerProduction: '85MW', latitude: '37.5665', longitude: '126.9780' },
+    // { id: '1', powerProduction: '85MW', latitude: '37.5665', longitude: '126.9780' },
   ]);
 
   const handleDataUploaded = (newData) => {

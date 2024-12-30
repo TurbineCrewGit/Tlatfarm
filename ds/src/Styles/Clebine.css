@@ -14,15 +14,29 @@
     padding: 20px;
 }
 
+/* 두 줄로 배치 */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap; /* 항목들이 두 줄로 감싸지도록 설정 */
     gap: 10px;
     padding: 20px;
     flex: 1;
 }
 
+/* 첫 번째 줄 - 3개 섹션 (각 33.33%) */
+.grid-container .section:nth-child(1),
+.grid-container .section:nth-child(2),
+.grid-container .section:nth-child(3) {
+    flex: 0 0 calc(33.33% - 10px); /* 첫 번째 줄에는 3개의 섹션이 33.33%씩 차지, gap을 고려하여 10px 빼기 */
+}
+
+/* 두 번째 줄 - 2개 섹션 (각 50%) */
+.grid-container .section:nth-child(4),
+.grid-container .section:nth-child(5) {
+    flex: 0 0 calc(50% - 10px); /* 두 번째 줄에는 2개의 섹션이 50%씩 차지, gap을 고려하여 10px 빼기 */
+}
+
+/* 각 섹션 스타일 */
 .section {
     background-color: antiquewhite;
     display: flex;
@@ -34,11 +48,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.section:nth-child(4),
-.section:nth-child(5) {
-    grid-column: span 1.5;
 }
 
 /* 새로운 테이블 스타일 */
@@ -81,6 +90,7 @@
     text-align: center;
     border: 2px solid black;
     color: black;
+    
 }
 
 .data-table th {
@@ -90,8 +100,12 @@
     top: 0;
 }
 
+.data-table tbody tr {
+    background-color: aliceblue;
+}
+
 .data-table tbody tr:hover {
-    background-color: #f0f0f0;
+    background-color: rgb(204, 204, 204);
 }
 
 .button-container {
@@ -113,12 +127,8 @@
     color: black;
 }
 
-  .upload-button:hover, .add-button:hover {
-    background-color: #e0e0e0;
-  }
 .upload-button:hover, .add-button:hover {
     background-color: #e0e0e0;
-    color: black;
 }
 
 .add-button {
@@ -136,16 +146,29 @@
     flex-direction: column; /* 세로로 배치 */
     align-items: flex-start;
     gap: 10px; /* 요소들 사이 간격 */
-  }
+}
 
-  .file-name {
+.file-name {
     font-size: 14px;
     color: gray;
-  }
-
+}
 
 .button-container {
     display: flex;
     justify-content: flex-start; /* 버튼들을 가로로 정렬 */
     gap: 10px; /* 버튼들 사이 간격 */
-  }
+}
+#deleteBtn {
+    border: none; /* 경계선 없애기 */
+    background: none; /* 배경 없애기 */
+    color: red; /* 텍스트 색상 (x버튼) */
+    font-size: 18px; /* 글자 크기 */
+    cursor: pointer; /* 마우스 커서가 포인터로 변경 */
+    padding: 0; /* 버튼 안의 여백 없애기 */
+    width: auto; /* 너비 자동 */
+    height: auto; /* 높이 자동 */
+}
+
+#deleteBtn:hover {
+    color: red; /* 마우스 올렸을 때 색상 변경 */
+}

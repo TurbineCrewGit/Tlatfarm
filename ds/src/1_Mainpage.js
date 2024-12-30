@@ -6,7 +6,6 @@ import MenuBar from './MenuBar.js';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapComponent from './Components/MainMapComponent.js';
 import flowImage from './dark_logo.png';
-import Draggable from "react-draggable";
 
 const theme = createTheme();
 
