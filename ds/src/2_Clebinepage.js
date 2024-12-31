@@ -30,7 +30,7 @@ function Clebine() {
   const getSectionStyle = (index) => {
     const baseStyle = {
       background: ["skyblue", "seagreen", "coral", "khaki", "dodgerblue"][index],
-      transition: "all 0.3s ease",
+      // transition: "all 0.3s ease",
       cursor: "pointer",
     };
 

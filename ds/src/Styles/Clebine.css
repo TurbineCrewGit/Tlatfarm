@@ -66,7 +66,7 @@
     align-items: center;
     background-color: antiquewhite;
     min-width: 600px;
-    padding-bottom: 40px;
+    /* padding-bottom: 40px; */
 }
 
 .table-wrapper {
@@ -109,11 +109,11 @@
 .button-container {
     display: flex;
     gap: 10px;
-    margin-top: 5px;
+    margin-top: 30px;
 }
 
 .upload-button, .add-button {
-    padding: 5px 15px;
+    /* padding: 5px 15px; */
     background-color: #f0f0f0;
     border: 1px solid black;
     border-radius: 4px;
@@ -123,6 +123,10 @@
     align-items: center;
     justify-content: center;
     color: black;
+}
+.upload-button {
+    width: 75px;
+    font-size: 13px;
 }
 
 .upload-button:hover, .add-button:hover {
@@ -137,6 +141,7 @@
 .selected-file {
     color: gray;
     border: none;
+
 }
 
 .file-upload-container {
@@ -183,6 +188,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    width: 250px;
 }
 
 .add-all-button {
@@ -210,5 +216,6 @@
     padding: 10px 16px;
     height: 40px;
     border: none;
+    color: white;
 }
 
