@@ -23,14 +23,14 @@ function Clebine() {
     setTableData(tableData.filter(row => row.id !== id));
   };
 
-  const handleSectionClick = (index) => {
+  const handleToggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);
   };
 
   const getSectionStyle = (index) => {
     const baseStyle = {
       background: ["skyblue", "seagreen", "coral", "khaki", "dodgerblue"][index],
-      // transition: "all 0.3s ease",
+      transition: "all 0.3s ease",
       cursor: "pointer",
     };
 
@@ -75,14 +75,12 @@ function Clebine() {
         
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
-            <div
-              key={index}
-              className="section"
-              style={getSectionStyle(index)}
-              onClick={() => handleSectionClick(index)}
-            >
+            <div key={index} className="section" style={getSectionStyle(index)}>
               <img src={index % 2 === 0 ? graph : graph2} alt={`graph${index + 1}`} width='400px' />
               <span>예시 이미지-설명</span>
+              <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
+                {expandedSection === index ? '축소' : '확대'}
+              </button>
             </div>
           ))}
         </main>
