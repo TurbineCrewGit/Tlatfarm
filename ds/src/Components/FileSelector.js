@@ -1,4 +1,5 @@
 import React from 'react';
+import "../Styles/Clebine.css";
 
 const FileSelector = ({ selectedFile, onFileChange, onClearFile }) => {
   return (

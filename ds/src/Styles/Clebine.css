@@ -141,16 +141,23 @@
 }
 
 .file-upload-container {
-    margin-top: 5px;
     display: flex;
-    flex-direction: column; /* 세로로 배치 */
-    align-items: flex-start;
-    gap: 10px; /* 요소들 사이 간격 */
-}
+    flex-direction: column;
+    align-items: center;
+  }
+  .controls-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* 요소 간 간격 */
+    margin-top: 10px;
+  }
 
 .file-name {
     font-size: 14px;
     color: gray;
+    margin-bottom: 10px;
 }
 
 .button-container {
