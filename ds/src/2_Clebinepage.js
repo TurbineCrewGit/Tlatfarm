@@ -45,23 +45,23 @@ function Clebine() {
         <main className="main-container">
           <div className="section" style={{background: "skyblue"}}>
             <img src={graph} alt="graph" width='400px' />
-            <span>설명</span>
+            <span>예시 이미지-설명</span>
           </div>
           <div className="section" style={{background: "seagreen"}}>
             <img src={graph2} alt="graph2" width="400px" />
-            <span>설명</span>
+            <span>예시 이미지-설명</span>
           </div>
           <div className="section" style={{background: "coral"}}>
             <img src={graph} alt="graph" width='400px' />
-            <span>설명</span>
+            <span>예시 이미지-설명</span>
           </div>
           <div className="section" style={{background: "khaki"}}>
             <img src={graph2} alt="graph2" width="400px" />
-            <span>설명</span>
+            <span>예시 이미지-설명</span>
           </div>
           <div className="section" style={{background: "dodgerblue"}}>
             <img src={graph2} alt="graph2" width="400px" />
-            <span>설명</span>
+            <span>예시 이미지-설명</span>
           </div>
         </main>
 
