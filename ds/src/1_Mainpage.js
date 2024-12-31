@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MenuBar from './MenuBar.js';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapComponent from './Components/MainMapComponent.js';
-import flowImage from './dark_logo.png';
+import flowImage from './Styles/images/dark_logo.png';
 
 const theme = createTheme();
 

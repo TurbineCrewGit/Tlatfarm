@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Styles/Clebine.css";
-import logo from './dark_logo.png';
+import logo from './Styles/images/dark_logo.png';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MenuBar from './MenuBar';
 import graph from './graph.png';
