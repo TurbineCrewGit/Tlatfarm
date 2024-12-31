@@ -75,30 +75,40 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
   };
 
   return (
+
     <div className="file-upload-container">
-      <div className="controls-container">
+      {selectedFile && (
+        <div className="file-name">
+          선택된 파일: {selectedFile}
+          <button id="deleteBtn" onClick={clearSelectedFile} style={{marginLeft: "10px"}}>
+            x
+          </button>
+        </div>
+      )}
+      <div className="button-container">
         <FileSelector
           selectedFile={selectedFile}
           onFileChange={handleFileChange}
-          onClearFile={clearSelectedFile}
         />
         <IdInput filterId={filterId} onIdChange={handleIdChange} />
         <button
+          id="idAddBtn"
+          className="add-button"
           onClick={() => handleFileUpload(true)}
-          className="idAddBtn"
           disabled={!selectedFile || !filterId}
         >
           ID 데이터 추가
         </button>
         <button
-          onClick={() => handleFileUpload(false)}
           className="add-all-button"
+          onClick={() => handleFileUpload(false)}
           disabled={!selectedFile}
         >
           전체 추가
         </button>
       </div>
     </div>
+    
   );
 };
 

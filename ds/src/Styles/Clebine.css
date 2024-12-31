@@ -37,7 +37,6 @@
 
 /* 각 섹션 스타일 */
 .section {
-    
     display: flex;
     box-sizing: border-box;
     border: 3px solid black;
@@ -90,7 +89,6 @@
     text-align: center;
     border: 2px solid black;
     color: black;
-    
 }
 
 .data-table th {
@@ -138,26 +136,28 @@
 
 .selected-file {
     color: gray;
+    border: none;
 }
 
 .file-upload-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .controls-container {
+}
+.controls-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 10px; /* 요소 간 간격 */
     margin-top: 10px;
-  }
+}
 
 .file-name {
     font-size: 14px;
     color: gray;
-    margin-bottom: 10px;
+    margin: 10px;
+    
 }
 
 .button-container {
@@ -165,6 +165,7 @@
     justify-content: flex-start; /* 버튼들을 가로로 정렬 */
     gap: 10px; /* 버튼들 사이 간격 */
 }
+
 #deleteBtn {
     border: none; /* 경계선 없애기 */
     background: none; /* 배경 없애기 */
@@ -175,33 +176,38 @@
     width: auto; /* 너비 자동 */
     height: auto; /* 높이 자동 */
 }
+
 .id-input {
     padding: 8px;
     margin: 0 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-  }
-  
-  .add-all-button {
+}
+
+.add-all-button {
     background-color: #4CAF50;
-    color: black;
+    color: white;
     padding: 8px 16px;
-    border: 1px solid black;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
     margin-left: 10px;
-  }
-  
-  .add-all-button:disabled {
+}
+
+.add-all-button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-  }
-  
-  .add-button:disabled {
+}
+
+.add-button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-  }
-  #idAddBtn {
+}
+
+#idAddBtn {
     width: 100px;
-  }
+    padding: 10px 16px;
+    height: 40px;
+    border: none;
+}
