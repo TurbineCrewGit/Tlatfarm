@@ -6,7 +6,17 @@ const FileSelector = ({ selectedFile, onFileChange, onClearFile }) => {
       {selectedFile && (
         <div className="file-name">
           선택된 파일: {selectedFile}
-          <button onClick={onClearFile} style={{ marginLeft: '10px', color: 'red', background: 'none', border: 'none', cursor: 'pointer', fontSize: '15px' }}>
+          <button
+            onClick={onClearFile}
+            style={{
+              marginLeft: '10px',
+              color: 'red',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '15px',
+            }}
+          >
             x
           </button>
         </div>
