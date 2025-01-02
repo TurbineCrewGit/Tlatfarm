@@ -2,10 +2,25 @@ import React from 'react';
 import graph from '../Styles/image/graph.png';
 import graph2 from '../Styles/image/graph2.png';
 
-function Section({ index, expandedSection, handleToggleSection, selectedTint, handleButtonClick }) {
+function Section({
+  index,
+  expandedSection,
+  handleToggleSection,
+  selectedTint,
+  handleButtonClick,
+  w_w,      // 풍향 풍속
+  humidity,       // 습도
+  rainfall,       // 강수량
+  sunlight,       // 일조량
+  temperature,    // 기온
+}) {
+
+  // 섹션 이름 배열 (풍향, 풍속, 습도, 강수량 등)
+  const sectionTitles = ["풍향/풍속", "습도", "강수량", "일조량", "기온"];
+
   const getSectionStyle = (index) => {
     const baseStyle = {
-      background: ["skyblue", "seagreen", "coral", "khaki", "dodgerblue"][index],
+      backgroundColor: "white",
       transition: "all 0.3s ease",
       overflow: "hidden",
       position: "relative",
@@ -63,15 +78,28 @@ function Section({ index, expandedSection, handleToggleSection, selectedTint, ha
 
   return (
     <div key={index} className="section" style={getSectionStyle(index)}>
-      <img
-        src={index % 2 === 0 ? graph : graph2}
-        alt={`graph${index + 1}`}
-        width="400px"
-        style={getImageStyle()}
-      />
-      <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
-        {expandedSection === index ? '축소' : '확대'}
-      </button>
+      {/* 섹션 제목 부분 */}
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h2 style={{ color: "black", fontSize: "24px", fontWeight: "bold" }}>{sectionTitles[index]}</h2>
+   
+      </div>
+
+      {/* 그래프 이미지 */}
+      <div style={{ textAlign: "center" }}>
+        <img
+          src={index % 2 === 0 ? graph : graph2}
+          alt={`graph${index + 1}`}
+          width="400px"
+          style={getImageStyle()}
+        />
+      </div>
+
+      {/* 버튼 부분 */}
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
+          {expandedSection === index ? '축소' : '확대'}
+        </button>
+      </div>
 
       {expandedSection === index && (
         <div style={{ position: "absolute", bottom: "5px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "30px" }}>
