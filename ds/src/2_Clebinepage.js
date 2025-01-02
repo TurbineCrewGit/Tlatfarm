@@ -56,6 +56,8 @@ function Clebine() {
         left,
         transform: "scale(1.7)", // 확대
         zIndex: 1000,
+        padding: "20px",
+        paddingBottom: "35px",
       };
     }
 
@@ -72,21 +74,17 @@ function Clebine() {
     return baseStyle;
   };
 
-  // 버튼 스타일 (바닥에 고정되고, 간격을 두도록 설정)
+  // 버튼 스타일
   const getButtonStyle = () => {
     return {
       position: "absolute",
       bottom: "5px", // 바닥에 고정
       left: "50%",
       transform: "translateX(-50%)",
-      display: expandedSection === 0 ? "flex" : "none", // 첫 번째 섹션에서만 버튼 보이기
+      display: "flex",
       gap: "30px", // 버튼 간의 간격
     };
   };
-  const getImageStyle = () => ({
-    padding: "20px", // 이미지 패딩
-    paddingBottom: "35px",
-  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -106,17 +104,13 @@ function Clebine() {
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
             <div key={index} className="section" style={getSectionStyle(index)}>
-              <img src={index % 2 === 0 ? graph : graph2} alt={`graph${index + 1}`} width='400px' 
-                style={expandedSection === index ? getImageStyle() : {}}
-              />
-              
-              {/* <span>예시 이미지-설명</span> */}
+              <img src={index % 2 === 0 ? graph : graph2} alt={`graph${index + 1}`} width='400px' />
               <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
                 {expandedSection === index ? '축소' : '확대'}
               </button>
 
-              {/* 첫 번째 섹션이 확대될 때만 버튼들이 보이도록 설정 */}
-              {expandedSection === 0 && (
+              {/* 확대된 상태에서만 보이는 버튼들 */}
+              {expandedSection === index && (
                 <div style={getButtonStyle()}>
                   <button>일봉</button>
                   <button>주봉</button>
