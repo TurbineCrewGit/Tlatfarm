@@ -68,6 +68,7 @@
 .data-table {
     width: 100%;
     border-collapse: collapse;
+    
 }
 
 .data-table th,
@@ -76,6 +77,9 @@
     text-align: center;
     border: 2px solid black;
     color: black;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden; /* 내용이 넘치면 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
 }
 
 .data-table th {
@@ -84,6 +88,7 @@
     position: sticky;
     top: 0;
 }
+
 
 .data-table tbody tr {
     background-color: aliceblue;
@@ -189,12 +194,12 @@
 }
 
 .add-all-button:disabled {
-    background-color: #cccccc;
+    background-color: #cccccc !important;
     cursor: not-allowed;
 }
 
 .add-button:disabled {
-    background-color: #cccccc;
+    background-color: #cccccc !important;
     cursor: not-allowed;
 }
 
@@ -204,8 +209,8 @@
     height: 40px;
     border: none;
     color: white;
+    background-color:cornflowerblue;
 }
-
 .section {
     position: relative;
     transition: all 0.3s ease;
@@ -229,9 +234,56 @@
     border: 1px solid #ccc; 
     border-radius: 4px; 
     cursor: pointer; 
-    transition: background-color 0.3s;
+    /* transition: background-color 0.3s; */
   }
   
   #toggleBtn:hover {
     background-color: #f0f0f0;
   }
+
+  @font-face {
+    font-family: 'LAB디지털';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .clock-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 전체 화면 높이 */
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .clock {
+    font-family: 'LAB디지털', sans-serif;
+    font-size: 50px !important;
+    border: 5px outset whitesmoke;
+    padding: 40px;
+    box-sizing: border-box; /* padding, border가 크기 계산에 포함되도록 */
+    color:palegoldenrod;
+    text-shadow: 5px 5px 6px rgb(104, 99, 36);
+    background-color: black;
+  }
+  
+
+  
+  .clebine-container {
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%; /* 컨테이너 너비 증가 */
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clebine-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+}
