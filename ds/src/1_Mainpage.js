@@ -7,6 +7,7 @@ import { KAKAO_MAP_APPKEY } from './Components/constants';
 import flowDarkImage from './Styles/image/어두운_로고.png';
 import expandIcon from './Styles/image/expand_button.png'; // 확장 아이콘 경로
 import "./Styles/App.css";
+import zIndex from "@mui/material/styles/zIndex.js";
 
 const theme = createTheme();
 
@@ -111,33 +112,34 @@ useEffect(() => {
                             );
 
                             // 오프셋 적용
-                            const adjustedLat = isOverlapping ? lat + 0.0001 : lat;
-                            const adjustedLng = isOverlapping ? lng + 0.0001 : lng;
+                            const adjustedLat = isOverlapping ? lat + 0.0000 : lat;
+                            const adjustedLng = isOverlapping ? lng + 0.0000 : lng;
 
                             if (!isNaN(lat) && !isNaN(lng)) {
                                 // 드론 상태에 따른 마커 이미지 설정
                                 const markerImage = new window.kakao.maps.MarkerImage(
-                                    wp.action === "6" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
-                                        ? `${process.env.PUBLIC_URL}/충전중.gif`
-                                        : `${process.env.PUBLIC_URL}/이동중.gif`,
-                                    wp.action === "6"
-                                        ? new window.kakao.maps.Size(80, 80)
+                                    wp.action === "16" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
+                                        ? `${process.env.PUBLIC_URL}/이동중.gif`
+                                        : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                    wp.action === "16"
+                                        ? new window.kakao.maps.Size(65, 65)
                                         : new window.kakao.maps.Size(65, 65)
                                 );
 
                                 const hoverImage = new window.kakao.maps.MarkerImage(
-                                    wp.action === "6" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
-                                        ? `${process.env.PUBLIC_URL}/충전중.gif`
-                                        : `${process.env.PUBLIC_URL}/이동중.gif`,
-                                    wp.action === "6"
-                                        ? new window.kakao.maps.Size(90, 90)
-                                        : new window.kakao.maps.Size(70, 70)
+                                    wp.action === "16" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
+                                        ? `${process.env.PUBLIC_URL}/이동중.gif`
+                                        : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                    wp.action === "16"
+                                        ? new window.kakao.maps.Size(80, 80)
+                                        : new window.kakao.maps.Size(80, 80)
                                 );
 
                                 const marker = new window.kakao.maps.Marker({
                                     position: new window.kakao.maps.LatLng(adjustedLat, adjustedLng),
                                     map: mapRef.current,
                                     image: markerImage,
+                                    zIndex: 4,
                                 });
 
                                 const infoWindow = new window.kakao.maps.InfoWindow({
@@ -219,7 +221,17 @@ useEffect(() => {
                         position: new window.kakao.maps.LatLng(lat, lng),
                         map: mapRef.current,
                         image: markerImage,
+                        zIndex: 1,
                     });
+
+                    // Custom Overlay로 작은 점 추가
+                    const dotOverlay = new window.kakao.maps.CustomOverlay({
+                        position: new window.kakao.maps.LatLng(lat, lng),
+                        content: '<div style="width: 6px; height: 6px; background-color: red; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); z-index: 2;"></div>',
+                        zIndex: 2,
+                    });
+
+                    dotOverlay.setMap(mapRef.current);
 
                     const infoWindow = new window.kakao.maps.InfoWindow({
                         content: `<div style="padding:5px; font-size:12px; color:#000;">ID: ${row.ID}<br>Power: ${row.Power}</div>`,
@@ -340,8 +352,9 @@ useEffect(() => {
                     <div className="bottom-sections">
                         
                         <div className="clebine-section">
-                            <h3>Clebine Section</h3>
-                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '200px', border: '1px solid #ccc', padding: '20px' }}>
+                            
+                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '200px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
+                                <h3>Clebine Section</h3>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
@@ -352,28 +365,46 @@ useEffect(() => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {csvData.map((row, index) => (
-                                            <tr key={index}>
-                                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.No}</td>
-                                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.ID}</td>
-                                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.Power}</td>
-                                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                                    <button 
-                                                        style={{ padding: "5px 10px", cursor: "pointer" }} 
-                                                        onClick={() => alert(`Clebine ID: ${row.ID}`)}>
-                                                        Detail
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {csvData.map((row, index) => {
+                                            let powerBackgroundColor;
+
+                                            // Power 값에 따라 배경 색상 설정
+                                            if (parseFloat(row.Power) === 0) {
+                                                powerBackgroundColor = "rgba(0, 0, 0, 0.5)"; // Red for 0W
+                                            } else if (parseFloat(row.Power) >= 1 && parseFloat(row.Power) <= 49) {
+                                                powerBackgroundColor = "rgba(255, 0, 0, 0.5)"; // Light Orange
+                                            } else if (parseFloat(row.Power) >= 50 && parseFloat(row.Power) <= 99) {
+                                                powerBackgroundColor = "rgba(255, 145, 0, 0.5)"; // Light Yellow
+                                            } else if (parseFloat(row.Power) >= 100 && parseFloat(row.Power) <= 149) {
+                                                powerBackgroundColor = "rgba(255, 255, 0, 0.5)"; // Light Green
+                                            } else if (parseFloat(row.Power) >= 150) {
+                                                powerBackgroundColor = "rgba(100, 255, 100, 0.5)"; // Light Blue
+                                            }
+                                        return (
+                                                <tr key={index}>
+                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.No}</td>
+                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.ID}</td>
+                                                    <td style={{ border: "1px solid #ddd", padding: "8px", backgroundColor:powerBackgroundColor }}>{row.Power}</td>
+                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <button 
+                                                            style={{ padding: "5px 10px", cursor: "pointer" }} 
+                                                            onClick={() => alert(`Clebine ID: ${row.ID}`)}>
+                                                            Detail
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
                         <div className="smartdrone-section">
+                            
+                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '200px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
                             <h3>SmartDrone Section</h3>
-                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '200px', border: '1px solid #ccc', padding: '20px' }}>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
