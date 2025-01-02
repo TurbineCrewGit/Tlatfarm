@@ -35,19 +35,6 @@
     flex: 0 0 calc(50% - 10px); /* 두 번째 줄에는 2개의 섹션이 50%씩 차지, gap을 고려하여 10px 빼기 */
 }
 
-/* 각 섹션 스타일 */
-.section {
-    display: flex;
-    box-sizing: border-box;
-    border: 3px solid black;
-    padding: 0;
-    border-radius: 8px;
-    color: black;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 /* 새로운 테이블 스타일 */
 .list-section {
     margin-top: -15px;
@@ -220,9 +207,19 @@
 }
 
 .section {
-    position: relative; 
+    position: relative;
+    transition: all 0.3s ease;
+    transform-origin: inherit;
+    display: flex;
+    box-sizing: border-box;
+    border: 3px solid black;
+    border-radius: 8px;
+    color: black;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  
+
   #toggleBtn {
     position: absolute; 
     bottom: 10px; 
@@ -238,4 +235,3 @@
   #toggleBtn:hover {
     background-color: #f0f0f0;
   }
-  
