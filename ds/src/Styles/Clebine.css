@@ -217,7 +217,7 @@
     transform-origin: inherit;
     display: flex;
     box-sizing: border-box;
-    border: 3px solid black;
+    border: none;
     border-radius: 8px;
     color: black;
     flex-direction: column;
