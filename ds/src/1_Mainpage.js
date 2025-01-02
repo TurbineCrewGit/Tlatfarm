@@ -106,37 +106,31 @@ useEffect(() => {
                             const lat = parseFloat(wp.lat);
                             const lng = parseFloat(wp.long);
 
-                            // Clebine 데이터와 중복 좌표인지 확인
-                            const isOverlapping = csvData.some(row => 
-                                parseFloat(row.Latitude) === lat && parseFloat(row.Longitude) === lng
-                            );
-
-                            // 오프셋 적용
-                            const adjustedLat = isOverlapping ? lat + 0.0000 : lat;
-                            const adjustedLng = isOverlapping ? lng + 0.0000 : lng;
 
                             if (!isNaN(lat) && !isNaN(lng)) {
                                 // 드론 상태에 따른 마커 이미지 설정
                                 const markerImage = new window.kakao.maps.MarkerImage(
-                                    wp.action === "16" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
+                                    wp.action === "16"
                                         ? `${process.env.PUBLIC_URL}/이동중.gif`
                                         : `${process.env.PUBLIC_URL}/충전중.gif`,
-                                    wp.action === "16"
-                                        ? new window.kakao.maps.Size(65, 65)
-                                        : new window.kakao.maps.Size(65, 65)
+                                    new window.kakao.maps.Size(65, 65), // 이미지 크기
+                                    {
+                                        offset: new window.kakao.maps.Point(32.5, 32.5), // 이미지 중심 (가로/세로의 절반)
+                                    }
                                 );
 
                                 const hoverImage = new window.kakao.maps.MarkerImage(
                                     wp.action === "16" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
                                         ? `${process.env.PUBLIC_URL}/이동중.gif`
                                         : `${process.env.PUBLIC_URL}/충전중.gif`,
-                                    wp.action === "16"
-                                        ? new window.kakao.maps.Size(80, 80)
-                                        : new window.kakao.maps.Size(80, 80)
+                                    new window.kakao.maps.Size(80, 80), // 확대 이미지 크기
+                                    {
+                                        offset: new window.kakao.maps.Point(40, 40), // 확대 이미지 중심
+                                    }
                                 );
 
                                 const marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(adjustedLat, adjustedLng),
+                                    position: new window.kakao.maps.LatLng(lat, lng),
                                     map: mapRef.current,
                                     image: markerImage,
                                     zIndex: 4,
