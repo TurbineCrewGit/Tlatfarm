@@ -29,12 +29,13 @@ const DataTable = ({ tableData, onDelete }) => {
             <th>위도</th>
             <th>경도</th>
             <th>작업</th>
+            <th>Detail</th>
           </tr>
         </thead>
         <tbody>
           {tableData.length === 0 ? (
             <tr>
-              <td colSpan="5" style={{ textAlign: "center" }}>
+              <td colSpan="6" style={{ textAlign: "center" }}>
                 파일을 올려주세요
               </td>
             </tr>
@@ -64,6 +65,19 @@ const DataTable = ({ tableData, onDelete }) => {
                       X
                     </button>
                   </td>
+                  <td>
+                    <button 
+                      className="detail-button"
+                      style={{
+                        padding: "5px 10px",
+                        border: "1px ridge black",
+                        borderRadius: "4px"
+                      }}
+                    >
+                      Detail
+                    </button>
+                  </td>
+                  
                 </tr>
               );
             })
