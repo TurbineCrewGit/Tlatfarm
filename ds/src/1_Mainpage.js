@@ -3,6 +3,7 @@ import "./Styles/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MenuBar from './MenuBar.js';
+import FlowLogo from './Styles/image/flow_noname_image.png';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapComponent from './Components/MainMapComponent.js';
 import flowImage from './Styles/images/dark_logo.png';
@@ -10,6 +11,7 @@ import flowImage from './Styles/images/dark_logo.png';
 const theme = createTheme();
 
 function Main() {
+
     const [markers, setMarkers] = useState([]); // 마커 상태 추가
 
     // 마커 추가 함수
@@ -20,10 +22,12 @@ function Main() {
         ]);
     };
 
+
     return (
         <ThemeProvider theme={theme}>
             <div id="mainDiv">
                 <header className="header">
+
                     <a href="https://turbinecrew.co.kr/" target="_blank" rel="noopener noreferrer">
                         <img
                             src={flowImage}
@@ -31,6 +35,7 @@ function Main() {
                             style={{ width: '450px', height: 'auto' }} 
                         />
                     </a>
+
 
                     {/* 메뉴바 */}
                     <MenuBar />
@@ -43,6 +48,9 @@ function Main() {
                     <MapComponent addMarker={addMarker} /> {/* addMarker prop 전달 */}
                 </main>
 
+
+
+                <img src={`${process.env.PUBLIC_URL}/컴포지션 1.gif`} alt="Turbine Planner" style={{backgroundColor:"none"}}/>
                 <ThemeToggle />
             </div>
         </ThemeProvider>

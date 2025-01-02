@@ -15,11 +15,12 @@
   left: 0;
   width: 250px;
   height: 100%;
+  background: #D4D9DD url(./image/bg01.jpg);
   background-color: #333;
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 0px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
   z-index: 3000;
   transform: translateX(-100%);
@@ -35,6 +36,7 @@
 .close-button {
   text-align: left;
   width: fit-content;
+  margin-left: 20px;
   background: none;
   border: none;
   color: white;
@@ -48,7 +50,15 @@
 }
 
 .menu-bar nav ul li {
-  margin: 20px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+}
+
+.menu-bar nav ul li:hover{
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 250px;
+  
 }
 
 .menu-bar nav ul li a {
@@ -56,6 +66,7 @@
   text-decoration: none;
   font-size: 18px;
 }
+
 
 .menu-bar nav ul li a:hover {
   text-decoration: underline;
