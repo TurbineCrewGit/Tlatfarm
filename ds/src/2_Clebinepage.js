@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Styles/Clebine.css";
 import logo from './Styles/images/dark_logo.png';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -15,6 +15,19 @@ function Clebine() {
   const [tableData, setTableData] = useState([]);
   const [expandedSection, setExpandedSection] = useState(null);
 
+  // 시간 관련 상태 추가
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // 실시간 시간 업데이트
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000); // 1초마다 시간 갱신
+
+    // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(intervalId);
+  }, []);
+
   const handleDataUploaded = (newData) => {
     setTableData(prevData => [...prevData, ...newData]);
   };
@@ -27,7 +40,6 @@ function Clebine() {
     setExpandedSection(expandedSection === index ? null : index);
   };
 
-  // 확대 시키는 함수
   const getSectionStyle = (index) => {
     const baseStyle = {
       background: ["skyblue", "seagreen", "coral", "khaki", "dodgerblue"][index],
@@ -37,7 +49,6 @@ function Clebine() {
       transformOrigin: "top left", // 확대 기준점
     };
 
-    // 각 섹션이 확장된 상태일 때
     if (expandedSection === index) {
       const positionOffsets = [
         { top: "10%", left: "22%" },  // 첫 번째 섹션
@@ -47,7 +58,6 @@ function Clebine() {
         { top: "-43%", left: "-43%" },  // 다섯 번째 섹션
       ];
 
-      // 각 섹션마다 다르게 top, left 값을 설정
       const { top, left } = positionOffsets[index] || { top: "30%", left: "40%" };
 
       return {
@@ -61,7 +71,6 @@ function Clebine() {
       };
     }
 
-    // 다른 섹션은 투명하게 처리
     if (expandedSection !== null && expandedSection !== index) {
       return {
         ...baseStyle,
@@ -70,11 +79,9 @@ function Clebine() {
       };
     }
 
-    // 기본 상태
     return baseStyle;
   };
 
-  // 버튼 스타일
   const getButtonStyle = () => {
     return {
       position: "absolute",
@@ -86,6 +93,10 @@ function Clebine() {
     };
   };
 
+  // 현재 시간 포맷 (시:분:초)
+  const timeString = `${currentTime.getFullYear()}년 ${currentTime.getMonth()+1}월 \ ${currentTime.getDate()}일
+   ${currentTime.getHours()}시 ${currentTime.getMinutes()}분 ${currentTime.getSeconds()}초`;
+
   return (
     <ThemeProvider theme={theme}>
       <div className="planner">
@@ -95,12 +106,26 @@ function Clebine() {
           </Link>
           <MenuBar />
         </header>
+
         <hr style={{
           border: "1px solid rgb(36, 36, 36)",
           width: "100vw",
           margin: "0"
         }} />
+
+        {/* 공식 시계 (실시간 시간 표시) */}
+        <div className="clock-wrapper">
+          <div className="clock" style={{ textAlign: 'center', marginTop: '10px', fontSize: '24px' }}>
+              {timeString}
+          </div>
+        </div>
         
+        <hr style={{
+          border: "1px solid rgb(36, 36, 36)",
+          width: "100vw",
+          margin: "0"
+        }} />
+
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
             <div key={index} className="section" style={getSectionStyle(index)}>
@@ -109,7 +134,6 @@ function Clebine() {
                 {expandedSection === index ? '축소' : '확대'}
               </button>
 
-              {/* 확대된 상태에서만 보이는 버튼들 */}
               {expandedSection === index && (
                 <div style={getButtonStyle()}>
                   <button>일봉</button>

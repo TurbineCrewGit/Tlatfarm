@@ -235,3 +235,26 @@
   #toggleBtn:hover {
     background-color: #f0f0f0;
   }
+
+  .clock-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 전체 화면 높이 */
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .clock {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 50px !important;
+    border: 5px dashed whitesmoke;
+    padding: 50px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    box-sizing: border-box; /* padding, border가 크기 계산에 포함되도록 */
+    color:palegoldenrod;
+    text-shadow: 5px 5px 6px rgb(104, 99, 36);
+  }
+  
+  
