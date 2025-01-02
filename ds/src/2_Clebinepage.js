@@ -30,22 +30,35 @@ function Clebine() {
   const getSectionStyle = (index) => {
     const baseStyle = {
       background: ["skyblue", "seagreen", "coral", "khaki", "dodgerblue"][index],
-      transition: "all 0.3s ease"
+      transition: "all 0.3s ease",
+      overflow: "hidden",
+      position: "relative",
+      transformOrigin: "top left", // 확대 기준점
     };
-
+  
+    // 각 섹션이 확장된 상태일 때
     if (expandedSection === index) {
+      const positionOffsets = [
+        { top: "10%", left: "22%" },  // 첫 번째 섹션
+        { top: "10%", left: "-12%" },  // 두 번째 섹션
+        { top: "10%", left: "-44%" },  // 세 번째 섹션
+        { top: "-42%", left: "10%" },  // 네 번째 섹션
+        { top: "-43%", left: "-43%" },  // 다섯 번째 섹션
+      ];
+  
+      // 각 섹션마다 다르게 top, left 값을 설정
+      const { top, left } = positionOffsets[index] || { top: "30%", left: "40%" };
+  
       return {
         ...baseStyle,
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: "90%",
-        height: "80%",
+        top,
+        left,
+        transform: "scale(1.7)", // 확대
         zIndex: 1000,
       };
     }
-
+  
+    // 다른 섹션은 투명하게 처리
     if (expandedSection !== null && expandedSection !== index) {
       return {
         ...baseStyle,
@@ -53,7 +66,8 @@ function Clebine() {
         pointerEvents: "none",
       };
     }
-
+  
+    // 기본 상태
     return baseStyle;
   };
 
