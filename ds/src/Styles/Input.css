@@ -35,7 +35,7 @@ input:focus {
 }
 
 .input-alt {
-  width: 100px;
+  width: 90px;
   font-size: 16px;
 }
 
@@ -44,7 +44,7 @@ input:focus {
 
 /* select */
 select {
-  width: 100px;
+  width: 65px;
   padding: 8px;
   margin-right: 10px;
   border: 2px solid var(--primary-color);
@@ -58,6 +58,10 @@ select {
   background-position: right 10px center;
   background-size: 12px;
   transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.select-inmain {
+  width: 65px;
 }
 
 select:hover {

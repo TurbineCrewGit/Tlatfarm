@@ -1,6 +1,6 @@
 .menu-button {
   position: absolute;
-  top: 10px;
+  top: 25px;
   left: 10px;
   background: none;
   border: none;
@@ -15,7 +15,7 @@
   left: 0;
   width: 250px;
   height: 100%;
-  background: #D4D9DD url(./image/bg01.jpg);
+  background: #D4D9DD url(./images/bg01.png);
   background-color: #333;
   color: white;
   display: flex;

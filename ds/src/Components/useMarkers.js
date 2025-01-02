@@ -1,5 +1,4 @@
 // useMarkers.js
-
 import { useState, useRef, useCallback } from 'react';
 import { FLIGHT_MODES } from './constants';
 import { v4 as uuidv4 } from 'uuid';
@@ -67,7 +66,9 @@ function useMarkers(mapRef) {
 
   // **마커 추가 함수** (removeMarker 이후에 정의)
   const addMarker = useCallback(
-    (latlng, alt = 0) => {
+    (latlng, alt = 0, enableAddMarker = true) => {
+      if (!enableAddMarker) return;
+
       const firstMarkerImageSrc = `${process.env.PUBLIC_URL}/smartpolemarker_start.png`;
       const normalMarkerImageSrc = `${process.env.PUBLIC_URL}/smartpolemarker.png`;
       const imageSize = new window.kakao.maps.Size(70, 80);
@@ -206,6 +207,7 @@ function useMarkers(mapRef) {
     polylineRef,
     distanceLabelsRef,
     updateMarkerImages,
+    //enableAddMarker: true,
   };
 }
 
