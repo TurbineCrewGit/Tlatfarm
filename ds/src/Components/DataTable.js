@@ -43,7 +43,7 @@ const DataTable = ({ tableData, onDelete }) => {
         return {};
     }
   };
-  
+
   return (
     <>
       <div className="clebine-container">
@@ -93,18 +93,19 @@ const DataTable = ({ tableData, onDelete }) => {
                       </button>
                     </td>
                     <td>
-                      <button 
+                      <button
                         className="detail-button"
                         onClick={() => handleDetailClick(row.id)}
                         style={{
                           padding: "5px 10px",
                           border: "1px ridge black",
                           borderRadius: "4px",
-                          backgroundColor: expandedRow === row.id ? "#e0e0e0" : "white",
-                          cursor: "pointer"
+                          backgroundColor: expandedRow === row.id ? "red" : "white", // Set background to red when "Close"
+                          color: expandedRow === row.id ? "white" : "black", // Change text color to white when "Close"
+                          cursor: "pointer",
                         }}
                       >
-                        Detail
+                        {expandedRow === row.id ? "Close" : "Detail"}
                       </button>
                     </td>
                   </tr>
@@ -122,41 +123,41 @@ const DataTable = ({ tableData, onDelete }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "20px"
+          gap: "20px",
         }}>
           <div style={{ display: "flex", gap: "30px" }}>
-            <button 
+            <button
               onClick={() => handleTintChange("red")}
               style={{
                 padding: "5px 15px",
                 cursor: "pointer",
                 backgroundColor: selectedTint === "red" ? "#e0e0e0" : "white",
                 border: "1px ridge black",
-                borderRadius: "4px"
+                borderRadius: "4px",
               }}
             >
               일봉
             </button>
-            <button 
+            <button
               onClick={() => handleTintChange("orange")}
               style={{
                 padding: "5px 15px",
                 cursor: "pointer",
                 backgroundColor: selectedTint === "orange" ? "#e0e0e0" : "white",
                 border: "1px ridge black",
-                borderRadius: "4px"
+                borderRadius: "4px",
               }}
             >
               주봉
             </button>
-            <button 
+            <button
               onClick={() => handleTintChange("yellow")}
               style={{
                 padding: "5px 15px",
                 cursor: "pointer",
                 backgroundColor: selectedTint === "yellow" ? "#e0e0e0" : "white",
                 border: "1px ridge black",
-                borderRadius: "4px"
+                borderRadius: "4px",
               }}
             >
               월봉
