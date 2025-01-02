@@ -44,6 +44,10 @@ const DataTable = ({ tableData, onDelete }) => {
     }
   };
 
+  const closeGraph = () => {
+    setExpandedRow(null);
+  };
+
   return (
     <>
       <div className="clebine-container">
@@ -100,8 +104,8 @@ const DataTable = ({ tableData, onDelete }) => {
                           padding: "5px 10px",
                           border: "1px ridge black",
                           borderRadius: "4px",
-                          backgroundColor: expandedRow === row.id ? "red" : "white", // Set background to red when "Close"
-                          color: expandedRow === row.id ? "white" : "black", // Change text color to white when "Close"
+                          backgroundColor: expandedRow === row.id ? "red" : "white",
+                          color: expandedRow === row.id ? "white" : "black",
                           cursor: "pointer",
                         }}
                       >
@@ -125,50 +129,31 @@ const DataTable = ({ tableData, onDelete }) => {
           alignItems: "center",
           gap: "20px",
         }}>
-          <div style={{ display: "flex", gap: "30px" }}>
+          <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
             <button
-              onClick={() => handleTintChange("red")}
+              onClick={closeGraph}
               style={{
-                padding: "5px 15px",
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                padding: "2px 3px",
                 cursor: "pointer",
-                backgroundColor: selectedTint === "red" ? "#e0e0e0" : "white",
-                border: "1px ridge black",
-                borderRadius: "4px",
+                backgroundColor: "red",
+                color: "white",
+                border: "none",
+                // borderRadius: "50%",
+                fontSize: "12px",
               }}
             >
-              일봉
+              X
             </button>
-            <button
-              onClick={() => handleTintChange("orange")}
-              style={{
-                padding: "5px 15px",
-                cursor: "pointer",
-                backgroundColor: selectedTint === "orange" ? "#e0e0e0" : "white",
-                border: "1px ridge black",
-                borderRadius: "4px",
-              }}
-            >
-              주봉
-            </button>
-            <button
-              onClick={() => handleTintChange("yellow")}
-              style={{
-                padding: "5px 15px",
-                cursor: "pointer",
-                backgroundColor: selectedTint === "yellow" ? "#e0e0e0" : "white",
-                border: "1px ridge black",
-                borderRadius: "4px",
-              }}
-            >
-              월봉
-            </button>
+            <img
+              src={tableData.findIndex(row => row.id === expandedRow) % 2 === 0 ? graph : graph2}
+              alt="graph"
+              width="400px"
+              style={getImageStyle()}
+            />
           </div>
-          <img
-            src={tableData.findIndex(row => row.id === expandedRow) % 2 === 0 ? graph : graph2}
-            alt="graph"
-            width="400px"
-            style={getImageStyle()}
-          />
         </div>
       )}
     </>
