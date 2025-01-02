@@ -1,6 +1,6 @@
 /* 지도 스타일 조정 */
 #kakaoMap {
-  width: 100%;
+  width: 100%; 
   height: 500px;
   /* 기본 높이 설정 */
   margin: 20px 0;
@@ -8,6 +8,7 @@
   border-radius: 10px;
   transition: border-color var(--transition-speed) ease;
   position: relative;
+  z-index: 100;
 }
 
 .mapComponentsBox{

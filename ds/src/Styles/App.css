@@ -5,6 +5,10 @@
 @import url("https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200");
 
 /* 기본 레이아웃 */
+body {
+  background: #3B4346 url("images/bg01.jpg");
+}
+
 .App {
   text-align: center;
   font-family: 'Inter', sans-serif;
@@ -122,12 +126,16 @@
   width: 100vw !important; /* 너비 설정 */
 }
 
+.planner {
+  background: #3B4346 url("images/bg01.jpg") !important
+}
 
 hr{
   margin-top: 0px;
 }
 
 .main {
+  /* background-color: var(--main-background); */
   padding-top: 30px;
   min-height: 85vh;
   overflow: auto;
