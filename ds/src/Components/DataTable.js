@@ -17,7 +17,7 @@ const DataTable = ({ tableData, onDelete }) => {
     }
     return ""; // 기본값 (배경색 없음)
   };
-
+  
   return (
     <div className="clebine-container">
       <h1 className="clebine-title">Clebine</h1>
