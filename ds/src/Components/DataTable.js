@@ -19,7 +19,8 @@ const DataTable = ({ tableData, onDelete }) => {
   };
 
   return (
-    <div>
+    <div className="clebine-container">
+      <h1 className="clebine-title">Clebine</h1>
       <table className="data-table">
         <thead>
           <tr>
