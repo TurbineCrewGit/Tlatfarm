@@ -17,6 +17,7 @@ function Clebine() {
 
   // 시간 관련 상태 추가
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [selectedTint, setSelectedTint] = useState(null); // tint 상태 관리
 
   // 실시간 시간 업데이트
   useEffect(() => {
@@ -38,6 +39,11 @@ function Clebine() {
 
   const handleToggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);
+    setSelectedTint(null); // 섹션 축소 시 틴트도 초기화
+  };
+
+  const handleButtonClick = (tintColor) => {
+    setSelectedTint(tintColor); // 선택된 버튼에 맞는 tint 색상 설정
   };
 
   const getSectionStyle = (index) => {
@@ -93,9 +99,26 @@ function Clebine() {
     };
   };
 
+  const getImageStyle = (index) => {
+    if (expandedSection === index) {
+      // 확대된 섹션에만 틴트를 적용
+      switch (selectedTint) {
+        case "red":
+          return { filter: "sepia(100%) saturate(200%) hue-rotate(0deg)" }; // 빨간 틴트
+        case "orange":
+          return { filter: "sepia(100%) saturate(200%) hue-rotate(30deg)" }; // 주황 틴트
+        case "yellow":
+          return { filter: "sepia(100%) saturate(200%) hue-rotate(60deg)" }; // 노랑 틴트
+        default:
+          return {}; // 기본 이미지 스타일 (틴트 없음)
+      }
+    }
+    return {}; // 기본 상태일 때는 틴트 없음
+  };
+
   // 현재 시간 포맷 (시:분:초)
-  const timeString = `${currentTime.getFullYear()}년 ${currentTime.getMonth()+1}월 \ ${currentTime.getDate()}일
-   ${currentTime.getHours()}시 ${currentTime.getMinutes()}분 ${currentTime.getSeconds()}초`;
+  const timeString = `${currentTime.getFullYear()}년 ${currentTime.getMonth() + 1}월 ${currentTime.getDate()}일
+    ${currentTime.getHours()}시 ${currentTime.getMinutes()}분 ${currentTime.getSeconds()}초`;
 
   return (
     <ThemeProvider theme={theme}>
@@ -116,10 +139,10 @@ function Clebine() {
         {/* 공식 시계 (실시간 시간 표시) */}
         <div className="clock-wrapper">
           <div className="clock" style={{ textAlign: 'center', marginTop: '10px', fontSize: '24px' }}>
-              {timeString}
+            {timeString}
           </div>
         </div>
-        
+
         <hr style={{
           border: "1px solid rgb(36, 36, 36)",
           width: "100vw",
@@ -129,16 +152,21 @@ function Clebine() {
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
             <div key={index} className="section" style={getSectionStyle(index)}>
-              <img src={index % 2 === 0 ? graph : graph2} alt={`graph${index + 1}`} width='400px' />
+              <img
+                src={index % 2 === 0 ? graph : graph2}
+                alt={`graph${index + 1}`}
+                width='400px'
+                style={getImageStyle(index)} // 틴트 스타일 적용
+              />
               <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
                 {expandedSection === index ? '축소' : '확대'}
               </button>
 
               {expandedSection === index && (
                 <div style={getButtonStyle()}>
-                  <button>일봉</button>
-                  <button>주봉</button>
-                  <button>월봉</button>
+                  <button onClick={() => handleButtonClick("red")}>일봉</button>
+                  <button onClick={() => handleButtonClick("orange")}>주봉</button>
+                  <button onClick={() => handleButtonClick("yellow")}>월봉</button>
                 </div>
               )}
             </div>
