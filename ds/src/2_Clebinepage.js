@@ -4,7 +4,6 @@ import Clock from './Components/Clock.js';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
-import { Link } from 'react-router-dom';
 
 const theme = createTheme();
 

@@ -15,8 +15,8 @@ function Section({ index, expandedSection, handleToggleSection, selectedTint, ha
     if (expandedSection === index) {
       const positionOffsets = [
         { top: "10%", left: "22%" },
-        { top: "10%", left: "-12%" },
-        { top: "10%", left: "-44%" },
+        { top: "5%", left: "-12%" },
+        { top: "5%", left: "-44%" },
         { top: "-42%", left: "10%" },
         { top: "-43%", left: "-43%" },
       ];
