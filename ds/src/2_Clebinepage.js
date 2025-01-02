@@ -9,7 +9,7 @@ import FileUpload from './Components/FileUpload';
 import DataTable from './Components/DataTable';
 import { Link } from 'react-router-dom';
 
-  const theme = createTheme();
+const theme = createTheme();
 
 function Clebine() {
   const [tableData, setTableData] = useState([]);
@@ -27,6 +27,7 @@ function Clebine() {
     setExpandedSection(expandedSection === index ? null : index);
   };
 
+  // 확대 시키는 함수
   const getSectionStyle = (index) => {
     const baseStyle = {
       background: ["skyblue", "seagreen", "coral", "khaki", "dodgerblue"][index],
@@ -35,7 +36,7 @@ function Clebine() {
       position: "relative",
       transformOrigin: "top left", // 확대 기준점
     };
-  
+
     // 각 섹션이 확장된 상태일 때
     if (expandedSection === index) {
       const positionOffsets = [
@@ -45,10 +46,10 @@ function Clebine() {
         { top: "-42%", left: "10%" },  // 네 번째 섹션
         { top: "-43%", left: "-43%" },  // 다섯 번째 섹션
       ];
-  
+
       // 각 섹션마다 다르게 top, left 값을 설정
       const { top, left } = positionOffsets[index] || { top: "30%", left: "40%" };
-  
+
       return {
         ...baseStyle,
         top,
@@ -57,7 +58,7 @@ function Clebine() {
         zIndex: 1000,
       };
     }
-  
+
     // 다른 섹션은 투명하게 처리
     if (expandedSection !== null && expandedSection !== index) {
       return {
@@ -66,10 +67,26 @@ function Clebine() {
         pointerEvents: "none",
       };
     }
-  
+
     // 기본 상태
     return baseStyle;
   };
+
+  // 버튼 스타일 (바닥에 고정되고, 간격을 두도록 설정)
+  const getButtonStyle = () => {
+    return {
+      position: "absolute",
+      bottom: "5px", // 바닥에 고정
+      left: "50%",
+      transform: "translateX(-50%)",
+      display: expandedSection === 0 ? "flex" : "none", // 첫 번째 섹션에서만 버튼 보이기
+      gap: "30px", // 버튼 간의 간격
+    };
+  };
+  const getImageStyle = () => ({
+    padding: "20px", // 이미지 패딩
+    paddingBottom: "35px",
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,11 +106,23 @@ function Clebine() {
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
             <div key={index} className="section" style={getSectionStyle(index)}>
-              <img src={index % 2 === 0 ? graph : graph2} alt={`graph${index + 1}`} width='400px' />
-              <span>예시 이미지-설명</span>
+              <img src={index % 2 === 0 ? graph : graph2} alt={`graph${index + 1}`} width='400px' 
+                style={expandedSection === index ? getImageStyle() : {}}
+              />
+              
+              {/* <span>예시 이미지-설명</span> */}
               <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
                 {expandedSection === index ? '축소' : '확대'}
               </button>
+
+              {/* 첫 번째 섹션이 확대될 때만 버튼들이 보이도록 설정 */}
+              {expandedSection === 0 && (
+                <div style={getButtonStyle()}>
+                  <button>일봉</button>
+                  <button>주봉</button>
+                  <button>월봉</button>
+                </div>
+              )}
             </div>
           ))}
         </main>
@@ -117,4 +146,4 @@ function Clebine() {
   );
 }
 
-  export default Clebine;
+export default Clebine;
