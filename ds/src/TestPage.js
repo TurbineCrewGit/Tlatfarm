@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { blue } from '@mui/material/colors';
 
 const TestPage = () => {
     const [data, setData] = useState(null);

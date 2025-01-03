@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Header from './Components/Header.js';
-import MenuBar from './MenuBar';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapComponent from './Components/MapComponents.js';
 import useMarkers from './Components/useMarkers.js';
