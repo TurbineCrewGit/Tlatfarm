@@ -9,6 +9,7 @@ import "./Styles/App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Header from './Components/Header.js';
 import MenuBar from './MenuBar';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapComponent from './Components/MapComponents.js';
@@ -202,12 +203,7 @@ function Smartdrone() {
       <DndProvider backend={HTML5Backend}>
         <div className="planner">
 
-          <header className="header">
-            <img src={`${process.env.PUBLIC_URL}/turbine_planner_title.png`} alt="Turbine Planner" />
-
-            {/* 메뉴바 */}
-            <MenuBar />
-          </header>
+          <Header />
 
           <main className="main">
             <Draggable handle=".dragSpotContainer">
