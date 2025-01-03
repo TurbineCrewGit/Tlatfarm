@@ -42,15 +42,15 @@ const DataTable = ({ tableData, onDelete }) => {
 
   const getPowerBackgroundColor = (powerValue) => {
     if (powerValue === 0) {
-      return "rgba(0, 0, 0, 0.5)";
+      return "rgba(0, 0, 0)";
     } else if (powerValue >= 1 && powerValue <= 49) {
-      return "rgba(255, 0, 0, 0.5)";
+      return "rgba(255, 0, 0)";
     } else if (powerValue >= 50 && powerValue <= 99) {
-      return "rgba(255, 145, 0, 0.5)";
+      return "rgba(255, 145, 0)";
     } else if (powerValue >= 100 && powerValue <= 149) {
-      return "rgba(255, 255, 0, 0.5)";
+      return "rgba(255, 255, 0)";
     } else if (powerValue >= 150) {
-      return "rgba(100, 255, 100, 0.5)";
+      return "rgba(100, 255, 100)";
     }
     return "";
   };
@@ -70,10 +70,7 @@ const DataTable = ({ tableData, onDelete }) => {
             <th>전력 생산량</th>
             <th>위도</th>
             <th>경도</th>
-            <th>풍향/풍속</th>
-            <th>습도</th>
-            <th>강수량</th>
-            <th>기온</th>
+            <th>Weather Info</th>
             <th>Detail</th>
             <th>작업</th>
           </tr>
@@ -81,7 +78,7 @@ const DataTable = ({ tableData, onDelete }) => {
         <tbody>
           {tableData.length === 0 ? (
             <tr>
-              <td colSpan="10" style={{ textAlign: "center" }}>
+              <td colSpan="7" style={{ textAlign: "center" }}>
                 파일을 올려주세요
               </td>
             </tr>
@@ -100,94 +97,94 @@ const DataTable = ({ tableData, onDelete }) => {
                   <td>{row.latitude}</td>
                   <td>{row.longitude}</td>
                   
-                  <td>
-                    {rowWeatherData.windDirect ? (
+                  {/* "Weather Info" 열 */}
+                  <td className="weather-column">
+                    <div>
+                      {rowWeatherData.windDirect ? (
                         parseFloat(rowWeatherData.windDirect) >= 22.5 && parseFloat(rowWeatherData.windDirect) < 67.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/225_675.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/225_675.png`} alt="Wind Direction 22.5-67.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 67.5 && parseFloat(rowWeatherData.windDirect) < 112.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/675_1125.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/675_1125.png`} alt="Wind Direction 67.5-112.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 112.5 && parseFloat(rowWeatherData.windDirect) < 157.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1125_1575.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1125_1575.png`} alt="Wind Direction 112.5-157.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 157.5 && parseFloat(rowWeatherData.windDirect) < 202.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1575_2025.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1575_2025.png`} alt="Wind Direction 157.5-202.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 202.5 && parseFloat(rowWeatherData.windDirect) < 247.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2025_2475.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2025_2475.png`} alt="Wind Direction 202.5-247.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 247.5 && parseFloat(rowWeatherData.windDirect) < 292.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2475_2925.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2475_2925.png`} alt="Wind Direction 247.5-292.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 292.5 && parseFloat(rowWeatherData.windDirect) < 337.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2925_3375.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2925_3375.png`} alt="Wind Direction 292.5-337.5" />
                         ) : parseFloat(rowWeatherData.windDirect) >= 337.5 && parseFloat(rowWeatherData.windDirect) < 360 
                         && parseFloat(rowWeatherData.windDirect) >= 0 && parseFloat(rowWeatherData.windDirect) < 22.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/0_225.png`} alt="" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/0_225.png`} alt="Wind Direction 0-22.5" />
                         ) : (
                           rowWeatherData.windDirect
                         )
                       ) : (
                         '-'
                       )}
-                  </td>
-                  <td>
-                    {rowWeatherData.humidity ? (
-                          parseFloat(rowWeatherData.humidity) <= 30 ? (
-                            <span>
-                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/under30.png`} alt="Very dry" />
-                            </span>
-                          ) : parseFloat(rowWeatherData.humidity) > 31 &&
-                            parseFloat(rowWeatherData.humidity) <= 50 ? (
-                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between31_50.png`} alt="dry" />
-                          ) : parseFloat(rowWeatherData.humidity) > 51 &&
-                            parseFloat(rowWeatherData.humidity) <= 70 ? (
-                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between51_70.png`} alt="good" />
-                          ) : parseFloat(rowWeatherData.humidity) > 70 ? (
-                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/over70.png`} alt="wet" />
-                          ) : (
-                            rowWeatherData.humidity
-                          )
+                    </div>
+                    
+                    <div>
+                      {rowWeatherData.humidity ? (
+                        parseFloat(rowWeatherData.humidity) <= 30 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/under30.png`} alt="Very dry" />
+                        ) : parseFloat(rowWeatherData.humidity) > 31 &&
+                          parseFloat(rowWeatherData.humidity) <= 50 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between31_50.png`} alt="Dry" />
+                        ) : parseFloat(rowWeatherData.humidity) > 51 &&
+                          parseFloat(rowWeatherData.humidity) <= 70 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between51_70.png`} alt="Good" />
+                        ) : parseFloat(rowWeatherData.humidity) > 70 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/over70.png`} alt="Wet" />
                         ) : (
-                          '-'
-                        )}
-                  </td>
-                  <td>
-                    {rowWeatherData.rainfall ? (
+                          rowWeatherData.humidity
+                        )
+                      ) : (
+                        '-'
+                      )}
+                    </div>
+
+                    <div>
+                      {rowWeatherData.rainfall ? (
                         parseFloat(rowWeatherData.rainfall) <= 0 ? (
-                          <span>
-                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/sunny.png`} alt="Sunny" />
-                          </span>
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/sunny.png`} alt="Sunny" />
                         ) : parseFloat(rowWeatherData.rainfall) > 0 &&
                           parseFloat(rowWeatherData.rainfall) <= 0.1 ? (
-                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between0_01.png`} alt="little rain" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between0_01.png`} alt="Little rain" />
                         ) : parseFloat(rowWeatherData.rainfall) > 0.1 &&
                           parseFloat(rowWeatherData.rainfall) <= 0.5 ? (
-                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between01_05.png`} alt="rain" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between01_05.png`} alt="Rain" />
                         ) : parseFloat(rowWeatherData.rainfall) > 0.5 ? (
-                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/up5.png`} alt="storm rain" />
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/up5.png`} alt="Storm rain" />
                         ) : (
                           rowWeatherData.rainfall
                         )
                       ) : (
                         '-'
                       )}
-                  </td>
-                  <td>
-                    {rowWeatherData.temperature ? (
-                      parseFloat(rowWeatherData.temperature) <= 0 ? (
-                        <span>
+                    </div>
+
+                    <div>
+                      {rowWeatherData.temperature ? (
+                        parseFloat(rowWeatherData.temperature) <= 0 ? (
                           <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/under0c.png`} alt="Cold" />
-                        </span>
-                      ) : parseFloat(rowWeatherData.temperature) > 0 &&
-                        parseFloat(rowWeatherData.temperature) <= 15 ? (
+                        ) : parseFloat(rowWeatherData.temperature) > 0 &&
+                          parseFloat(rowWeatherData.temperature) <= 15 ? (
                           <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/between0_15.png`} alt="Warm" />
-                      ) : parseFloat(rowWeatherData.temperature) > 15 &&
-                        parseFloat(rowWeatherData.temperature) <= 30 ? (
+                        ) : parseFloat(rowWeatherData.temperature) > 15 &&
+                          parseFloat(rowWeatherData.temperature) <= 30 ? (
                           <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/between15_30.png`} alt="Hot" />
-                      ) : parseFloat(rowWeatherData.temperature) > 30 ? (
+                        ) : parseFloat(rowWeatherData.temperature) > 30 ? (
                           <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/over30c.png`} alt="Very Hot" />
+                        ) : (
+                          rowWeatherData.temperature
+                        )
                       ) : (
-                        rowWeatherData.temperature
-                      )
-                    ) : (
-                      '-'
-                    )}
+                        '-'
+                      )}
+                    </div>
                   </td>
 
                   <td>
