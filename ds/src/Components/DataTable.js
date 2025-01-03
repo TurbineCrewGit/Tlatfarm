@@ -1,23 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../Styles/DataTable.css";
 
 const DataTable = ({ tableData, onDelete }) => {
   const navigate = useNavigate();
+  const [weatherData, setWeatherData] = useState({});
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      const newWeatherData = {};
+      
+      // tableData의 각 행에 대해 CSV 파일을 읽어옵니다
+      for (const row of tableData) {
+        try {
+          const response = await fetch(`${process.env.PUBLIC_URL}/${row.id}.csv`);
+          const csvText = await response.text();
+          
+          // CSV 파싱
+          const lines = csvText.split('\n');
+          if (lines.length > 1) {  // 헤더와 최소 1개의 데이터 행이 있는지 확인
+            const latestData = lines[1].split(',');  // 최신 데이터 사용 (헤더 다음 줄)
+            newWeatherData[row.id] = {
+              temperature: latestData[2],  // temp
+              humidity: latestData[3],     // humidity
+              windInfo: `${latestData[5]}° / ${latestData[4]}m/s`,  // wd/ws
+              rainfall: latestData[8],     // rainfall
+            };
+          }
+        } catch (error) {
+          console.error(`Error loading CSV for ID ${row.id}:`, error);
+        }
+      }
+      setWeatherData(newWeatherData);
+    };
+
+    if (tableData.length > 0) {
+      fetchWeatherData();
+    }
+  }, [tableData]);
 
   const getPowerBackgroundColor = (powerValue) => {
     if (powerValue === 0) {
-      return "rgba(0, 0, 0, 0.5)"; // 0W은 검정색
+      return "rgba(0, 0, 0, 0.5)";
     } else if (powerValue >= 1 && powerValue <= 49) {
-      return "rgba(255, 0, 0, 0.5)"; // 연한 빨강
+      return "rgba(255, 0, 0, 0.5)";
     } else if (powerValue >= 50 && powerValue <= 99) {
-      return "rgba(255, 145, 0, 0.5)"; // 연한 주황
+      return "rgba(255, 145, 0, 0.5)";
     } else if (powerValue >= 100 && powerValue <= 149) {
-      return "rgba(255, 255, 0, 0.5)"; // 연한 노랑
+      return "rgba(255, 255, 0, 0.5)";
     } else if (powerValue >= 150) {
-      return "rgba(100, 255, 100, 0.5)"; // 연한 초록
+      return "rgba(100, 255, 100, 0.5)";
     }
-    return ""; // 기본값 (배경색 없음)
+    return "";
   };
 
   const handleDetailClick = (id) => {
@@ -54,6 +88,7 @@ const DataTable = ({ tableData, onDelete }) => {
             tableData.map((row) => {
               const powerValue = parseFloat(row.powerProduction);
               const powerBackgroundColor = getPowerBackgroundColor(powerValue);
+              const rowWeatherData = weatherData[row.id] || {};
 
               return (
                 <tr key={row.id}>
@@ -72,11 +107,11 @@ const DataTable = ({ tableData, onDelete }) => {
                       X
                     </button>
                   </td>
-                  <td>{row.windInfo}</td>
-                  <td>{row.humidity}</td>
-                  <td>{row.rainfall}</td>
-                  <td>{row.sunlight}</td>
-                  <td>{row.temperature}</td>
+                  <td>{rowWeatherData.windInfo || '-'}</td>
+                  <td>{rowWeatherData.humidity || '-'}</td>
+                  <td>{rowWeatherData.rainfall || '-'}</td>
+                  <td>-</td>
+                  <td>{rowWeatherData.temperature || '-'}</td>
                   <td>
                     <button
                       className="detailBtn"

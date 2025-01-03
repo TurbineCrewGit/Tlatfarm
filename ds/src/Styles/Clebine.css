@@ -128,7 +128,6 @@
     border: 1px solid #ccc; 
     border-radius: 4px; 
     cursor: pointer; 
-    /* transition: background-color 0.3s; */
   }
   
   #toggleBtn:hover {
@@ -164,20 +163,4 @@
   
 
   
-  .clebine-container {
-    border: 2px solid black;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px auto;
-    width: 90%; /* 컨테이너 너비 증가 */
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.clebine-title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-  font-weight: bold;
-}
+  
