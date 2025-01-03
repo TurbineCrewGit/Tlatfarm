@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from 'react';
+// Clebine.js
+import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Clock from './Components/Clock.js';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
+import DataTable from './Components/DataTable'; // DataTable 컴포넌트 임포트
 
 const theme = createTheme();
 
-function Clebine() {
-  const [tableData, setTableData] = useState([]);
-  const [expandedSection, setExpandedSection] = useState(null);
-  const [selectedTint, setSelectedTint] = useState(null);
-  
-  const handleDataUploaded = (newData) => {
-    setTableData(prevData => [...prevData, ...newData]);
-  };
-
-  const handleDelete = (id) => {
-    setTableData(tableData.filter(row => row.id !== id));
-  };
+function Clebine({ tableData, onDelete, handleDataUploaded }) {
+  const [expandedSection, setExpandedSection] = React.useState(null);
+  const [selectedTint, setSelectedTint] = React.useState(null);
 
   const handleToggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);
@@ -38,7 +31,7 @@ function Clebine() {
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
         <DataSection
           tableData={tableData}
-          handleDelete={handleDelete}
+          handleDelete={onDelete}
           handleDataUploaded={handleDataUploaded}
         />
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
