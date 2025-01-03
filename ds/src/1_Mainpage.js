@@ -6,18 +6,37 @@ import ThemeToggle from "./Components/ThemeToggle.js";
 import { KAKAO_MAP_APPKEY } from './Components/constants';
 import flowDarkImage from './Styles/image/어두운_로고.png';
 import expandIcon from './Styles/image/expand_button.png'; // 확장 아이콘 경로
+import Draggable from "react-draggable";
 import "./Styles/App.css";
-import zIndex from "@mui/material/styles/zIndex.js";
 
 const theme = createTheme();
 
 function Main() {
     const mapRef = useRef(null); // 지도 객체 참조
     const markersRef = useRef([]); // 마커 객체 참조
+    const CustomOverlayRef = useRef([]); // Custom Overlay 객체 참조
     const [csvData, setCsvData] = useState([]); // CSV 데이터 저장
     const [droneData, setDroneData] = useState([]); // 드론 데이터 저장
     const [isMapLoaded, setIsMapLoaded] = useState(false); // 지도 로드 상태
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태
+    const [isControllerOpen, setIsControllerOpen] = useState(true); // control section 열림 상태
+    const [buttonStates, setButtonStates] = useState({
+        clebine: true,
+        smartDrone: true,
+    });
+
+    const toggleControllerContent = () => {
+        setIsControllerOpen((prev) => !prev);
+    };
+
+    const clearAllMarkers = () => {
+        // 모든 마커의 지도 설정을 null로 변경
+        markersRef.current.forEach((marker) => marker.setMap(null));
+        // 배열 비우기
+        markersRef.current = [];
+        console.log("모든 마커가 제거되었습니다.");
+    };
+    
 
     // 카카오맵 초기화
     useEffect(() => {
@@ -83,7 +102,10 @@ function Main() {
 
 // SmartDrone 데이터 로드
 useEffect(() => {
+    if (!isMapLoaded || !buttonStates.smartDrone) return;
+
     const loadDroneData = async () => {
+
         try {
             const fileUrls = ['/D-1.json', '/D-2.json', '/D-3.json'];
 
@@ -172,12 +194,16 @@ useEffect(() => {
     };
 
     loadDroneData();
-}, [isMapLoaded]);
+    return () => {
+        markersRef.current.forEach((marker) => marker.setMap(null));
+        markersRef.current = [];
+    };
+}, [isMapLoaded, setDroneData, buttonStates.smartDrone, buttonStates.clebine]);
 
 
 // 지도 로드 후 Clebine 마커 추가
 useEffect(() => {
-    if (!isMapLoaded || csvData.length === 0) return;
+    if (!isMapLoaded || csvData.length === 0 || !buttonStates.clebine) return;
 
     const addMarkers = () => {
         csvData.forEach((row) => {
@@ -242,6 +268,7 @@ useEffect(() => {
                     });
 
                     markersRef.current.push(marker);
+                    CustomOverlayRef.current.push(dotOverlay);
                 }
             }
         });
@@ -253,20 +280,38 @@ useEffect(() => {
     return () => {
         markersRef.current.forEach((marker) => marker.setMap(null));
         markersRef.current = [];
+        CustomOverlayRef.current.forEach((overlay) => overlay.setMap(null));
+        CustomOverlayRef.current = [];
     };
-}, [isMapLoaded, csvData]);
+}, [isMapLoaded, csvData, buttonStates.clebine, buttonStates.smartDrone]);
 
-
-    // 지도 중심 재설정
-    const resetMapCenter = () => {
-        if (!mapRef.current) {
-            console.error("지도 객체가 초기화되지 않았습니다.");
-            return;
+const toggleButton = (type) => {
+    clearAllMarkers(); // 모든 마커 제거
+    setButtonStates((prevStates) => {
+        console.log("버튼 상태 변경:", type);
+        console.log("이전 상태:", prevStates);
+        if(type === "clebine") {
+            buttonStates.clebine = !prevStates.clebine;
+            console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
+        }else if(type === "smartDrone") {
+            buttonStates.smartDrone = !prevStates.smartDrone;
+            console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
         }
-        const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
-        mapRef.current.setCenter(defaultCenter);
-        console.log("지도 중심 재설정 완료.");
-    };
+        return {clebine: buttonStates.clebine, smartDrone: buttonStates.smartDrone};
+    });
+};
+
+
+// 지도 중심 재설정
+const resetMapCenter = () => {
+    if (!mapRef.current) {
+        console.error("지도 객체가 초기화되지 않았습니다.");
+        return;
+    }
+    const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
+    mapRef.current.setCenter(defaultCenter);
+    console.log("지도 중심 재설정 완료.");
+};
 
     // 지도 확장/축소 토글
     const toggleMapSize = () => {
@@ -278,6 +323,7 @@ useEffect(() => {
                 mapRef.current.setCenter(defaultCenter);
 
                 markersRef.current.forEach((marker) => {
+
                     marker.setMap(mapRef.current);
                 });
             }
@@ -347,7 +393,7 @@ useEffect(() => {
                         
                         <div className="clebine-section">
                             
-                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '200px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
+                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
                                 <h3>Clebine Section</h3>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
@@ -397,7 +443,7 @@ useEffect(() => {
 
                         <div className="smartdrone-section">
                             
-                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '200px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
+                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
                             <h3>SmartDrone Section</h3>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
@@ -443,6 +489,68 @@ useEffect(() => {
                             </div>
                         </div>
                     </div>
+                    {/* Draggable로 Control Section 감싸기 */}
+                    <Draggable handle=".drag-handle">
+                        <div className="control-section"
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                width: "250px",
+                                height: "auto",
+                                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                borderRadius: "15px",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                                zIndex: 1000,
+                                padding: "10px",
+                            }}
+                        >
+                            <div className="drag-handle" style={{ cursor: "move", textAlign: "center", fontWeight: "bold" }}>
+                                <br />
+                                <h3 style={{ margin: 0, textAlign: "center", color: "white" }}>Control Section</h3>
+                                <button className="controller-toggle-btn" onClick={toggleControllerContent}>
+                                    {isControllerOpen ? "∧" : "∨"}
+                                </button>
+                            </div>
+                            {isControllerOpen && (
+                            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
+                                <h4 style={{margin: -3, textAlign:"center", color: "white"}}>Clebine</h4>
+                                {/* Clebine Button */}
+                                <button
+                                    onClick={() => toggleButton("clebine")}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <img
+                                        src={buttonStates.clebine ? `${process.env.PUBLIC_URL}/ON 버튼.png` : `${process.env.PUBLIC_URL}/OFF 버튼.png`}
+                                        alt="Clebine Button"
+                                        style={{ width: "100%", height: "100%" }}
+                                    />
+                                </button>
+
+                                {/* SmartDrone Button */}
+                                <h4 style={{margin: -3, textAlign:"center", color: "white"}}>SmartDrone</h4>
+                                <button
+                                    onClick={() => toggleButton("smartDrone")}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <img
+                                        src={buttonStates.smartDrone ? `${process.env.PUBLIC_URL}/ON 버튼.png` : `${process.env.PUBLIC_URL}/OFF 버튼.png`}
+                                        alt="SmartDrone Button"
+                                        style={{ width: "100%", height: "100%" }}
+                                    />
+                                </button>
+                            </div>)}
+                        </div>
+                    </Draggable>
                 </div>
 
                 <ThemeToggle />
