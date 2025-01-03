@@ -54,7 +54,8 @@ function Smartdrone() {
                   <tr key={drone.id}>
                     <td> {drone.id} </td>
                     <td>
-                      <Link to={`/Smartdronepage/${drone.id}`} className="details-link">{drone.name}
+                      <Link to={`/Smartdronepage/${drone.id}`} className="details-link">
+                        {drone.name}
                       </Link></td>
                     <td>{drone.status}</td>
                   </tr>

@@ -208,7 +208,7 @@ function SmartDrone_Details() {
           <Header />
 
           <main className="main">
-          <h1>{id}번 드론 페이지 입니다</h1> {/* 드론 ID 출력 */}
+          {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
 
             <Draggable handle=".dragSpotContainer">
               <div className={`remote-control-panel ${isControllerOpen ? "open" : "closed"}`}>
