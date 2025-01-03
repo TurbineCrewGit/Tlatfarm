@@ -8,11 +8,6 @@ function Section({
   handleToggleSection,
   selectedTint,
   handleButtonClick,
-  w_w,      // 풍향 풍속
-  humidity,       // 습도
-  rainfall,       // 강수량
-  sunlight,       // 일조량
-  temperature,    // 기온
 }) {
 
   // 섹션 이름 배열 (풍향, 풍속, 습도, 강수량 등)
