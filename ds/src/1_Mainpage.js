@@ -6,7 +6,6 @@ import ThemeToggle from "./Components/ThemeToggle.js";
 import { KAKAO_MAP_APPKEY } from './Components/constants';
 import flowDarkImage from './Styles/image/어두운_로고.png';
 import expandIcon from './Styles/image/expand_button.png'; // 확장 아이콘 경로
-import Draggable from "react-draggable";
 import "./Styles/App.css";
 
 const theme = createTheme();
@@ -30,6 +29,7 @@ function Main() {
             [type]: false, // 강제로 off 상태로 변경
         }));
         console.log(`${type} 버튼이 OFF 상태로 변경되었습니다.`);
+        console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
     };
     
     const turnOnButton = (type) => {
@@ -38,6 +38,7 @@ function Main() {
             [type]: true, // 강제로 on 상태로 변경
         }));
         console.log(`${type} 버튼이 ON 상태로 변경되었습니다.`);
+        console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
     };
 
     const clearAllMarkers = () => {
@@ -110,107 +111,6 @@ function Main() {
 
         loadCsvData();
     }, []);
-
-// SmartDrone 데이터 로드
-useEffect(() => {
-    if (!isMapLoaded || !buttonStates.smartDrone) return;
-
-    const loadDroneData = async () => {
-
-        try {
-            const fileUrls = ['/D-1.json', '/D-2.json', '/D-3.json'];
-
-            const allData = await Promise.all(fileUrls.map(async (url) => {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`파일 로드 실패: ${url}`);
-                const data = await response.json();
-                return data;
-            }));
-
-            setDroneData(allData);
-            console.log("드론 데이터 로드 완료:", allData);
-
-            // 지도에 드론 마커 추가
-            if (isMapLoaded) {
-                allData.forEach((drone) => {
-                    drone.waypoints
-                        .filter((wp) => wp.isItme === "1")
-                        .forEach((wp) => {
-                            const lat = parseFloat(wp.lat);
-                            const lng = parseFloat(wp.long);
-
-
-                            if (!isNaN(lat) && !isNaN(lng)) {
-                                // 드론 상태에 따른 마커 이미지 설정
-                                const markerImage = new window.kakao.maps.MarkerImage(
-                                    wp.action === "16"
-                                        ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                        : `${process.env.PUBLIC_URL}/충전중.gif`,
-                                    new window.kakao.maps.Size(65, 65), // 이미지 크기
-                                    {
-                                        offset: new window.kakao.maps.Point(32.5, 32.5), // 이미지 중심 (가로/세로의 절반)
-                                    }
-                                );
-
-                                const hoverImage = new window.kakao.maps.MarkerImage(
-                                    wp.action === "16" // 착륙 상태라면 "충전중.gif", 그 외에는 "이동중.gif"
-                                        ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                        : `${process.env.PUBLIC_URL}/충전중.gif`,
-                                    new window.kakao.maps.Size(80, 80), // 확대 이미지 크기
-                                    {
-                                        offset: new window.kakao.maps.Point(40, 40), // 확대 이미지 중심
-                                    }
-                                );
-
-                                const marker = new window.kakao.maps.Marker({
-                                    position: new window.kakao.maps.LatLng(lat, lng),
-                                    map: mapRef.current,
-                                    image: markerImage,
-                                    zIndex: 4,
-                                });
-
-                                const infoWindow = new window.kakao.maps.InfoWindow({
-                                    content: `<div style="padding:3px; font-size:12px; color:#000;">ID: ${drone.ID}<br>Status: ${(() => {
-                                        switch (wp.action) {
-                                            case "5":
-                                                return "이륙";
-                                            case "6":
-                                                return "착륙";
-                                            case "16":
-                                                return "이동";
-                                            default:
-                                                return wp.action;
-                                        }
-                                    })()}</div>`
-                                });
-
-                                window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-                                    infoWindow.open(mapRef.current, marker);
-                                    marker.setImage(hoverImage);
-                                });
-
-                                window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-                                    infoWindow.close();
-                                    marker.setImage(markerImage);
-                                });
-
-                                markersRef.current.push(marker);
-                            }
-                        });
-                });
-            }
-        } catch (error) {
-            console.error("드론 데이터 로드 오류:", error);
-        }
-    };
-
-    loadDroneData();
-    return () => {
-        markersRef.current.forEach((marker) => marker.setMap(null));
-        markersRef.current = [];
-    };
-}, [isMapLoaded, setDroneData, buttonStates.smartDrone, buttonStates.clebine]);
-
 
 // 지도 로드 후 Clebine 마커 추가
 useEffect(() => {
@@ -295,6 +195,110 @@ useEffect(() => {
         CustomOverlayRef.current = [];
     };
 }, [isMapLoaded, csvData, buttonStates.clebine, buttonStates.smartDrone]);
+
+
+
+useEffect(() => {
+    const loadDroneData = async () => {
+        try {
+            const fileUrls = ['/D-1.json', '/D-2.json', '/D-3.json'];
+
+            const allData = await Promise.all(fileUrls.map(async (url) => {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`파일 로드 실패: ${url}`);
+                const data = await response.json();
+                return data;
+            }));
+
+            setDroneData(allData);
+            console.log("드론 데이터 로드 완료:", allData);
+        } catch (error) {
+            console.error("드론 데이터 로드 오류:", error);
+        }
+    };
+
+    if (buttonStates.smartDrone) {
+        loadDroneData();
+    }
+}, [buttonStates.smartDrone]);
+
+useEffect(() => {
+    if (!isMapLoaded || droneData.length === 0 || !buttonStates.smartDrone) return;
+
+    const addDroneMarkers = () => {
+        droneData.forEach((drone) => {
+            drone.waypoints
+                .filter((wp) => wp.isItme === "1")
+                .forEach((wp) => {
+                    const lat = parseFloat(wp.lat);
+                    const lng = parseFloat(wp.long);
+
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        const markerImage = new window.kakao.maps.MarkerImage(
+                            wp.action === "16"
+                                ? `${process.env.PUBLIC_URL}/이동중.gif`
+                                : `${process.env.PUBLIC_URL}/충전중.gif`,
+                            new window.kakao.maps.Size(65, 65),
+                            { offset: new window.kakao.maps.Point(32.5, 32.5) }
+                        );
+
+                        const hoverImage = new window.kakao.maps.MarkerImage(
+                            wp.action === "16"
+                                ? `${process.env.PUBLIC_URL}/이동중.gif`
+                                : `${process.env.PUBLIC_URL}/충전중.gif`,
+                            new window.kakao.maps.Size(80, 80),
+                            { offset: new window.kakao.maps.Point(40, 40) }
+                        );
+
+                        const marker = new window.kakao.maps.Marker({
+                            position: new window.kakao.maps.LatLng(lat, lng),
+                            map: mapRef.current,
+                            image: markerImage,
+                            zIndex: 4,
+                        });
+
+                        const infoWindow = new window.kakao.maps.InfoWindow({
+                            content: `<div style="padding:3px; font-size:12px; color:#000;">ID: ${drone.ID}<br>Status: ${(() => {
+                                switch (wp.action) {
+                                    case "5":
+                                        return "이륙";
+                                    case "6":
+                                        return "착륙";
+                                    case "16":
+                                        return "이동";
+                                    default:
+                                        return wp.action;
+                                }
+                            })()}</div>`
+                        });
+
+                        window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+                            infoWindow.open(mapRef.current, marker);
+                            marker.setImage(hoverImage);
+                        });
+
+                        window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+                            infoWindow.close();
+                            marker.setImage(markerImage);
+                        });
+
+                        markersRef.current.push(marker);
+                    }
+                });
+        });
+        console.log("모든 드론 마커 추가 완료.");
+    };
+
+    addDroneMarkers();
+
+    if(!buttonStates.clebine) {
+        return () => {
+            markersRef.current.forEach((marker) => marker.setMap(null));
+            markersRef.current = [];
+        }
+    }
+
+}, [isMapLoaded, droneData, buttonStates.smartDrone, buttonStates.clebine]);
 
 const toggleButton = (type) => {
     clearAllMarkers(); // 모든 마커 제거
@@ -402,7 +406,7 @@ const toggleMapSize = () => {
 
                 <hr className="custom_hr" />
 
-                <div className="main-content" style={{ /*width: "1500px",maxHeight:"1000px", overflow: "scroll"*/ }}>
+                <div className="main-content">
                     <div className="map-section" style={{ position: "relative" }}>
                         <div
                             id="kakaoMap"
@@ -454,8 +458,8 @@ const toggleMapSize = () => {
                         <div className="clebine-section">
                             
                             <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
-                                <h3>Clebine Section</h3>
-                                <div style={{ display: "flex", gap: "10px" }}>
+                                <div style={{flexDirection: "row", display: "flex", gap: "5px"}}>
+                                    <h3>Clebine</h3>
                                     {/* Turn On Button */}
                                     <button
                                         onClick={() => turnOnButton("clebine")}
@@ -488,7 +492,6 @@ const toggleMapSize = () => {
                                         />
                                     </button>
                                 </div>
-                                
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
@@ -550,42 +553,44 @@ const toggleMapSize = () => {
                         </div>
 
                         <div className="smartdrone-section">
-                            
                             <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
-                            <h3>SmartDrone Section</h3>
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                {/* Turn On Button */}
-                                <button
-                                    onClick={() => turnOnButton("smartDrone")}
-                                    style={{
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/on.png`}
-                                        alt="SmartDrone On Button"
-                                        style={{ width: "50px", height: "50px" }}
-                                    />
-                                </button>
+                            <div style={{flexDirection: "row", display: "flex", gap: "5px"}}>
+                                <h3>SmartDrone Section</h3>
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                    {/* Turn On Button */}
+                                    <button
+                                        onClick={() => turnOnButton("smartDrone")}
+                                        style={{
+                                            background: "none",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        <img
+                                            src={`${process.env.PUBLIC_URL}/on.png`}
+                                            alt="SmartDrone On Button"
+                                            style={{ width: "50px", height: "50px" }}
+                                        />
+                                    </button>
 
-                                {/* Turn Off Button */}
-                                <button
-                                    onClick={() => turnOffButton("smartDrone")}
-                                    style={{
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/off.png`}
-                                        alt="SmartDrone Off Button"
-                                        style={{ width: "50px", height: "50px" }}
-                                    />
-                                </button>
+                                    {/* Turn Off Button */}
+                                    <button
+                                        onClick={() => turnOffButton("smartDrone")}
+                                        style={{
+                                            background: "none",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        <img
+                                            src={`${process.env.PUBLIC_URL}/off.png`}
+                                            alt="SmartDrone Off Button"
+                                            style={{ width: "50px", height: "50px" }}
+                                        />
+                                    </button>
+                                </div>
                             </div>
+
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
