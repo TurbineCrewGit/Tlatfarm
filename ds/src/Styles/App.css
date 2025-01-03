@@ -121,6 +121,24 @@ body {
   border-radius: 8px;
 }
 
+.section-container {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Section과 버튼 간 간격 */
+  margin-bottom: 20px; /* 섹션 간 간격 */
+}
+
+.section-title {
+  flex: 1; /* Section 태그가 가능한 넓게 차지하도록 설정 */
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column; /* 버튼을 세로로 정렬 */
+  gap: 10px; /* 버튼 간 간격 */
+}
+
+
 .planner{
   background: #3B4346 url("images/bg01.png")
 }
