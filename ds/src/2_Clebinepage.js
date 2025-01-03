@@ -5,7 +5,6 @@ import Clock from './Components/Clock.js';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
-import DataTable from './Components/DataTable'; // DataTable 컴포넌트 임포트
 
 const theme = createTheme();
 

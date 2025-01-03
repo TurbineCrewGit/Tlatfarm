@@ -58,6 +58,7 @@ const DataTable = ({ tableData, onDelete }) => {
     navigate(`/clebinepage/${id}`);
   };
 
+
   return (
     <div className="clebine-container">
       <h1 className="clebine-title">Clebine</h1>
@@ -100,8 +101,49 @@ const DataTable = ({ tableData, onDelete }) => {
                   
                   <td>{rowWeatherData.windInfo || '-'}</td>
                   <td>{rowWeatherData.humidity || '-'}</td>
-                  <td>{rowWeatherData.rainfall || '-'}</td>
-                  <td>{rowWeatherData.temperature || '-'}</td>
+                  <td>
+                    {rowWeatherData.rainfall ? (
+                        parseFloat(rowWeatherData.rainfall) <= 0 ? (
+                          <span>
+                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/sunny.png`} alt="Sunny" />
+                          </span>
+                        ) : parseFloat(rowWeatherData.rainfall) > 0 &&
+                          parseFloat(rowWeatherData.rainfall) <= 0.1 ? (
+                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between0_01.png`} alt="little rain" />
+                        ) : parseFloat(rowWeatherData.rainfall) > 0.1 &&
+                          parseFloat(rowWeatherData.rainfall) <= 0.5 ? (
+                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between01_05.png`} alt="rain" />
+                        ) : parseFloat(rowWeatherData.rainfall) > 0.5 ? (
+                            <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/up5.png`} alt="storm rain" />
+                        ) : (
+                          rowWeatherData.rainfall
+                        )
+                      ) : (
+                        '-'
+                      )}
+                  </td>
+                  <td>
+                    {rowWeatherData.temperature ? (
+                      parseFloat(rowWeatherData.temperature) <= 0 ? (
+                        <span>
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/under0c.png`} alt="Cold" />
+                        </span>
+                      ) : parseFloat(rowWeatherData.temperature) > 0 &&
+                        parseFloat(rowWeatherData.temperature) <= 15 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/between0_15.png`} alt="Warm" />
+                      ) : parseFloat(rowWeatherData.temperature) > 15 &&
+                        parseFloat(rowWeatherData.temperature) <= 30 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/between15_30.png`} alt="Hot" />
+                      ) : parseFloat(rowWeatherData.temperature) > 30 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/over30c.png`} alt="Very Hot" />
+                      ) : (
+                        rowWeatherData.temperature
+                      )
+                    ) : (
+                      '-'
+                    )}
+                  </td>
+
                   <td>
                     <button
                       className="detailBtn"
