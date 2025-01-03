@@ -100,7 +100,27 @@ const DataTable = ({ tableData, onDelete }) => {
                   <td>{row.longitude}</td>
                   
                   <td>{rowWeatherData.windInfo || '-'}</td>
-                  <td>{rowWeatherData.humidity || '-'}</td>
+                  <td>
+                    {rowWeatherData.humidity ? (
+                          parseFloat(rowWeatherData.humidity) <= 30 ? (
+                            <span>
+                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/under30.png`} alt="Very dry" />
+                            </span>
+                          ) : parseFloat(rowWeatherData.humidity) > 31 &&
+                            parseFloat(rowWeatherData.humidity) <= 50 ? (
+                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between31_50.png`} alt="dry" />
+                          ) : parseFloat(rowWeatherData.humidity) > 51 &&
+                            parseFloat(rowWeatherData.humidity) <= 70 ? (
+                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between51_70.png`} alt="good" />
+                          ) : parseFloat(rowWeatherData.humidity) > 70 ? (
+                              <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/over70.png`} alt="wet" />
+                          ) : (
+                            rowWeatherData.humidity
+                          )
+                        ) : (
+                          '-'
+                        )}
+                  </td>
                   <td>
                     {rowWeatherData.rainfall ? (
                         parseFloat(rowWeatherData.rainfall) <= 0 ? (
