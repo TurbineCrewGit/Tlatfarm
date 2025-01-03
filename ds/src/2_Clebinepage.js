@@ -36,6 +36,12 @@ function Clebine() {
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
         <Clock />
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
+        <DataSection
+          tableData={tableData}
+          handleDelete={handleDelete}
+          handleDataUploaded={handleDataUploaded}
+        />
+        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
             <Section
@@ -48,12 +54,6 @@ function Clebine() {
             />
           ))}
         </main>
-        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
-        <DataSection
-          tableData={tableData}
-          handleDelete={handleDelete}
-          handleDataUploaded={handleDataUploaded}
-        />
       </div>
     </ThemeProvider>
   );
