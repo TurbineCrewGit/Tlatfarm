@@ -1,4 +1,3 @@
-// DataTable.js
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import "../Styles/DataTable.css";
@@ -36,13 +35,18 @@ const DataTable = ({ tableData, onDelete }) => {
             <th>위도</th>
             <th>경도</th>
             <th>작업</th>
+            <th>풍향/풍속</th>
+            <th>습도</th>
+            <th>강수량</th>
+            <th>일조량</th>
+            <th>기온</th>
             <th>Detail</th>
           </tr>
         </thead>
         <tbody>
           {tableData.length === 0 ? (
             <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
+              <td colSpan="11" style={{ textAlign: "center" }}>
                 파일을 올려주세요
               </td>
             </tr>
@@ -68,6 +72,11 @@ const DataTable = ({ tableData, onDelete }) => {
                       X
                     </button>
                   </td>
+                  <td>{row.windInfo}</td>
+                  <td>{row.humidity}</td>
+                  <td>{row.rainfall}</td>
+                  <td>{row.sunlight}</td>
+                  <td>{row.temperature}</td>
                   <td>
                     <button
                       className="detailBtn"
