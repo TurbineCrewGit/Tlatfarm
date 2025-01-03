@@ -167,7 +167,7 @@ hr{
   font-size: calc(10px + 2vmin);
   color: var(--text-color);
   transition: background var(--transition-speed) ease;
-
+  padding-top: 15vh;
 }
 
 .title{
