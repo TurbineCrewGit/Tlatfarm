@@ -23,7 +23,8 @@ const DataTable = ({ tableData, onDelete }) => {
             newWeatherData[row.id] = {
               temperature: latestData[2],  // temp
               humidity: latestData[3],     // humidity
-              windInfo: `${latestData[5]}° / ${latestData[4]}m/s`,  // wd/ws
+              windDirect: `${latestData[5]}°`,
+              windSpeed: `${latestData[4]}m/s`,  // wd/ws
               rainfall: latestData[8],     // rainfall
             };
           }
@@ -99,7 +100,32 @@ const DataTable = ({ tableData, onDelete }) => {
                   <td>{row.latitude}</td>
                   <td>{row.longitude}</td>
                   
-                  <td>{rowWeatherData.windInfo || '-'}</td>
+                  <td>
+                    {rowWeatherData.windDirect ? (
+                        parseFloat(rowWeatherData.windDirect) >= 22.5 && parseFloat(rowWeatherData.windDirect) < 67.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/225_675.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 67.5 && parseFloat(rowWeatherData.windDirect) < 112.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/675_1125.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 112.5 && parseFloat(rowWeatherData.windDirect) < 157.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1125_1575.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 157.5 && parseFloat(rowWeatherData.windDirect) < 202.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1575_2025.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 202.5 && parseFloat(rowWeatherData.windDirect) < 247.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2025_2475.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 247.5 && parseFloat(rowWeatherData.windDirect) < 292.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2475_2925.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 292.5 && parseFloat(rowWeatherData.windDirect) < 337.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2925_3375.png`} alt="" />
+                        ) : parseFloat(rowWeatherData.windDirect) >= 337.5 && parseFloat(rowWeatherData.windDirect) < 360 
+                        && parseFloat(rowWeatherData.windDirect) >= 0 && parseFloat(rowWeatherData.windDirect) < 22.5 ? (
+                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/0_225.png`} alt="" />
+                        ) : (
+                          rowWeatherData.windDirect
+                        )
+                      ) : (
+                        '-'
+                      )}
+                  </td>
                   <td>
                     {rowWeatherData.humidity ? (
                           parseFloat(rowWeatherData.humidity) <= 30 ? (

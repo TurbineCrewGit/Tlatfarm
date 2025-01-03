@@ -8,13 +8,14 @@
 }
 
 .list-container {
-    border: 2px solid black;
+    border: none;
     border-radius: 8px;
-    padding: 30px;
+    padding: 15px;
+    padding-top: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: antiquewhite;
+    background-color: transparent;
     min-width: 600px;
     width: max-content;
 }
@@ -111,7 +112,7 @@
     cursor: pointer;
 }
 .clebine-container {
-    border: 2px solid black;
+    border: none;
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
@@ -129,5 +130,5 @@
 }
 
 .tableImg {
-    width: 40px;
+    width: 50px;
 }
