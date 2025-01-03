@@ -19,14 +19,25 @@ function Main() {
     const [droneData, setDroneData] = useState([]); // 드론 데이터 저장
     const [isMapLoaded, setIsMapLoaded] = useState(false); // 지도 로드 상태
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태
-    const [isControllerOpen, setIsControllerOpen] = useState(true); // control section 열림 상태
     const [buttonStates, setButtonStates] = useState({
         clebine: true,
         smartDrone: true,
     });
 
-    const toggleControllerContent = () => {
-        setIsControllerOpen((prev) => !prev);
+    const turnOffButton = (type) => {
+        setButtonStates((prevStates) => ({
+            ...prevStates,
+            [type]: false, // 강제로 off 상태로 변경
+        }));
+        console.log(`${type} 버튼이 OFF 상태로 변경되었습니다.`);
+    };
+    
+    const turnOnButton = (type) => {
+        setButtonStates((prevStates) => ({
+            ...prevStates,
+            [type]: true, // 강제로 on 상태로 변경
+        }));
+        console.log(`${type} 버튼이 ON 상태로 변경되었습니다.`);
     };
 
     const clearAllMarkers = () => {
@@ -313,22 +324,71 @@ const resetMapCenter = () => {
     console.log("지도 중심 재설정 완료.");
 };
 
-    // 지도 확장/축소 토글
-    const toggleMapSize = () => {
-        setIsExpanded((prevState) => !prevState);
-        setTimeout(() => {
-            if (mapRef.current) {
-                mapRef.current.relayout();
-                const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
-                mapRef.current.setCenter(defaultCenter);
+// 지도 중심 각자 위치로로 재설정
+const reposition = (type, id) => {
+    if (!mapRef.current) {
+        console.error("지도 객체가 초기화되지 않았습니다.");
+        return;
+    }
 
-                markersRef.current.forEach((marker) => {
+    let targetCoordinates = null;
 
-                    marker.setMap(mapRef.current);
-                });
+    if (type === "clebine") {
+        // Clebine 데이터를 검색
+        const clebine = csvData.find((row) => row.ID === id);
+        if (clebine && clebine.Latitude && clebine.Longitude) {
+            targetCoordinates = new window.kakao.maps.LatLng(
+                parseFloat(clebine.Latitude),
+                parseFloat(clebine.Longitude)
+            );
+        } else {
+            console.warn(`Clebine ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+        }
+    } else if (type === "drone") {
+        // Drone 데이터를 검색
+        for (const drone of droneData) {
+            if (drone.ID === id) {
+                const waypoint = drone.waypoints.find((wp) => wp.isItme === "1");
+                if (waypoint && waypoint.lat && waypoint.long) {
+                    targetCoordinates = new window.kakao.maps.LatLng(
+                        parseFloat(waypoint.lat),
+                        parseFloat(waypoint.long)
+                    );
+                    break;
+                }
             }
-        }, 300);
-    };
+        }
+        if (!targetCoordinates) {
+            console.warn(`Drone ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+        }
+    }
+
+    // 지도 중심 설정
+    if (targetCoordinates) {
+        mapRef.current.setCenter(targetCoordinates);
+        console.log(`지도 중심이 ${type} ID: ${id}의 좌표로 이동되었습니다.`);
+    } else {
+        console.error(`ID: ${id}에 해당하는 ${type}의 좌표를 찾을 수 없습니다.`);
+    }
+};
+
+
+// 지도 확장/축소 토글
+const toggleMapSize = () => {
+    setIsExpanded((prevState) => !prevState);
+    setTimeout(() => {
+        if (mapRef.current) {
+            mapRef.current.relayout();
+            const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
+            mapRef.current.setCenter(defaultCenter);
+
+            markersRef.current.forEach((marker) => {
+
+                marker.setMap(mapRef.current);
+            });
+        }
+    }, 300);
+};
 
     return (
         <ThemeProvider theme={theme}>
@@ -342,7 +402,7 @@ const resetMapCenter = () => {
 
                 <hr className="custom_hr" />
 
-                <div className="main-content">
+                <div className="main-content" style={{ /*width: "1500px",maxHeight:"1000px", overflow: "scroll"*/ }}>
                     <div className="map-section" style={{ position: "relative" }}>
                         <div
                             id="kakaoMap"
@@ -358,7 +418,7 @@ const resetMapCenter = () => {
                                 position: "absolute",
                                 top: "40px",
                                 right: "10px",
-                                zIndex: 1000,
+                                zIndex: 100,
                                 backgroundColor: "rgba(255, 255, 255, 0.8)",
                                 border: "1px solid #ccc",
                                 borderRadius: "5px",
@@ -395,6 +455,40 @@ const resetMapCenter = () => {
                             
                             <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
                                 <h3>Clebine Section</h3>
+                                <div style={{ display: "flex", gap: "10px" }}>
+                                    {/* Turn On Button */}
+                                    <button
+                                        onClick={() => turnOnButton("clebine")}
+                                        style={{
+                                            background: "none",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        <img
+                                            src={`${process.env.PUBLIC_URL}/on.png`}
+                                            alt="Clebine On Button"
+                                            style={{ width: "50px", height: "50px" }}
+                                        />
+                                    </button>
+
+                                    {/* Turn Off Button */}
+                                    <button
+                                        onClick={() => turnOffButton("clebine")}
+                                        style={{
+                                            background: "none",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        <img
+                                            src={`${process.env.PUBLIC_URL}/off.png`}
+                                            alt="Clebine Off Button"
+                                            style={{ width: "50px", height: "50px" }}
+                                        />
+                                    </button>
+                                </div>
+                                
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
@@ -402,6 +496,8 @@ const resetMapCenter = () => {
                                             <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "25px", paddingRight: "25px"}}>ID</th>
                                             <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Power</th>
                                             <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Detail</th>
+                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Reposition</th>
+                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Visibility</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -432,6 +528,18 @@ const resetMapCenter = () => {
                                                             Detail
                                                         </button>
                                                     </td>
+                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <button 
+                                                            style={{ padding: "5px 10px", cursor: "pointer" }}
+                                                            onClick={() => reposition("clebine", row.ID)}
+                                                        >
+                                                            Reposition
+                                                        </button>
+                                                    </td>
+                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <button>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             );
                                         }
@@ -445,12 +553,47 @@ const resetMapCenter = () => {
                             
                             <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
                             <h3>SmartDrone Section</h3>
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                {/* Turn On Button */}
+                                <button
+                                    onClick={() => turnOnButton("smartDrone")}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/on.png`}
+                                        alt="SmartDrone On Button"
+                                        style={{ width: "50px", height: "50px" }}
+                                    />
+                                </button>
+
+                                {/* Turn Off Button */}
+                                <button
+                                    onClick={() => turnOffButton("smartDrone")}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/off.png`}
+                                        alt="SmartDrone Off Button"
+                                        style={{ width: "50px", height: "50px" }}
+                                    />
+                                </button>
+                            </div>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
                                             <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>ID</th>
                                             <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Status</th>
                                             <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Detail</th>
+                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Reposition</th>
+                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Visibility</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -481,6 +624,18 @@ const resetMapCenter = () => {
                                                                 Detail
                                                             </button>
                                                         </td>
+                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                            <button 
+                                                                style={{ padding: "5px 10px", cursor: "pointer" }}
+                                                                onClick={() => reposition("drone", drone.ID)}
+                                                            >
+                                                                Reposition
+                                                            </button>
+                                                        </td>
+                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                            <button>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 ))
                                         ))}
@@ -489,68 +644,6 @@ const resetMapCenter = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Draggable로 Control Section 감싸기 */}
-                    <Draggable handle=".drag-handle">
-                        <div className="control-section"
-                            style={{
-                                position: "absolute",
-                                top: "50%",
-                                left: "50%",
-                                transform: "translate(-50%, -50%)",
-                                width: "250px",
-                                height: "auto",
-                                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                                borderRadius: "15px",
-                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                                zIndex: 1000,
-                                padding: "10px",
-                            }}
-                        >
-                            <div className="drag-handle" style={{ cursor: "move", textAlign: "center", fontWeight: "bold" }}>
-                                <br />
-                                <h3 style={{ margin: 0, textAlign: "center", color: "white" }}>Control Section</h3>
-                                <button className="controller-toggle-btn" onClick={toggleControllerContent}>
-                                    {isControllerOpen ? "∧" : "∨"}
-                                </button>
-                            </div>
-                            {isControllerOpen && (
-                            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
-                                <h4 style={{margin: -3, textAlign:"center", color: "white"}}>Clebine</h4>
-                                {/* Clebine Button */}
-                                <button
-                                    onClick={() => toggleButton("clebine")}
-                                    style={{
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <img
-                                        src={buttonStates.clebine ? `${process.env.PUBLIC_URL}/ON 버튼.png` : `${process.env.PUBLIC_URL}/OFF 버튼.png`}
-                                        alt="Clebine Button"
-                                        style={{ width: "100%", height: "100%" }}
-                                    />
-                                </button>
-
-                                {/* SmartDrone Button */}
-                                <h4 style={{margin: -3, textAlign:"center", color: "white"}}>SmartDrone</h4>
-                                <button
-                                    onClick={() => toggleButton("smartDrone")}
-                                    style={{
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <img
-                                        src={buttonStates.smartDrone ? `${process.env.PUBLIC_URL}/ON 버튼.png` : `${process.env.PUBLIC_URL}/OFF 버튼.png`}
-                                        alt="SmartDrone Button"
-                                        style={{ width: "100%", height: "100%" }}
-                                    />
-                                </button>
-                            </div>)}
-                        </div>
-                    </Draggable>
                 </div>
 
                 <ThemeToggle />
