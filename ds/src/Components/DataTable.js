@@ -68,19 +68,18 @@ const DataTable = ({ tableData, onDelete }) => {
             <th>전력 생산량</th>
             <th>위도</th>
             <th>경도</th>
-            <th>작업</th>
             <th>풍향/풍속</th>
             <th>습도</th>
             <th>강수량</th>
-            <th>일조량</th>
             <th>기온</th>
             <th>Detail</th>
+            <th>작업</th>
           </tr>
         </thead>
         <tbody>
           {tableData.length === 0 ? (
             <tr>
-              <td colSpan="11" style={{ textAlign: "center" }}>
+              <td colSpan="10" style={{ textAlign: "center" }}>
                 파일을 올려주세요
               </td>
             </tr>
@@ -98,19 +97,10 @@ const DataTable = ({ tableData, onDelete }) => {
                   </td>
                   <td>{row.latitude}</td>
                   <td>{row.longitude}</td>
-                  <td>
-                    <button
-                      id="deleteBtn"
-                      onClick={() => onDelete(row.id)}
-                      style={{ padding: "5px 10px", cursor: "pointer" }}
-                    >
-                      X
-                    </button>
-                  </td>
+                  
                   <td>{rowWeatherData.windInfo || '-'}</td>
                   <td>{rowWeatherData.humidity || '-'}</td>
                   <td>{rowWeatherData.rainfall || '-'}</td>
-                  <td>-</td>
                   <td>{rowWeatherData.temperature || '-'}</td>
                   <td>
                     <button
@@ -118,6 +108,15 @@ const DataTable = ({ tableData, onDelete }) => {
                       onClick={() => handleDetailClick(row.id)}
                     >
                       detail
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      id="deleteBtn"
+                      onClick={() => onDelete(row.id)}
+                      style={{ padding: "5px 10px", cursor: "pointer" }}
+                    >
+                      X
                     </button>
                   </td>
                 </tr>
