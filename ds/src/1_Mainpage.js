@@ -18,28 +18,13 @@ function Main() {
     const [droneData, setDroneData] = useState([]); // 드론 데이터 저장
     const [isMapLoaded, setIsMapLoaded] = useState(false); // 지도 로드 상태
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태
+    const [filterID, setFilterID] = useState([]); // 표시할 Clebine 및 Drone ID 관리
     const [buttonStates, setButtonStates] = useState({
         clebine: true,
         smartDrone: true,
     });
 
-    const turnOffButton = (type) => {
-        setButtonStates((prevStates) => ({
-            ...prevStates,
-            [type]: false, // 강제로 off 상태로 변경
-        }));
-        console.log(`${type} 버튼이 OFF 상태로 변경되었습니다.`);
-        console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
-    };
-    
-    const turnOnButton = (type) => {
-        setButtonStates((prevStates) => ({
-            ...prevStates,
-            [type]: true, // 강제로 on 상태로 변경
-        }));
-        console.log(`${type} 버튼이 ON 상태로 변경되었습니다.`);
-        console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
-    };
+ 
 
     const clearAllMarkers = () => {
         // 모든 마커의 지도 설정을 null로 변경
@@ -112,12 +97,90 @@ function Main() {
         loadCsvData();
     }, []);
 
+    // 드론 데이터 로드
+    useEffect(() => {
+        const loadDroneData = async () => {
+            try {
+                const fileUrls = ['/D-1.json', '/D-2.json', '/D-3.json'];
+    
+                const allData = await Promise.all(fileUrls.map(async (url) => {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`파일 로드 실패: ${url}`);
+                    const data = await response.json();
+                    return data;
+                }));
+    
+                setDroneData(allData);
+                console.log("드론 데이터 로드 완료:", allData);
+            } catch (error) {
+                console.error("드론 데이터 로드 오류:", error);
+            }
+        };
+    
+        if (buttonStates.smartDrone) {
+            loadDroneData();
+        }
+    }, [buttonStates.smartDrone]);
+
+    // 초기화 시 모든 ID를 filterID에 추가 ******************************
+    useEffect(() => {
+        const allIDs = [
+            ...csvData.map(row => `clebine-${row.ID}`),
+            ...droneData.map(drone => `drone-${drone.ID}`),
+        ];
+        setFilterID(allIDs);
+    }, [csvData, droneData]);
+
+    // Visibility 토글 함수
+    const toggleFilterID = (type, id) => {
+        clearAllMarkers(); // 모든 마커 제거
+        const targetID = `${type}-${id}`;
+        setFilterID(prev => 
+            prev.includes(targetID)
+                ? prev.filter(item => item !== targetID) // ID 제거
+                : [...prev, targetID] // ID 추가
+        );
+        console.log("filterID toggled: ",targetID);
+        console.log("filterID: ", filterID);
+    };
+
+    const turnOffButton = (type) => {
+    
+        // Remove all IDs of the given type from filterID
+        setFilterID((prevFilterID) => {
+            if (type === "clebine") {
+                return prevFilterID.filter((id) => !id.startsWith("clebine-"));
+            } else if (type === "smartDrone") {
+                return prevFilterID.filter((id) => !id.startsWith("drone-"));
+            }
+            return prevFilterID;
+        });
+    };
+    
+    const turnOnButton = (type) => {
+        const allIDs =
+            type === "clebine"
+                ? csvData.map((row) => `clebine-${row.ID}`)
+                : droneData.map((drone) => `drone-${drone.ID}`);
+
+    
+        // filterID에 해당 타입의 모든 ID를 추가
+        setFilterID((prevFilterID) =>
+            Array.from(new Set([...prevFilterID, ...allIDs])) // 중복 제거
+        );
+        console.log(`${type} IDs added to filterID`);
+    };
+    
+
 // 지도 로드 후 Clebine 마커 추가
 useEffect(() => {
-    if (!isMapLoaded || csvData.length === 0 || !buttonStates.clebine) return;
+    if (!isMapLoaded || csvData.length === 0) return;
 
     const addMarkers = () => {
         csvData.forEach((row) => {
+            const targetID = `clebine-${row.ID}`;
+            if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 스킵
+
             if (row.Latitude && row.Longitude) {
                 const lat = parseFloat(row.Latitude);
                 const lng = parseFloat(row.Longitude);
@@ -194,39 +257,16 @@ useEffect(() => {
         CustomOverlayRef.current.forEach((overlay) => overlay.setMap(null));
         CustomOverlayRef.current = [];
     };
-}, [isMapLoaded, csvData, buttonStates.clebine, buttonStates.smartDrone]);
-
-
+}, [isMapLoaded, csvData, filterID]);
 
 useEffect(() => {
-    const loadDroneData = async () => {
-        try {
-            const fileUrls = ['/D-1.json', '/D-2.json', '/D-3.json'];
-
-            const allData = await Promise.all(fileUrls.map(async (url) => {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`파일 로드 실패: ${url}`);
-                const data = await response.json();
-                return data;
-            }));
-
-            setDroneData(allData);
-            console.log("드론 데이터 로드 완료:", allData);
-        } catch (error) {
-            console.error("드론 데이터 로드 오류:", error);
-        }
-    };
-
-    if (buttonStates.smartDrone) {
-        loadDroneData();
-    }
-}, [buttonStates.smartDrone]);
-
-useEffect(() => {
-    if (!isMapLoaded || droneData.length === 0 || !buttonStates.smartDrone) return;
+    if (!isMapLoaded || droneData.length === 0) return;
 
     const addDroneMarkers = () => {
         droneData.forEach((drone) => {
+            const targetID = `drone-${drone.ID}`;
+            if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 스킵
+
             drone.waypoints
                 .filter((wp) => wp.isItme === "1")
                 .forEach((wp) => {
@@ -290,32 +330,13 @@ useEffect(() => {
     };
 
     addDroneMarkers();
-
-    if(!buttonStates.clebine) {
-        return () => {
-            markersRef.current.forEach((marker) => marker.setMap(null));
-            markersRef.current = [];
-        }
+    
+    return () => {
+        markersRef.current.forEach((marker) => marker.setMap(null));
+        markersRef.current = [];
     }
 
-}, [isMapLoaded, droneData, buttonStates.smartDrone, buttonStates.clebine]);
-
-const toggleButton = (type) => {
-    clearAllMarkers(); // 모든 마커 제거
-    setButtonStates((prevStates) => {
-        console.log("버튼 상태 변경:", type);
-        console.log("이전 상태:", prevStates);
-        if(type === "clebine") {
-            buttonStates.clebine = !prevStates.clebine;
-            console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
-        }else if(type === "smartDrone") {
-            buttonStates.smartDrone = !prevStates.smartDrone;
-            console.log("clebine: ", buttonStates.clebine, "smartDrone: ", buttonStates.smartDrone);
-        }
-        return {clebine: buttonStates.clebine, smartDrone: buttonStates.smartDrone};
-    });
-};
-
+}, [isMapLoaded, droneData, filterID]);
 
 // 지도 중심 재설정
 const resetMapCenter = () => {
@@ -454,9 +475,7 @@ const toggleMapSize = () => {
                     </div>
 
                     <div className="bottom-sections">
-                        
                         <div className="clebine-section">
-                            
                             <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
                                 <div style={{flexDirection: "row", display: "flex", gap: "5px"}}>
                                     <h3>Clebine</h3>
@@ -509,15 +528,15 @@ const toggleMapSize = () => {
 
                                             // Power 값에 따라 배경 색상 설정
                                             if (parseFloat(row.Power) === 0) {
-                                                powerBackgroundColor = "rgba(0, 0, 0, 0.5)"; // Red for 0W
+                                                powerBackgroundColor = "#141414"; // Red for 0W
                                             } else if (parseFloat(row.Power) >= 1 && parseFloat(row.Power) <= 49) {
-                                                powerBackgroundColor = "rgba(255, 0, 0, 0.5)"; // Light Orange
+                                                powerBackgroundColor = "#941414"; // Light Orange
                                             } else if (parseFloat(row.Power) >= 50 && parseFloat(row.Power) <= 99) {
-                                                powerBackgroundColor = "rgba(255, 145, 0, 0.5)"; // Light Yellow
+                                                powerBackgroundColor = "#945D14"; // Light Yellow
                                             } else if (parseFloat(row.Power) >= 100 && parseFloat(row.Power) <= 149) {
-                                                powerBackgroundColor = "rgba(255, 255, 0, 0.5)"; // Light Green
+                                                powerBackgroundColor = "#949414"; // Light Green
                                             } else if (parseFloat(row.Power) >= 150) {
-                                                powerBackgroundColor = "rgba(100, 255, 100, 0.5)"; // Light Blue
+                                                powerBackgroundColor = "#469446"; // Light Blue
                                             }
                                         return (
                                                 <tr key={index}>
@@ -540,7 +559,8 @@ const toggleMapSize = () => {
                                                         </button>
                                                     </td>
                                                     <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                                        <button>
+                                                        <button onClick={() => toggleFilterID("clebine", row.ID)}>
+                                                            {filterID.includes(`clebine-${row.ID}`) ? "Hide" : "Show"}
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -638,7 +658,8 @@ const toggleMapSize = () => {
                                                             </button>
                                                         </td>
                                                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                                            <button>
+                                                            <button onClick={() => toggleFilterID("drone", drone.ID)}>
+                                                                {filterID.includes(`drone-${drone.ID}`) ? "Hide" : "Show"}
                                                             </button>
                                                         </td>
                                                     </tr>
