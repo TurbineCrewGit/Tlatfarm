@@ -1,7 +1,6 @@
 // Clebine.js
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Clock from './Components/Clock.js';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
@@ -27,7 +26,7 @@ function Clebine({ tableData, onDelete, handleDataUploaded }) {
         <Header />
         {/* <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
         <Clock /> */}
-        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
+        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", marginTop: "15px" }} />
         <DataSection
           tableData={tableData}
           handleDelete={onDelete}

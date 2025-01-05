@@ -9,27 +9,25 @@ const DataTable = ({ tableData, onDelete }) => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       const newWeatherData = {};
-      
-      // tableData의 각 행에 대해 CSV 파일을 읽어옵니다
+
       for (const row of tableData) {
         try {
           const response = await fetch(`${process.env.PUBLIC_URL}/${row.id}.csv`);
           const csvText = await response.text();
-          
-          // CSV 파싱
+
           const lines = csvText.split('\n');
-          if (lines.length > 1) {  // 헤더와 최소 1개의 데이터 행이 있는지 확인
-            const latestData = lines[1].split(',');  // 최신 데이터 사용 (헤더 다음 줄)
+          if (lines.length > 1) {
+            const latestData = lines[1].split(',');
             newWeatherData[row.id] = {
-              temperature: latestData[2],  // temp
-              humidity: latestData[3],     // humidity
-              windDirect: `${latestData[5]}°`,
-              windSpeed: `${latestData[4]}m/s`,  // wd/ws
-              rainfall: latestData[8],     // rainfall
+              temperature: latestData[2],
+              humidity: latestData[3],
+              windDirect: parseFloat(latestData[5]),
+              windSpeed: `${latestData[4]}m/s`,
+              rainfall: latestData[8],
             };
           }
         } catch (error) {
-          console.error(`Error loading CSV for ID ${row.id}:`, error);
+          console.error(`ID ${row.id}의 CSV 로딩 오류:`, error);
         }
       }
       setWeatherData(newWeatherData);
@@ -41,29 +39,107 @@ const DataTable = ({ tableData, onDelete }) => {
   }, [tableData]);
 
   const getPowerBackgroundColor = (powerValue) => {
-    if (parseFloat(powerValue) === 0) {
-      return "#141414"; // Dark Gray for 0W
-    } else if (parseFloat(powerValue) >= 1 && parseFloat(powerValue) <= 49) {
-      return "#941414"; // Red for 1W to 49W
-    } else if (parseFloat(powerValue) >= 50 && parseFloat(powerValue) <= 99) {
-      return "#945D14"; // Light Orange for 50W to 99W
-    } else if (parseFloat(powerValue) >= 100 && parseFloat(powerValue) <= 149) {
-      return "#949414"; // Yellow for 100W to 149W
-    } else if (parseFloat(powerValue) >= 150) {
-      return "#469446"; // Green for 150W and above
-    }
+    const value = parseFloat(powerValue);
+    if (value === 0) return "#141414";
+    if (value >= 1 && value <= 49) return "#941414";
+    if (value >= 50 && value <= 99) return "#945D14";
+    if (value >= 100 && value <= 149) return "#949414";
+    if (value >= 150) return "#469446";
     return "";
   };
-  
-
-
-
-
 
   const handleDetailClick = (id) => {
     navigate(`/clebinepage/${id}`);
   };
 
+  const renderWeatherIcon = (data) => {
+    if (!data) return '-';
+
+    const { windDirect, humidity, rainfall, temperature } = data;
+
+    return (
+      <div className="weather-column">
+        {/* 풍향 */}
+        {windDirect !== undefined ? (
+          <img
+            className="tableImg"
+            src={`${process.env.PUBLIC_URL}/windInfo/${getWindDirectionImage(windDirect)}.png`}
+            alt={`풍향 ${windDirect}`}
+          />
+        ) : (
+          '-'
+        )}
+
+        {/* 습도 */}
+        {humidity !== undefined ? (
+          <img
+            className="tableImg"
+            src={`${process.env.PUBLIC_URL}/humidity/${getHumidityImage(humidity)}.png`}
+            alt={`습도 ${humidity}`}
+          />
+        ) : (
+          '-'
+        )}
+
+        {/* 강수량 */}
+        {rainfall !== undefined ? (
+          <img
+            className="tableImg"
+            src={`${process.env.PUBLIC_URL}/rainfall/${getRainfallImage(rainfall)}.png`}
+            alt={`강수량 ${rainfall}`}
+          />
+        ) : (
+          '-'
+        )}
+
+        {/* 온도 */}
+        {temperature !== undefined ? (
+          <img
+            className="tableImg"
+            src={`${process.env.PUBLIC_URL}/temp/${getTemperatureImage(temperature)}.png`}
+            alt={`온도 ${temperature}`}
+          />
+        ) : (
+          '-'
+        )}
+      </div>
+    );
+  };
+
+  const getWindDirectionImage = (windDirect) => {
+    if (windDirect >= 22.5 && windDirect < 67.5) return "225_675";
+    if (windDirect >= 67.5 && windDirect < 112.5) return "675_1125";
+    if (windDirect >= 112.5 && windDirect < 157.5) return "1125_1575";
+    if (windDirect >= 157.5 && windDirect < 202.5) return "1575_2025";
+    if (windDirect >= 202.5 && windDirect < 247.5) return "2025_2475";
+    if (windDirect >= 247.5 && windDirect < 292.5) return "2475_2925";
+    if (windDirect >= 292.5 && windDirect < 337.5) return "2925_3375";
+    return "0_225"; // 기본값 또는 북풍
+  };
+
+  const getHumidityImage = (humidity) => {
+    const h = parseFloat(humidity);
+    if (h <= 30) return "under30";
+    if (h <= 50) return "between31_50";
+    if (h <= 70) return "between51_70";
+    return "over70";
+  };
+
+  const getRainfallImage = (rainfall) => {
+    const r = parseFloat(rainfall);
+    if (r <= 0) return "sunny";
+    if (r <= 0.1) return "between0_01";
+    if (r <= 0.5) return "between01_05";
+    return "up5";
+  };
+
+  const getTemperatureImage = (temperature) => {
+    const t = parseFloat(temperature);
+    if (t <= 0) return "under0c";
+    if (t <= 15) return "between0_15";
+    if (t <= 30) return "between15_30";
+    return "over30c";
+  };
 
   return (
     <div className="clebine-container">
@@ -101,112 +177,23 @@ const DataTable = ({ tableData, onDelete }) => {
                   </td>
                   <td>{row.latitude}</td>
                   <td>{row.longitude}</td>
-                  
-                  {/* "Weather Info" 열 */}
-                  <td className="weather-column">
-                    <div>
-                      {rowWeatherData.windDirect ? (
-                        parseFloat(rowWeatherData.windDirect) >= 22.5 && parseFloat(rowWeatherData.windDirect) < 67.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/225_675.png`} alt="Wind Direction 22.5-67.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 67.5 && parseFloat(rowWeatherData.windDirect) < 112.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/675_1125.png`} alt="Wind Direction 67.5-112.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 112.5 && parseFloat(rowWeatherData.windDirect) < 157.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1125_1575.png`} alt="Wind Direction 112.5-157.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 157.5 && parseFloat(rowWeatherData.windDirect) < 202.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/1575_2025.png`} alt="Wind Direction 157.5-202.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 202.5 && parseFloat(rowWeatherData.windDirect) < 247.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2025_2475.png`} alt="Wind Direction 202.5-247.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 247.5 && parseFloat(rowWeatherData.windDirect) < 292.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2475_2925.png`} alt="Wind Direction 247.5-292.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 292.5 && parseFloat(rowWeatherData.windDirect) < 337.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/2925_3375.png`} alt="Wind Direction 292.5-337.5" />
-                        ) : parseFloat(rowWeatherData.windDirect) >= 337.5 && parseFloat(rowWeatherData.windDirect) < 360 
-                        && parseFloat(rowWeatherData.windDirect) >= 0 && parseFloat(rowWeatherData.windDirect) < 22.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/windInfo/0_225.png`} alt="Wind Direction 0-22.5" />
-                        ) : (
-                          rowWeatherData.windDirect
-                        )
-                      ) : (
-                        '-'
-                      )}
-                    </div>
-                    
-                    <div>
-                      {rowWeatherData.humidity ? (
-                        parseFloat(rowWeatherData.humidity) <= 30 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/under30.png`} alt="Very dry" />
-                        ) : parseFloat(rowWeatherData.humidity) > 31 &&
-                          parseFloat(rowWeatherData.humidity) <= 50 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between31_50.png`} alt="Dry" />
-                        ) : parseFloat(rowWeatherData.humidity) > 51 &&
-                          parseFloat(rowWeatherData.humidity) <= 70 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/between51_70.png`} alt="Good" />
-                        ) : parseFloat(rowWeatherData.humidity) > 70 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/humidity/over70.png`} alt="Wet" />
-                        ) : (
-                          rowWeatherData.humidity
-                        )
-                      ) : (
-                        '-'
-                      )}
-                    </div>
-
-                    <div>
-                      {rowWeatherData.rainfall ? (
-                        parseFloat(rowWeatherData.rainfall) <= 0 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/sunny.png`} alt="Sunny" />
-                        ) : parseFloat(rowWeatherData.rainfall) > 0 &&
-                          parseFloat(rowWeatherData.rainfall) <= 0.1 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between0_01.png`} alt="Little rain" />
-                        ) : parseFloat(rowWeatherData.rainfall) > 0.1 &&
-                          parseFloat(rowWeatherData.rainfall) <= 0.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/between01_05.png`} alt="Rain" />
-                        ) : parseFloat(rowWeatherData.rainfall) > 0.5 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/rainfall/up5.png`} alt="Storm rain" />
-                        ) : (
-                          rowWeatherData.rainfall
-                        )
-                      ) : (
-                        '-'
-                      )}
-                    </div>
-
-                    <div>
-                      {rowWeatherData.temperature ? (
-                        parseFloat(rowWeatherData.temperature) <= 0 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/under0c.png`} alt="Cold" />
-                        ) : parseFloat(rowWeatherData.temperature) > 0 &&
-                          parseFloat(rowWeatherData.temperature) <= 15 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/between0_15.png`} alt="Warm" />
-                        ) : parseFloat(rowWeatherData.temperature) > 15 &&
-                          parseFloat(rowWeatherData.temperature) <= 30 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/between15_30.png`} alt="Hot" />
-                        ) : parseFloat(rowWeatherData.temperature) > 30 ? (
-                          <img className="tableImg" src={`${process.env.PUBLIC_URL}/temp/over30c.png`} alt="Very Hot" />
-                        ) : (
-                          rowWeatherData.temperature
-                        )
-                      ) : (
-                        '-'
-                      )}
-                    </div>
+                  <td className="weatherColumn">
+                    {renderWeatherIcon(rowWeatherData)}
                   </td>
-
                   <td>
                     <button
                       className="detailBtn"
                       onClick={() => handleDetailClick(row.id)}
                     >
-                      detail
+                      Detail
                     </button>
                   </td>
                   <td>
                     <button
-                      id="deleteBtn"
+                      className="deleteBtn"
                       onClick={() => onDelete(row.id)}
-                      style={{ padding: "5px 10px", cursor: "pointer" }}
                     >
-                      X
+                      x
                     </button>
                   </td>
                 </tr>

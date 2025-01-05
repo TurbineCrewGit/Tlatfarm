@@ -57,16 +57,7 @@
     gap: 10px; /* 버튼들 사이 간격 */
 }
 
-#deleteBtn {
-    border: none; /* 경계선 없애기 */
-    background: none; /* 배경 없애기 */
-    color: red; /* 텍스트 색상 (x버튼) */
-    font-size: 18px; /* 글자 크기 */
-    cursor: pointer; /* 마우스 커서가 포인터로 변경 */
-    padding: 0; /* 버튼 안의 여백 없애기 */
-    width: auto; /* 너비 자동 */
-    height: auto; /* 높이 자동 */
-}
+
 
 .id-input {
     padding: 8px;

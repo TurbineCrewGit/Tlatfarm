@@ -5,10 +5,9 @@
 
 /* 새로운 테이블 스타일 */
 .list-section {
-    margin-top: -15px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 20px;
 }
 
@@ -43,8 +42,8 @@
 .data-table th {
     padding: 8px 20px; /* 패딩 통일 */
     text-align: center;
-    border: none; /* 테두리 제거 */
     color: white;
+    border: 1px solid white;
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
     overflow: hidden; /* 내용이 넘치면 숨김 */
     text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
@@ -64,14 +63,7 @@
     background-color: #292929;
 }
 
-.weather-column {
-    display: flex;
-    flex-direction: row;
-    gap: 0px;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0;
-    border: none;
+.weatherColumn {
     background-color: gray !important;
 }
 
@@ -80,7 +72,6 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    
 }
 
 .weather-column img {
@@ -139,6 +130,17 @@
     color: black;
 }
 
+.deleteBtn {
+    border: none; /* 경계선 없애기 */
+    background: none; /* 배경 없애기 */
+    color: red; /* 텍스트 색상 (x버튼) */
+    font-size: 18px; /* 글자 크기 */
+    cursor: pointer; /* 마우스 커서가 포인터로 변경 */
+    padding: 0; /* 버튼 안의 여백 없애기 */
+    width: auto; /* 너비 자동 */
+    height: auto; /* 높이 자동 */
+}
+
 .selected-file {
     color: gray;
     border: none;
@@ -152,16 +154,18 @@
 
 .detailBtn {
     padding: 5px 10px;
-    border: 1px ridge black;
-    border-radius: 4px;
+    border: none;
+    background-color: transparent;
+    color:deepskyblue;
+    text-decoration: underline;
     cursor: pointer;
 }
 
 .clebine-container {
-    border: none;
-    border-radius: 8px;
+    /* border: none;
+    border-radius: 8px; */
     padding: 20px;
-    margin: 20px auto;
+    /* margin: 20px auto; */
     width: max-content;
     background-color: transparent;
     /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
