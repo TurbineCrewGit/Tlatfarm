@@ -560,7 +560,7 @@ const toggleMapSize = () => {
                                                     </td>
                                                     <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                                                         <button onClick={() => toggleFilterID("clebine", row.ID)}>
-                                                            {filterID.includes(`clebine-${row.ID}`) ? "Hide" : "Show"}
+                                                            {filterID.includes(`clebine-${row.ID}`) ? "Shown" : "Hidden"}
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -659,7 +659,7 @@ const toggleMapSize = () => {
                                                         </td>
                                                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                                                             <button onClick={() => toggleFilterID("drone", drone.ID)}>
-                                                                {filterID.includes(`drone-${drone.ID}`) ? "Hide" : "Show"}
+                                                                {filterID.includes(`drone-${drone.ID}`) ? "Shown" : "Hidden"}
                                                             </button>
                                                         </td>
                                                     </tr>
