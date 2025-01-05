@@ -41,19 +41,24 @@ const DataTable = ({ tableData, onDelete }) => {
   }, [tableData]);
 
   const getPowerBackgroundColor = (powerValue) => {
-    if (powerValue === 0) {
-      return "rgba(0, 0, 0)";
-    } else if (powerValue >= 1 && powerValue <= 49) {
-      return "rgba(255, 0, 0)";
-    } else if (powerValue >= 50 && powerValue <= 99) {
-      return "rgba(255, 145, 0)";
-    } else if (powerValue >= 100 && powerValue <= 149) {
-      return "rgba(255, 255, 0)";
-    } else if (powerValue >= 150) {
-      return "rgba(100, 255, 100)";
+    if (parseFloat(powerValue) === 0) {
+      return "#141414"; // Dark Gray for 0W
+    } else if (parseFloat(powerValue) >= 1 && parseFloat(powerValue) <= 49) {
+      return "#941414"; // Red for 1W to 49W
+    } else if (parseFloat(powerValue) >= 50 && parseFloat(powerValue) <= 99) {
+      return "#945D14"; // Light Orange for 50W to 99W
+    } else if (parseFloat(powerValue) >= 100 && parseFloat(powerValue) <= 149) {
+      return "#949414"; // Yellow for 100W to 149W
+    } else if (parseFloat(powerValue) >= 150) {
+      return "#469446"; // Green for 150W and above
     }
     return "";
   };
+  
+
+
+
+
 
   const handleDetailClick = (id) => {
     navigate(`/clebinepage/${id}`);
