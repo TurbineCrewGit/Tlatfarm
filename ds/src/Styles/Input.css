@@ -137,8 +137,20 @@ select:disabled {
 }
 
 .btn-reset-position{
-  transform: translateY(-2px);
+  position: absolute;
+  bottom: 20px; /* 화면 아래에서 20px 위 */
+  right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+  z-index: 1000; /* 지도 위에 표시되도록 우선순위 설정 */
+  background-color: #ffffff; /* 버튼 배경색 */
+  color: #000000; /* 버튼 텍스트 색 */
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 5px; /* 둥근 모서리 */
+  padding: 10px 15px; /* 내부 여백 */
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
 }
+
 .btn-reset-position:hover{
   transform: translateY(-4px);
 }
