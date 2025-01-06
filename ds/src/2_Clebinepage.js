@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react';
+// Clebine.js
+import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Clock from './Components/Clock.js';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
 
 const theme = createTheme();
 
-function Clebine() {
-  const [tableData, setTableData] = useState([]);
-  const [expandedSection, setExpandedSection] = useState(null);
-  const [selectedTint, setSelectedTint] = useState(null);
-  
-  const handleDataUploaded = (newData) => {
-    setTableData(prevData => [...prevData, ...newData]);
-  };
-
-  const handleDelete = (id) => {
-    setTableData(tableData.filter(row => row.id !== id));
-  };
+function Clebine({ tableData, onDelete, handleDataUploaded }) {
+  const [expandedSection, setExpandedSection] = React.useState(null);
+  const [selectedTint, setSelectedTint] = React.useState(null);
 
   const handleToggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);
@@ -33,8 +24,14 @@ function Clebine() {
     <ThemeProvider theme={theme}>
       <div className="planner">
         <Header />
-        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
-        <Clock />
+        {/* <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
+        <Clock /> */}
+        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", marginTop: "15px" }} />
+        <DataSection
+          tableData={tableData}
+          handleDelete={onDelete}
+          handleDataUploaded={handleDataUploaded}
+        />
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3, 4].map((index) => (
@@ -48,12 +45,6 @@ function Clebine() {
             />
           ))}
         </main>
-        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
-        <DataSection
-          tableData={tableData}
-          handleDelete={handleDelete}
-          handleDataUploaded={handleDataUploaded}
-        />
       </div>
     </ThemeProvider>
   );

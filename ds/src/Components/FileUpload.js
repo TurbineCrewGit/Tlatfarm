@@ -3,7 +3,7 @@ import { parseCSV, parseXLSX } from '../Components/FileParsing.js';
 import { checkDuplicateIds } from '../Components/CheckDuplicateIds.js';
 import FileSelector from '../Components/FileSelector.js';
 import IdInput from '../Components/IdInput.js';
-import "../Styles/Clebine.css";
+import "../Styles/DataTable.css";
 
 const FileUpload = ({ onDataUploaded, tableData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -80,7 +80,7 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
       {selectedFile && (
         <div className="file-name">
           선택된 파일: {selectedFile}
-          <button id="deleteBtn" onClick={clearSelectedFile} style={{marginLeft: "10px"}}>
+          <button className="deleteBtn" onClick={clearSelectedFile} style={{marginLeft: "10px"}}>
             x
           </button>
         </div>
