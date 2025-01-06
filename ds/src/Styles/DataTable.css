@@ -154,6 +154,7 @@
     border-radius: 8px; */
     padding: 20px;
     /* margin: 20px auto; */
+    margin-top: 40px;
     width: max-content;
     background-color: transparent;
     overflow: visible;
@@ -196,7 +197,7 @@ tr {
     transform: translateX(-50%);
     visibility: hidden; /* 초기 상태 숨김 */
     opacity: 0; /* 초기 불투명도 0 */
-    width: 180px;
+    width: 110px;
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     text-align: left;
@@ -205,7 +206,7 @@ tr {
     z-index: 999999;
     transition: opacity 0.3s ease, visibility 0.3s ease; /* 부드러운 전환 효과 */
     font-size: 12px;
-    
+    text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     pointer-events: none; /* 마우스 이벤트 방지 */
 }
