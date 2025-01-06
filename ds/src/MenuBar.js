@@ -14,13 +14,24 @@ const MenuBar = () => {
 
   return (
     <>
-      <button className="menu-button" onClick={toggleMenu} aria-label="메뉴 열기/닫기">
-        &#x2630;
-      </button>
+      {/* 메뉴 버튼을 메뉴가 닫혀 있을 때만 표시 */}
+      {!isMenuOpen && (
+        <button
+          className="menu-button"
+          onClick={toggleMenu}
+          aria-label="메뉴 열기"
+        >
+          &#x2630;
+        </button>
+      )}
 
       {/* 메뉴바 */}
       <div className={`menu-bar ${isMenuOpen ? 'open' : ''}`}>
-        <button className="close-button" onClick={toggleMenu} aria-label="메뉴 닫기">
+        <button
+          className="close-button"
+          onClick={toggleMenu}
+          aria-label="메뉴 닫기"
+        >
           &times;
         </button>
         <nav>
@@ -29,8 +40,7 @@ const MenuBar = () => {
             <li><Link to="/Clebinepage">Clebine</Link></li>
             <li><Link to="/Smartdronepage">Smartdrone</Link></li>
             <li><Link to="/Managementpage">농작물관리</Link></li>
-          
-            
+            {/* 필요한 추가 메뉴 항목 */}
           </ul>
         </nav>
       </div>
