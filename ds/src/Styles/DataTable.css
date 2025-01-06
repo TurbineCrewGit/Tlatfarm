@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
+    padding-top: 0;
 }
 
 .list-container {
@@ -67,18 +68,6 @@
     background-color: gray !important;
 }
 
-.weather-column div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-}
-
-.weather-column img {
-    max-width: 50px;
-    max-height: 50px;
-    margin: 0;
-}
 
 /* 테이블 헤더 스타일 유지 */
 .data-table th {

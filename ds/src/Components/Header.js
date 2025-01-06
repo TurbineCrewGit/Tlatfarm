@@ -7,7 +7,7 @@ function Header() {
   return (
     <header className="header">
       <Link to='/'>
-        <img src={logo} alt="Turbine Planner" width='400px' />
+        <img src={logo} alt="Turbine Planner" width='350px' style={{marginTop:'25px'}} />
       </Link>
       <MenuBar />
     </header>
