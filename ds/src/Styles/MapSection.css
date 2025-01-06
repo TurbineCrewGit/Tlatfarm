@@ -1,0 +1,16 @@
+.map-tooltip {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.5;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.map-tooltip p {
+    margin: 0;
+}
