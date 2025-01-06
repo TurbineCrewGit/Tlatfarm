@@ -72,6 +72,7 @@ function Main() {
         loadKakaoMapScript();
     }, []);
 
+
     // CSV 데이터 로드
     useEffect(() => {
         const loadCsvData = async () => {
@@ -122,7 +123,8 @@ function Main() {
         }
     }, [buttonStates.smartDrone]);
 
-    // 초기화 시 모든 ID를 filterID에 추가 ******************************
+
+    // 초기화 시 모든 ID를 filterID에 추가
     useEffect(() => {
         const allIDs = [
             ...csvData.map(row => `clebine-${row.ID}`),
@@ -140,12 +142,10 @@ function Main() {
                 ? prev.filter(item => item !== targetID) // ID 제거
                 : [...prev, targetID] // ID 추가
         );
-        console.log("filterID toggled: ",targetID);
-        console.log("filterID: ", filterID);
     };
 
+    // Turn On/Off Button 함수
     const turnOffButton = (type) => {
-    
         // Remove all IDs of the given type from filterID
         setFilterID((prevFilterID) => {
             if (type === "clebine") {
@@ -156,14 +156,12 @@ function Main() {
             return prevFilterID;
         });
     };
-    
     const turnOnButton = (type) => {
         const allIDs =
             type === "clebine"
                 ? csvData.map((row) => `clebine-${row.ID}`)
                 : droneData.map((drone) => `drone-${drone.ID}`);
 
-    
         // filterID에 해당 타입의 모든 ID를 추가
         setFilterID((prevFilterID) =>
             Array.from(new Set([...prevFilterID, ...allIDs])) // 중복 제거
@@ -171,145 +169,63 @@ function Main() {
         console.log(`${type} IDs added to filterID`);
     };
     
+    // 지도 로드 후 Clebine 마커 추가
+    useEffect(() => {
+        if (!isMapLoaded || csvData.length === 0) return;
 
-// 지도 로드 후 Clebine 마커 추가
-useEffect(() => {
-    if (!isMapLoaded || csvData.length === 0) return;
+        const addMarkers = () => {
+            csvData.forEach((row) => {
+                const targetID = `clebine-${row.ID}`;
+                if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 스킵
 
-    const addMarkers = () => {
-        csvData.forEach((row) => {
-            const targetID = `clebine-${row.ID}`;
-            if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 스킵
-
-            if (row.Latitude && row.Longitude) {
-                const lat = parseFloat(row.Latitude);
-                const lng = parseFloat(row.Longitude);
-                const power = parseFloat(row.Power);
-
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    // 충전량에 따라 마커 이미지 설정
-                    let markerImageSrc;
-                    if (power === 0) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/0w.png`;
-                    } else if (power >= 1 && power <= 49) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/0_49w.png`;
-                    } else if (power >= 50 && power <= 99) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/50_100w.png`;
-                    } else if (power >= 100 && power <= 149) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/100_150w.png`;
-                    } else if (power >= 150) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/150_200w.png`;
-                    }
-
-                    const markerImage = new window.kakao.maps.MarkerImage(
-                        markerImageSrc,
-                        new window.kakao.maps.Size(60, 70)
-                    );
-
-                    const hoverImage = new window.kakao.maps.MarkerImage(
-                        markerImageSrc,
-                        new window.kakao.maps.Size(70, 80)
-                    );
-
-                    const marker = new window.kakao.maps.Marker({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        map: mapRef.current,
-                        image: markerImage,
-                        zIndex: 1,
-                    });
-
-                    // Custom Overlay로 작은 점 추가
-                    const dotOverlay = new window.kakao.maps.CustomOverlay({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        content: '<div style="width: 6px; height: 6px; background-color: red; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); z-index: 2;"></div>',
-                        zIndex: 2,
-                    });
-
-                    dotOverlay.setMap(mapRef.current);
-
-                    const infoWindow = new window.kakao.maps.InfoWindow({
-                        content: `<div style="padding:5px; font-size:12px; color:#000;">ID: ${row.ID}<br>Power: ${row.Power}</div>`,
-                    });
-
-                    window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-                        infoWindow.open(mapRef.current, marker);
-                        marker.setImage(hoverImage);
-                    });
-
-                    window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-                        infoWindow.close();
-                        marker.setImage(markerImage);
-                    });
-
-                    markersRef.current.push(marker);
-                    CustomOverlayRef.current.push(dotOverlay);
-                }
-            }
-        });
-        console.log("모든 Clebine 마커 추가 완료.");
-    };
-
-    addMarkers();
-
-    return () => {
-        markersRef.current.forEach((marker) => marker.setMap(null));
-        markersRef.current = [];
-        CustomOverlayRef.current.forEach((overlay) => overlay.setMap(null));
-        CustomOverlayRef.current = [];
-    };
-}, [isMapLoaded, csvData, filterID]);
-
-useEffect(() => {
-    if (!isMapLoaded || droneData.length === 0) return;
-
-    const addDroneMarkers = () => {
-        droneData.forEach((drone) => {
-            const targetID = `drone-${drone.ID}`;
-            if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 스킵
-
-            drone.waypoints
-                .filter((wp) => wp.isItme === "1")
-                .forEach((wp) => {
-                    const lat = parseFloat(wp.lat);
-                    const lng = parseFloat(wp.long);
+                if (row.Latitude && row.Longitude) {
+                    const lat = parseFloat(row.Latitude);
+                    const lng = parseFloat(row.Longitude);
+                    const power = parseFloat(row.Power);
 
                     if (!isNaN(lat) && !isNaN(lng)) {
+                        // 충전량에 따라 마커 이미지 설정
+                        let markerImageSrc;
+                        if (power === 0) {
+                            markerImageSrc = `${process.env.PUBLIC_URL}/0w.png`;
+                        } else if (power >= 1 && power <= 49) {
+                            markerImageSrc = `${process.env.PUBLIC_URL}/0_49w.png`;
+                        } else if (power >= 50 && power <= 99) {
+                            markerImageSrc = `${process.env.PUBLIC_URL}/50_100w.png`;
+                        } else if (power >= 100 && power <= 149) {
+                            markerImageSrc = `${process.env.PUBLIC_URL}/100_150w.png`;
+                        } else if (power >= 150) {
+                            markerImageSrc = `${process.env.PUBLIC_URL}/150_200w.png`;
+                        }
+
                         const markerImage = new window.kakao.maps.MarkerImage(
-                            wp.action === "16"
-                                ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                : `${process.env.PUBLIC_URL}/충전중.gif`,
-                            new window.kakao.maps.Size(65, 65),
-                            { offset: new window.kakao.maps.Point(32.5, 32.5) }
+                            markerImageSrc,
+                            new window.kakao.maps.Size(60, 70)
                         );
 
                         const hoverImage = new window.kakao.maps.MarkerImage(
-                            wp.action === "16"
-                                ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                : `${process.env.PUBLIC_URL}/충전중.gif`,
-                            new window.kakao.maps.Size(80, 80),
-                            { offset: new window.kakao.maps.Point(40, 40) }
+                            markerImageSrc,
+                            new window.kakao.maps.Size(70, 80)
                         );
 
                         const marker = new window.kakao.maps.Marker({
                             position: new window.kakao.maps.LatLng(lat, lng),
                             map: mapRef.current,
                             image: markerImage,
-                            zIndex: 4,
+                            zIndex: 1,
                         });
 
+                        // Custom Overlay로 작은 점 추가
+                        const dotOverlay = new window.kakao.maps.CustomOverlay({
+                            position: new window.kakao.maps.LatLng(lat, lng),
+                            content: '<div style="width: 6px; height: 6px; background-color: red; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); z-index: 2;"></div>',
+                            zIndex: 2,
+                        });
+
+                        dotOverlay.setMap(mapRef.current);
+
                         const infoWindow = new window.kakao.maps.InfoWindow({
-                            content: `<div style="padding:3px; font-size:12px; color:#000;">ID: ${drone.ID}<br>Status: ${(() => {
-                                switch (wp.action) {
-                                    case "5":
-                                        return "이륙";
-                                    case "6":
-                                        return "착륙";
-                                    case "16":
-                                        return "이동";
-                                    default:
-                                        return wp.action;
-                                }
-                            })()}</div>`
+                            content: `<div style="padding:5px; font-size:12px; color:#000;">ID: ${row.ID}<br>Power: ${row.Power}</div>`,
                         });
 
                         window.kakao.maps.event.addListener(marker, 'mouseover', () => {
@@ -323,97 +239,179 @@ useEffect(() => {
                         });
 
                         markersRef.current.push(marker);
+                        CustomOverlayRef.current.push(dotOverlay);
                     }
-                });
-        });
-        console.log("모든 드론 마커 추가 완료.");
+                }
+            });
+            console.log("모든 Clebine 마커 추가 완료.");
+        };
+
+        addMarkers();
+
+        return () => {
+            markersRef.current.forEach((marker) => marker.setMap(null));
+            markersRef.current = [];
+            CustomOverlayRef.current.forEach((overlay) => overlay.setMap(null));
+            CustomOverlayRef.current = [];
+        };
+    }, [isMapLoaded, csvData, filterID]);
+
+    useEffect(() => {
+        if (!isMapLoaded || droneData.length === 0) return;
+
+        const addDroneMarkers = () => {
+            droneData.forEach((drone) => {
+                const targetID = `drone-${drone.ID}`;
+                if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 스킵
+
+                drone.waypoints
+                    .filter((wp) => wp.isItme === "1")
+                    .forEach((wp) => {
+                        const lat = parseFloat(wp.lat);
+                        const lng = parseFloat(wp.long);
+
+                        if (!isNaN(lat) && !isNaN(lng)) {
+                            const markerImage = new window.kakao.maps.MarkerImage(
+                                wp.action === "16"
+                                    ? `${process.env.PUBLIC_URL}/이동중.gif`
+                                    : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                new window.kakao.maps.Size(65, 65),
+                                { offset: new window.kakao.maps.Point(32.5, 32.5) }
+                            );
+
+                            const hoverImage = new window.kakao.maps.MarkerImage(
+                                wp.action === "16"
+                                    ? `${process.env.PUBLIC_URL}/이동중.gif`
+                                    : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                new window.kakao.maps.Size(80, 80),
+                                { offset: new window.kakao.maps.Point(40, 40) }
+                            );
+
+                            const marker = new window.kakao.maps.Marker({
+                                position: new window.kakao.maps.LatLng(lat, lng),
+                                map: mapRef.current,
+                                image: markerImage,
+                                zIndex: 4,
+                            });
+
+                            const infoWindow = new window.kakao.maps.InfoWindow({
+                                content: `<div style="padding:3px; font-size:12px; color:#000;">ID: ${drone.ID}<br>Status: ${(() => {
+                                    switch (wp.action) {
+                                        case "5":
+                                            return "이륙";
+                                        case "6":
+                                            return "착륙";
+                                        case "16":
+                                            return "이동";
+                                        default:
+                                            return wp.action;
+                                    }
+                                })()}</div>`
+                            });
+
+                            window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+                                infoWindow.open(mapRef.current, marker);
+                                marker.setImage(hoverImage);
+                            });
+
+                            window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+                                infoWindow.close();
+                                marker.setImage(markerImage);
+                            });
+
+                            markersRef.current.push(marker);
+                        }
+                    });
+            });
+            console.log("모든 드론 마커 추가 완료.");
+        };
+
+        addDroneMarkers();
+        
+        return () => {
+            markersRef.current.forEach((marker) => marker.setMap(null));
+            markersRef.current = [];
+        }
+
+    }, [isMapLoaded, droneData, filterID]);
+
+
+    // 지도 중심 재설정
+    const resetMapCenter = () => {
+        if (!mapRef.current) {
+            console.error("지도 객체가 초기화되지 않았습니다.");
+            return;
+        }
+        const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
+        mapRef.current.setCenter(defaultCenter);
+        console.log("지도 중심 재설정 완료.");
     };
 
-    addDroneMarkers();
-    
-    return () => {
-        markersRef.current.forEach((marker) => marker.setMap(null));
-        markersRef.current = [];
-    }
-
-}, [isMapLoaded, droneData, filterID]);
-
-// 지도 중심 재설정
-const resetMapCenter = () => {
-    if (!mapRef.current) {
-        console.error("지도 객체가 초기화되지 않았습니다.");
-        return;
-    }
-    const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
-    mapRef.current.setCenter(defaultCenter);
-    console.log("지도 중심 재설정 완료.");
-};
-
-// 지도 중심 각자 위치로로 재설정
-const reposition = (type, id) => {
-    if (!mapRef.current) {
-        console.error("지도 객체가 초기화되지 않았습니다.");
-        return;
-    }
-
-    let targetCoordinates = null;
-
-    if (type === "clebine") {
-        // Clebine 데이터를 검색
-        const clebine = csvData.find((row) => row.ID === id);
-        if (clebine && clebine.Latitude && clebine.Longitude) {
-            targetCoordinates = new window.kakao.maps.LatLng(
-                parseFloat(clebine.Latitude),
-                parseFloat(clebine.Longitude)
-            );
-        } else {
-            console.warn(`Clebine ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+    // 지도 중심 각자 위치로로 재설정
+    const reposition = (type, id) => {
+        if (!mapRef.current) {
+            console.error("지도 객체가 초기화되지 않았습니다.");
+            return;
         }
-    } else if (type === "drone") {
-        // Drone 데이터를 검색
-        for (const drone of droneData) {
-            if (drone.ID === id) {
-                const waypoint = drone.waypoints.find((wp) => wp.isItme === "1");
-                if (waypoint && waypoint.lat && waypoint.long) {
-                    targetCoordinates = new window.kakao.maps.LatLng(
-                        parseFloat(waypoint.lat),
-                        parseFloat(waypoint.long)
-                    );
-                    break;
+
+        let targetCoordinates = null;
+
+        if (type === "clebine") {
+            // Clebine 데이터를 검색
+            const clebine = csvData.find((row) => row.ID === id);
+            if (clebine && clebine.Latitude && clebine.Longitude) {
+                targetCoordinates = new window.kakao.maps.LatLng(
+                    parseFloat(clebine.Latitude),
+                    parseFloat(clebine.Longitude)
+                );
+            } else {
+                console.warn(`Clebine ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+            }
+        } else if (type === "drone") {
+            // Drone 데이터를 검색
+            for (const drone of droneData) {
+                if (drone.ID === id) {
+                    const waypoint = drone.waypoints.find((wp) => wp.isItme === "1");
+                    if (waypoint && waypoint.lat && waypoint.long) {
+                        targetCoordinates = new window.kakao.maps.LatLng(
+                            parseFloat(waypoint.lat),
+                            parseFloat(waypoint.long)
+                        );
+                        break;
+                    }
                 }
             }
+            if (!targetCoordinates) {
+                console.warn(`Drone ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+            }
         }
-        if (!targetCoordinates) {
-            console.warn(`Drone ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+
+        // 지도 중심 설정
+        if (targetCoordinates) {
+            mapRef.current.setCenter(targetCoordinates);
+            console.log(`지도 중심이 ${type} ID: ${id}의 좌표로 이동되었습니다.`);
+        } else {
+            console.error(`ID: ${id}에 해당하는 ${type}의 좌표를 찾을 수 없습니다.`);
         }
-    }
+    };
 
-    // 지도 중심 설정
-    if (targetCoordinates) {
-        mapRef.current.setCenter(targetCoordinates);
-        console.log(`지도 중심이 ${type} ID: ${id}의 좌표로 이동되었습니다.`);
-    } else {
-        console.error(`ID: ${id}에 해당하는 ${type}의 좌표를 찾을 수 없습니다.`);
-    }
-};
+    // 지도 확장/축소 토글
+    const toggleMapSize = () => {
+        setIsExpanded((prevState) => !prevState);
+        setTimeout(() => {
+            if (mapRef.current) {
+                mapRef.current.relayout();
+                const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
+                mapRef.current.setCenter(defaultCenter);
 
+                markersRef.current.forEach((marker) => {
 
-// 지도 확장/축소 토글
-const toggleMapSize = () => {
-    setIsExpanded((prevState) => !prevState);
-    setTimeout(() => {
-        if (mapRef.current) {
-            mapRef.current.relayout();
-            const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
-            mapRef.current.setCenter(defaultCenter);
+                    marker.setMap(mapRef.current);
+                });
+            }
+        }, 300);
+    };
 
-            markersRef.current.forEach((marker) => {
-
-                marker.setMap(mapRef.current);
-            });
-        }
-    }, 300);
-};
 
     return (
         <ThemeProvider theme={theme}>
@@ -476,7 +474,7 @@ const toggleMapSize = () => {
 
                     <div className="bottom-sections">
                         <div className="clebine-section">
-                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
+                            <div className="clebine-box">
                                 <div style={{flexDirection: "row", display: "flex", gap: "5px"}}>
                                     <h3>Clebine</h3>
                                     {/* Turn On Button */}
@@ -514,12 +512,12 @@ const toggleMapSize = () => {
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>No</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "25px", paddingRight: "25px"}}>ID</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Power</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Detail</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Reposition</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Visibility</th>
+                                            <th>No</th>
+                                            <th>ID</th>
+                                            <th>Power</th>
+                                            <th>Detail</th>
+                                            <th>Reposition</th>
+                                            <th>Visibility</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -528,29 +526,29 @@ const toggleMapSize = () => {
 
                                             // Power 값에 따라 배경 색상 설정
                                             if (parseFloat(row.Power) === 0) {
-                                                powerBackgroundColor = "#141414"; // Red for 0W
+                                                powerBackgroundColor = "#141414"; // Black for 0W
                                             } else if (parseFloat(row.Power) >= 1 && parseFloat(row.Power) <= 49) {
-                                                powerBackgroundColor = "#941414"; // Light Orange
+                                                powerBackgroundColor = "#941414"; // Crimson for 1~49W
                                             } else if (parseFloat(row.Power) >= 50 && parseFloat(row.Power) <= 99) {
-                                                powerBackgroundColor = "#945D14"; // Light Yellow
+                                                powerBackgroundColor = "#945D14"; // Orange for 50~99W
                                             } else if (parseFloat(row.Power) >= 100 && parseFloat(row.Power) <= 149) {
-                                                powerBackgroundColor = "#949414"; // Light Green
+                                                powerBackgroundColor = "#949414"; // Yellow for 100~149W
                                             } else if (parseFloat(row.Power) >= 150) {
-                                                powerBackgroundColor = "#469446"; // Light Blue
+                                                powerBackgroundColor = "#469446"; // Green for 150W~
                                             }
                                         return (
                                                 <tr key={index}>
-                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.No}</td>
-                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>{row.ID}</td>
-                                                    <td style={{ border: "1px solid #ddd", padding: "8px", backgroundColor:powerBackgroundColor }}>{row.Power}</td>
-                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                    <td>{row.No}</td>
+                                                    <td>{row.ID}</td>
+                                                    <td style={{ backgroundColor:powerBackgroundColor }}>{row.Power}</td>
+                                                    <td>
                                                         <button 
                                                             style={{ padding: "5px 10px", cursor: "pointer" }} 
                                                             onClick={() => alert(`Clebine ID: ${row.ID}`)}>
                                                             Detail
                                                         </button>
                                                     </td>
-                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                    <td>
                                                         <button 
                                                             style={{ padding: "5px 10px", cursor: "pointer" }}
                                                             onClick={() => reposition("clebine", row.ID)}
@@ -558,7 +556,7 @@ const toggleMapSize = () => {
                                                             Reposition
                                                         </button>
                                                     </td>
-                                                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                    <td>
                                                         <button onClick={() => toggleFilterID("clebine", row.ID)}>
                                                             {filterID.includes(`clebine-${row.ID}`) ? "Shown" : "Hidden"}
                                                         </button>
@@ -573,7 +571,7 @@ const toggleMapSize = () => {
                         </div>
 
                         <div className="smartdrone-section">
-                            <div className="clebine-box" style={{ overflowY: 'scroll', maxHeight: '250px', border: '1px solid #ccc', padding: '20px', paddingTop: '5px' }}>
+                            <div className="smartdrone-box">
                             <div style={{flexDirection: "row", display: "flex", gap: "5px"}}>
                                 <h3>SmartDrone Section</h3>
                                 <div style={{ display: "flex", gap: "5px" }}>
@@ -614,11 +612,11 @@ const toggleMapSize = () => {
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>ID</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Status</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Detail</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Reposition</th>
-                                            <th style={{ border: "1px solid #ddd", padding: "8px" , paddingLeft: "20px", paddingRight: "20px"}}>Visibility</th>
+                                            <th>ID</th>
+                                            <th>Status</th>
+                                            <th>Detail</th>
+                                            <th>Reposition</th>
+                                            <th>Visibility</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -627,8 +625,8 @@ const toggleMapSize = () => {
                                                 .filter((wp) => wp.isItme === "1")
                                                 .map((wp, idx) => (
                                                     <tr key={`${drone.ID}-${idx}`}>
-                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{drone.ID}</td>
-                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <td>{drone.ID}</td>
+                                                        <td>
                                                             {(() => {
                                                                 switch (wp.action) {
                                                                     case "5":
@@ -642,14 +640,14 @@ const toggleMapSize = () => {
                                                                 }
                                                             })()}
                                                         </td>
-                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <td>
                                                             <button 
                                                                 style={{ padding: "5px 10px", cursor: "pointer" }} 
                                                                 onClick={() => alert(`SmartDrone ID: ${drone.ID}`)}>
                                                                 Detail
                                                             </button>
                                                         </td>
-                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <td>
                                                             <button 
                                                                 style={{ padding: "5px 10px", cursor: "pointer" }}
                                                                 onClick={() => reposition("drone", drone.ID)}
@@ -657,7 +655,7 @@ const toggleMapSize = () => {
                                                                 Reposition
                                                             </button>
                                                         </td>
-                                                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                                        <td>
                                                             <button onClick={() => toggleFilterID("drone", drone.ID)}>
                                                                 {filterID.includes(`drone-${drone.ID}`) ? "Shown" : "Hidden"}
                                                             </button>
