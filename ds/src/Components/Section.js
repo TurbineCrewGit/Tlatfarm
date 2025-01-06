@@ -1,6 +1,7 @@
 import React from 'react';
 import graph from '../Styles/image/graph.png';
 import graph2 from '../Styles/image/graph2.png';
+import expandIcon from '../Styles/image/expand_button.png';
 
 function Section({
   index,
@@ -92,7 +93,10 @@ function Section({
       {/* 버튼 부분 */}
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
-          {expandedSection === index ? '축소' : '확대'}
+          <img id='expandImg'
+            src={expandIcon}
+            alt='확장 버튼'
+          />
         </button>
       </div>
 
