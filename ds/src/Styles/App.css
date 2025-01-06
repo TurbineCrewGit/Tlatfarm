@@ -32,6 +32,7 @@ body {
   z-index: 1000; /* 헤더가 다른 요소 위에 있도록 설정 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 스크롤 시 헤더 강조 */
 }
+
 #mainDiv {
   background: #3B4346 url("images/bg01.png");
   display: flex;
