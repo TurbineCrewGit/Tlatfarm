@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback, useImperativeHandle, forwardRef } from 'react';
 import { KAKAO_MAP_APPKEY } from './constants';
 import "../Styles/App.css";
+import center from "../Styles/images/centerOfMap.png"
 
 const MapComponent = forwardRef(({ addMarker, coordinates, markersRef, mapRef, isMapOpen, setIsMapOpen }, ref) => {
 
@@ -189,19 +190,13 @@ const MapComponent = forwardRef(({ addMarker, coordinates, markersRef, mapRef, i
         >
           {isMapOpen ? '지도 접기' : '지도 펼치기'}
         </button>
-
-        <button
-          className="btn btn-reset-position"
-          onClick={resetMapPosition} // 새 함수 호출
-        >
-          지도 중심 재설정
-        </button>
       </div>
 
       {/* 지도 */}
       <div id="map-box" className={`map-container ${isMapOpen ? 'open' : 'closed'}`}>
         <div className='mapFilter'></div>
         <div id="kakaoMap"></div>
+          <img src={center} className="reset-map-position" onClick={resetMapPosition}/>
       </div>
     </div>
   );

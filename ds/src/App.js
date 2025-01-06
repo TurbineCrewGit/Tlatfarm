@@ -7,7 +7,10 @@ import Main from "./1_Mainpage.js";
 import Clebine from "./2_Clebinepage.js";
 import Smartdrone from "./3_Smartdronepage.js";
 import Management from "./4_Managementpage.js";
+
 import ClebineDetail from "./ClebineDetail"; // 상세 페이지 컴포넌트 임포트
+import TestPage from "./TestPage.js";
+import SmartDronepage_Details from "./3-1_Smartdronepage_Details.js";
 
 const theme = createTheme();
 
@@ -40,7 +43,10 @@ function App() {
           />
           <Route path="/clebinepage/:id" element={<ClebineDetail tableData={tableData} />} /> {/* 상세 페이지 라우트 추가 */}
           <Route path="/Smartdronepage" element={<Smartdrone />} />
+          <Route path="/Smartdronepage/:id" element={<SmartDronepage_Details />} />
           <Route path="/managementpage" element={<Management />} />
+          <Route path="/test" element={<TestPage />} />
+
         </Routes>
       </div>
     </ThemeProvider>

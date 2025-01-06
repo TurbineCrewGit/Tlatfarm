@@ -1,3 +1,88 @@
 @import "./Map.css";
 @import "./MarkerTable.css";
 @import "./RemoteController.css";
+
+.droneListContainer {
+    position: relative;
+    height: 50vh;
+    width: 100%;
+    max-width: 800px;
+    overflow-y: scroll;
+    margin: 0 auto;
+    padding: 0;
+    border: 1px solid var(--primary-color);
+    box-sizing: border-box;
+    transition: border-color var(--transition-speed) ease, height 0.5s ease;
+}
+
+/* 스크롤바 스타일 */
+.droneListContainer::-webkit-scrollbar {
+    width: 15px;
+}
+
+.droneListContainer::-webkit-scrollbar-track {
+    background: var(--primary-color);
+}
+
+.droneListContainer::-webkit-scrollbar-thumb {
+    background: var(--tertiary-color);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.droneListContainer::-webkit-scrollbar-thumb:hover {
+    background: #10d100;
+}
+
+.droneListTable {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: center;
+}
+
+.droneListTable th,
+.droneListTable td {
+    padding: 8px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.droneListTable th {
+    background-color: var(--table-header-background);
+    color: var(--table-header-text-color);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.droneListTable td {
+    background-color: var(--table-row-background);
+    color: var(--table-row-text-color);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  }
+
+.droneListTable tbody {
+    height: 100%;
+}
+
+.droneListTable tbody tr td {
+    height: auto;
+}
+
+.details-link {
+    color: var(--table-row-text-color);
+    text-decoration: none;
+}
+
+.nameInput {
+    width: 40%;
+    padding: 8px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid var(--table-border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}

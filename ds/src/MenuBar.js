@@ -40,7 +40,7 @@ const MenuBar = () => {
             <li><Link to="/Clebinepage">Clebine</Link></li>
             <li><Link to="/Smartdronepage">Smartdrone</Link></li>
             <li><Link to="/Managementpage">농작물관리</Link></li>
-            {/* 필요한 추가 메뉴 항목 */}
+
           </ul>
         </nav>
       </div>
