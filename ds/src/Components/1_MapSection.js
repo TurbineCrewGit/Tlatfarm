@@ -1,7 +1,16 @@
 import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { KAKAO_MAP_APPKEY } from "./constants";
 import expandIcon from "../Styles/image/expand_button.png";
+import movingDroneIcon from "../Styles/image/이동중.gif";
+import chargingDroneIcon from "../Styles/image/충전중.gif";
+import Icon0w from "../Styles/image/0w.png";
+import Icon0_49w from "../Styles/image/0_49w.png";
+import Icon50_100w from "../Styles/image/50_100w.png";
+import Icon100_150w from "../Styles/image/100_150w.png";
+import Icon150_200w from "../Styles/image/150_200w.png";
+
 import "../Styles/MapSection.css";
+import { Icon } from "@mui/material";
 
 const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
     const mapRef = useRef(null); // 지도 객체 참조
@@ -134,15 +143,15 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
                 if (!isNaN(lat) && !isNaN(lng)) {
                     let markerImageSrc;
                     if (power === 0) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/0w.png`;
+                        markerImageSrc = Icon0w;
                     } else if (power >= 1 && power <= 49) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/0_49w.png`;
+                        markerImageSrc = Icon0_49w;
                     } else if (power >= 50 && power <= 99) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/50_100w.png`;
+                        markerImageSrc = Icon50_100w;
                     } else if (power >= 100 && power <= 149) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/100_150w.png`;
+                        markerImageSrc = Icon100_150w;
                     } else if (power >= 150) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/150_200w.png`;
+                        markerImageSrc = Icon150_200w;
                     }
         
                     const markerImage = new window.kakao.maps.MarkerImage(
@@ -233,16 +242,16 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
                         if (!isNaN(lat) && !isNaN(lng)) {
                             const markerImage = new window.kakao.maps.MarkerImage(
                                 wp.action === "16"
-                                    ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                    : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                    ? movingDroneIcon
+                                    : chargingDroneIcon,
                                 new window.kakao.maps.Size(65, 65),
                                 { offset: new window.kakao.maps.Point(32.5, 32.5) }
                             );
         
                             const hoverImage = new window.kakao.maps.MarkerImage(
                                 wp.action === "16"
-                                    ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                    : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                ? movingDroneIcon
+                                : chargingDroneIcon,
                                 new window.kakao.maps.Size(80, 80),
                                 { offset: new window.kakao.maps.Point(40, 40) }
                             );

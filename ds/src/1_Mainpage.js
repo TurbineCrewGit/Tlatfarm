@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Papa from 'papaparse'; // CSV 파싱 라이브러리
 import MenuBar from './MenuBar';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapSection from "./Components/1_MapSection.js";
@@ -44,7 +43,7 @@ function MainPage() {
 
         fetchData();
     }, []);
-    
+
 
     // Visibility 토글
     const toggleFilterID = (type, id) => {
@@ -56,6 +55,7 @@ function MainPage() {
         );
     };
 
+
     const turnOnButton = (type) => {
         const allIDs =
             type === "clebine"
@@ -63,7 +63,6 @@ function MainPage() {
                 : droneData.map((drone) => `drone-${drone.ID}`);
         setFilterID((prev) => [...new Set([...prev, ...allIDs])]);
     };
-
     const turnOffButton = (type) => {
         setFilterID((prev) =>
             type === "clebine"

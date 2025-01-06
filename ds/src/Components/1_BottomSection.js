@@ -1,4 +1,6 @@
 import React from "react";
+import onButtonIcon from "../Styles/image/on.png";
+import offButtonIcon from "../Styles/image/off.png";
 
 const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition }) => {
     return (
@@ -17,7 +19,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                             }}
                         >
                             <img
-                                src={`${process.env.PUBLIC_URL}/on.png`}
+                                src={onButtonIcon}
                                 alt="Clebine On Button"
                                 style={{ width: "50px", height: "50px" }}
                             />
@@ -32,7 +34,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                             }}
                         >
                             <img
-                                src={`${process.env.PUBLIC_URL}/off.png`}
+                                src={offButtonIcon}
                                 alt="Clebine Off Button"
                                 style={{ width: "50px", height: "50px" }}
                             />
@@ -114,7 +116,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                                 }}
                             >
                                 <img
-                                    src={`${process.env.PUBLIC_URL}/on.png`}
+                                    src={onButtonIcon}
                                     alt="SmartDrone On Button"
                                     style={{ width: "50px", height: "50px" }}
                                 />
@@ -129,7 +131,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                                 }}
                             >
                                 <img
-                                    src={`${process.env.PUBLIC_URL}/off.png`}
+                                    src={offButtonIcon}
                                     alt="SmartDrone Off Button"
                                     style={{ width: "50px", height: "50px" }}
                                 />
