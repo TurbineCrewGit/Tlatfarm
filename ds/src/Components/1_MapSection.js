@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
-import { KAKAO_MAP_APPKEY } from "../Components/constants";
+import { KAKAO_MAP_APPKEY } from "./constants";
 import expandIcon from "../Styles/image/expand_button.png";
 import "../Styles/MapSection.css";
 

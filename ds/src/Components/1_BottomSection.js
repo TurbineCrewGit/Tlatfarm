@@ -7,7 +7,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
             <div className="clebine-section">
                 <div className="clebine-box">
                     <div style={{ flexDirection: "row", display: "flex", gap: "5px" }}>
-                        <h3>Clebine</h3>
+                        <h3>Clebine Section</h3>
                         <button
                             onClick={() => turnOnButton("clebine")}
                             style={{
