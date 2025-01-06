@@ -1,75 +1,154 @@
-// planner.js
-
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import Draggable from "react-draggable";
-import "./Styles/App.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Header from './Components/Header.js';
 import ThemeToggle from "./Components/ThemeToggle.js";
-import MapComponent from './Components/MapComponents.js';
-import useMarkers from './Components/useMarkers.js';
-import MarkerTable from './Components/MarkerTable.js';
-import { API_BASE_URL } from './Components/constants.js';
-
+import "./Styles/App.css";
 
 const theme = createTheme();
 
 function Smartdrone() {
-  // 드론 목록 데이터 (임시 데이터)
-  const drones = [
-    { id: 1, name: "Drone A", status: "Active" },
-    { id: 2, name: "Drone B", status: "Idle" },
-    { id: 3, name: "Drone C", status: "Maintenance" },
-  ];
+  const [drones, setDrones] = useState([
+    { id: 1, name: "Drone 1"},
+    { id: 2, name: "Drone 2"},
+    { id: 3, name: "Drone 3"},
+  ]);
 
-  // return 시작
+  const [editNameId, setEditNameId] = useState(null);
+  const [tempName, setTempName] = useState("");
+
+  // 삭제 기능
+  const deleteDrone = (id) => {
+    setDrones((prevDrones) => prevDrones.filter((drone) => drone.id !== id));
+  };
+
+  // 드론 추가 기능
+  const addDrone = () => {
+    const newDroneId = drones.length ? drones[drones.length - 1].id + 1 : 1;
+    setDrones((prevDrones) => [
+      ...prevDrones,
+      { id: newDroneId, name: `Drone ${newDroneId}`, status: "Idle" },
+    ]);
+  };
+
+  // 이름 변경 시작
+  const startEditName = (id, currentName) => {
+    setEditNameId(id);
+    setTempName(currentName);
+  };
+
+  // 이름 변경 저장
+  const saveNameChange = (id) => {
+    setDrones((prevDrones) =>
+      prevDrones.map((drone) =>
+        drone.id === id ? { ...drone, name: tempName } : drone
+      )
+    );
+    setEditNameId(null);
+    setTempName("");
+  };
+
+  // 이름 변경 취소
+  const cancelEditName = () => {
+    setEditNameId(null);
+    setTempName("");
+  };
+
+  // 드론이 없을 때 메시지
+  const noDronesMessage = "등록된 드론이 없습니다.";
+
   return (
     <ThemeProvider theme={theme}>
-      <DndProvider backend={HTML5Backend}>
-        <div className="planner">
+      <div className="planner">
+        <Header />
+        <main className="main">
+          <h1>Smart Drone List</h1>
 
-          <Header />
+          {/* 드론 목록 테이블 */}
+          <div className="droneListContainer">
 
-          <main className="main">
-
-            <h1>Smart Drone List</h1>
-
-            {/* 드론 목록 테이블 */}
-            <table>
+            <table className="droneListTable">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Status</th>
+                  <th>드론 ID</th>
+                  <th>드론 이름</th>
+                  <th>삭제</th>
                 </tr>
               </thead>
               <tbody>
-                {drones.map((drone) => (
-                  <tr key={drone.id}>
-                    <td> {drone.id} </td>
-                    <td>
-                      <Link to={`/Smartdronepage/${drone.id}`} className="details-link">
-                        {drone.name}
-                      </Link></td>
-                    <td>{drone.status}</td>
+                {drones.length > 0 ? (
+                  drones.map((drone) => (
+                    <tr key={drone.id}>
+                      <td>{drone.id}</td>
+                      <td>
+                        {editNameId === drone.id ? (
+                          <div>
+                            <input
+                              type="text"
+                              value={tempName}
+                              onChange={(e) => setTempName(e.target.value)}
+                              className="nameInput"
+                            />
+                            <button
+                              className="btn"
+                              onClick={() => saveNameChange(drone.id)}
+                            >
+                              저장
+                            </button>
+                            <button
+                              className="btn"
+                              onClick={cancelEditName}
+                            >
+                              취소
+                            </button>
+                          </div>
+                        ) : (
+                          <Link
+                            to={`/Smartdronepage/${drone.id}`}
+                            className="details-link"
+                          >
+                            {drone.name}
+                          </Link>
+                        )}
+                      </td>
+                      <td>
+                        <button
+                          className="btn"
+                          onClick={() => startEditName(drone.id, drone.name)}
+                        >
+                          이름 변경
+                        </button>
+                        <button
+                          className="btn"
+                          onClick={() => deleteDrone(drone.id)}
+                        >
+                          삭제
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr className="noDrones">
+                    <td colSpan="3">
+                      {noDronesMessage}
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
 
+          </div>
 
+          {/* 추가 및 테마 토글 버튼 */}
+          <div className="buttonGroup">
+            <button className="btn" onClick={addDrone}>
+              드론 추가
+            </button>
             <ThemeToggle />
-
-          </main>
-        </div>
-      </DndProvider>
-    </ThemeProvider>
+          </div>
+        </main>
+      </div >
+    </ThemeProvider >
   );
 }
 

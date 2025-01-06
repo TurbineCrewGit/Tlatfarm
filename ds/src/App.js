@@ -7,7 +7,7 @@ import Clebine from "./2_Clebinepage.js";
 import Smartdrone from "./3_Smartdronepage.js";
 import Management from "./4_Managementpage.js";
 import TestPage from "./TestPage.js";
-import SmartDrone_Details from "./3-1_Smartdrone_Details.js";
+import SmartDronepage_Details from "./3-1_Smartdronepage_Details.js";
 
 
 const theme = createTheme();
@@ -25,7 +25,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/clebinepage" element={<Clebine />} />
           <Route path="/Smartdronepage" element={<Smartdrone />} />
-          <Route path="/Smartdronepage/:id" element={<SmartDrone_Details />} />
+          <Route path="/Smartdronepage/:id" element={<SmartDronepage_Details />} />
           <Route path="/managementpage" element={<Management />} />
           <Route path="/test" element={<TestPage />} />
         </Routes>
