@@ -55,50 +55,80 @@ const DataTable = ({ tableData, onDelete }) => {
   const renderWeatherIcon = (data) => {
     if (!data) return '-';
 
-    const { windDirect, humidity, rainfall, temperature } = data;
+    const { windDirect, humidity, rainfall, temperature, windSpeed } = data;
 
     return (
       <div className="weather-column">
         {/* 풍향 */}
         {windDirect !== undefined ? (
-          <img
-            className="tableImg"
-            src={`${process.env.PUBLIC_URL}/windInfo/${getWindDirectionImage(windDirect)}.png`}
-            alt={`풍향 ${windDirect}`}
-          />
+          <div className="weather-tooltip">
+            <img
+              className="tableImg"
+              src={`${process.env.PUBLIC_URL}/windInfo/${getWindDirectionImage(windDirect)}.png`}
+              alt={`풍향 ${windDirect}`}
+            />
+            <div className="tooltip-text">
+              <strong>풍향 정보</strong>
+              <br />
+              풍향: {windDirect}°
+              <br />
+              풍속: {windSpeed}
+            </div>
+          </div>
         ) : (
           '-'
         )}
 
         {/* 습도 */}
         {humidity !== undefined ? (
-          <img
-            className="tableImg"
-            src={`${process.env.PUBLIC_URL}/humidity/${getHumidityImage(humidity)}.png`}
-            alt={`습도 ${humidity}`}
-          />
+          <div className="weather-tooltip">
+            <img
+              className="tableImg"
+              src={`${process.env.PUBLIC_URL}/humidity/${getHumidityImage(humidity)}.png`}
+              alt={`습도 ${humidity}`}
+            />
+            <div className="tooltip-text">
+              <strong>습도 정보</strong>
+              <br />
+              습도: {humidity}%
+            </div>
+          </div>
         ) : (
           '-'
         )}
 
         {/* 강수량 */}
         {rainfall !== undefined ? (
-          <img
-            className="tableImg"
-            src={`${process.env.PUBLIC_URL}/rainfall/${getRainfallImage(rainfall)}.png`}
-            alt={`강수량 ${rainfall}`}
-          />
+          <div className="weather-tooltip">
+            <img
+              className="tableImg"
+              src={`${process.env.PUBLIC_URL}/rainfall/${getRainfallImage(rainfall)}.png`}
+              alt={`강수량 ${rainfall}`}
+            />
+            <div className="tooltip-text">
+              <strong>강수량 정보</strong>
+              <br />
+              강수량: {rainfall}mm
+            </div>
+          </div>
         ) : (
           '-'
         )}
 
         {/* 온도 */}
         {temperature !== undefined ? (
-          <img
-            className="tableImg"
-            src={`${process.env.PUBLIC_URL}/temp/${getTemperatureImage(temperature)}.png`}
-            alt={`온도 ${temperature}`}
-          />
+          <div className="weather-tooltip">
+            <img
+              className="tableImg"
+              src={`${process.env.PUBLIC_URL}/temp/${getTemperatureImage(temperature)}.png`}
+              alt={`온도 ${temperature}`}
+            />
+            <div className="tooltip-text">
+              <strong>온도 정보</strong>
+              <br />
+              온도: {temperature}°C
+            </div>
+          </div>
         ) : (
           '-'
         )}
