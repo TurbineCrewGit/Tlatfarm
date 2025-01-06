@@ -68,8 +68,6 @@ const DataTable = ({ tableData, onDelete }) => {
               alt={`풍향 ${windDirect}`}
             />
             <div className="tooltip-text">
-              <strong>풍향 정보</strong>
-              <br />
               풍향: {windDirect}°
               <br />
               풍속: {windSpeed}
@@ -88,8 +86,6 @@ const DataTable = ({ tableData, onDelete }) => {
               alt={`습도 ${humidity}`}
             />
             <div className="tooltip-text">
-              <strong>습도 정보</strong>
-              <br />
               습도: {humidity}%
             </div>
           </div>
@@ -106,8 +102,6 @@ const DataTable = ({ tableData, onDelete }) => {
               alt={`강수량 ${rainfall}`}
             />
             <div className="tooltip-text">
-              <strong>강수량 정보</strong>
-              <br />
               강수량: {rainfall}mm
             </div>
           </div>
@@ -124,8 +118,6 @@ const DataTable = ({ tableData, onDelete }) => {
               alt={`온도 ${temperature}`}
             />
             <div className="tooltip-text">
-              <strong>온도 정보</strong>
-              <br />
               온도: {temperature}°C
             </div>
           </div>
