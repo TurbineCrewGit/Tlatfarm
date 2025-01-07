@@ -27,7 +27,7 @@ const ClebineDetail = ({ tableData }) => {
         <div>
         <Header />
         </div>
-        <div className='detail_body'>
+        <div className='detail_body' style={{marginTop:'130px'}}>
             <h2>ID: {id} 상세 페이지</h2>
             <button className='backBtn' onClick={() => navigate(-1)}>
                 뒤로가기

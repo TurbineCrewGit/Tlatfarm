@@ -112,17 +112,21 @@
 
   #toggleBtn {
     position: absolute; 
-    bottom: 10px; 
-    right: 10px; 
-    padding: 8px 12px; 
-    background-color: white; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
+    bottom: 5px; 
+    right: 5px; 
+    padding: 5px 5px; 
+    background-color: transparent; 
+    border: none;
     cursor: pointer; 
   }
+
+  #expandImg {
+    width: 15px;
+    
+  }
   
-  #toggleBtn:hover {
-    background-color: #f0f0f0;
+  #expandImg:hover {
+    width: 20px;
   }
 
   @font-face {

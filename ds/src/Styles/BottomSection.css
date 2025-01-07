@@ -1,0 +1,94 @@
+.bottom-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: rgba(0, 0, 0, 0.3); /* 배경색 유지 */
+    border-radius: var(--border-radius);
+    padding: 20px;
+    width: 100%;
+}
+
+.clebine-section,
+.smartdrone-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #292929; /* 초기 배경색 */
+    border-radius: 10px;
+    border: 1px solid #ccc; /* 테두리 유지 */
+    overflow-y: auto; /* 스크롤 활성화 */
+    max-height: 250px; /* 최대 높이 설정 */
+    padding: 10px; /* 내부 여백 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #fff; /* 텍스트 색상 */
+}
+
+.section-title {
+    font-size: 1.5em;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed) ease;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #ddd; /* 테두리 색상 유지 */
+    padding: 8px;
+    text-align: center;
+    background-color: transparent; /* 배경 투명 */
+    color: var(--text-color);
+}
+
+.data-table th {
+    background-color: var(--table-header-background);
+    color: var(--table-header-text-color);
+    position: sticky; /* 헤더 고정 */
+    top: 0;
+    z-index: 2;
+}
+
+.data-table td {
+    background-color: transparent; /* 투명 배경 */
+}
+
+.detail-button,
+.reposition-button,
+.visibility-button {
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+}
+
+.detail-button:hover,
+.reposition-button:hover,
+.visibility-button:hover {
+    background-color: var(--button-color); /* Hover 색상 제거 */
+}

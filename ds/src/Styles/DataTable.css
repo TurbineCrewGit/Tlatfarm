@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
+    padding-top: 0;
 }
 
 .list-container {
@@ -27,7 +28,7 @@
 .table-wrapper {
     width: 100%;
     max-height: 150px;
-    overflow-y: auto;
+    overflow-y: visible;
     margin-bottom: 10px;
     background-color: aliceblue;
     border-radius: 4px;
@@ -65,19 +66,6 @@
 
 .weatherColumn {
     background-color: gray !important;
-}
-
-.weather-column div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-}
-
-.weather-column img {
-    max-width: 50px;
-    max-height: 50px;
-    margin: 0;
 }
 
 /* 테이블 헤더 스타일 유지 */
@@ -156,7 +144,7 @@
     padding: 5px 10px;
     border: none;
     background-color: transparent;
-    color:deepskyblue;
+    color: deepskyblue;
     text-decoration: underline;
     cursor: pointer;
 }
@@ -166,8 +154,10 @@
     border-radius: 8px; */
     padding: 20px;
     /* margin: 20px auto; */
+    margin-top: 60px;
     width: max-content;
     background-color: transparent;
+    overflow: visible;
     /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
@@ -188,3 +178,70 @@ tr {
     vertical-align: middle;
     border-color: inherit;
 }
+
+/* 추가된 툴팁 스타일 */
+/* 툴팁 컨테이너 */
+/* 툴팁 컨테이너 */
+/* 추가된 툴팁 스타일 */
+.weather-tooltip {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+/* 툴팁 텍스트 초기 상태: 숨김 */
+.weather-tooltip .tooltip-text {
+    position: absolute; /* 부모 요소를 기준으로 위치 지정 */
+    bottom: 110%; /* 부모 요소의 위쪽에 배치 */
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden; /* 초기 상태 숨김 */
+    opacity: 0; /* 초기 불투명도 0 */
+    width: 110px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 8px;
+    z-index: 999999;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* 부드러운 전환 효과 */
+    font-size: 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    pointer-events: none; /* 마우스 이벤트 방지 */
+}
+
+/* 툴팁 화살표 수정 */
+.weather-tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* 화살표가 툴팁의 아래쪽을 가리키도록 설정 */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent; /* 화살표 색상 및 방향 수정 */
+}
+
+/* 호버 시 툴팁 보이기 */
+.weather-tooltip:hover .tooltip-text,
+.weather-tooltip:focus .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+  /* 상위 요소들의 overflow 설정 제거 */
+  .weather-column,
+  .data-table td,
+  .table-wrapper,
+  .list-container {
+    overflow: visible !important;
+  }
+
+  /* 아이콘 호버 시 확대 효과 */
+.weather-tooltip img.tableImg {
+    transition: transform 0.3s;
+  }
+  
+  .weather-tooltip:hover img.tableImg {
+    transform: scale(1.2);
+  }
