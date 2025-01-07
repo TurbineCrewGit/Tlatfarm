@@ -9,7 +9,7 @@ import Icon50_100w from "../Styles/image/50_100w.png";
 import Icon100_150w from "../Styles/image/100_150w.png";
 import Icon150_200w from "../Styles/image/150_200w.png";
 
-import "../Styles/MapSection.css";
+import "../Styles/1_MapSection.css";
 import { Icon } from "@mui/material";
 
 const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
@@ -18,6 +18,21 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
     const customOverlayRef = useRef([]); // Custom Overlay 객체 참조
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태
     const [isMapLoaded, setIsMapLoaded] = useState(false); // 지도 로드 상태
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // 다크 모드 감지
+  useEffect(() => {
+    const handleDarkModeChange = () => {
+      setIsDarkMode(document.body.classList.contains("dark-mode"));
+    };
+
+    handleDarkModeChange(); // 초기 다크 모드 상태 확인
+    window.addEventListener("dark-mode-change", handleDarkModeChange); // 다크 모드 상태 변경 감지
+
+    return () => {
+      window.removeEventListener("dark-mode-change", handleDarkModeChange);
+    };
+  }, []);
 
     // 지도 초기화 함수
     const initializeMap = () => {
@@ -324,14 +339,19 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
 
     return (
         <div className="map-section" style={{ position: "relative" }}>
-            <div
-                id="kakaoMap"
-                style={{
-                    width: isExpanded ? "100%" : "100%",
-                    height: isExpanded ? "100vh" : "400px",
-                    transition: "all 0.3s ease",
-                }}
-            ></div>
+
+            <div className="map-container">
+                <div
+                    id="kakaoMap"
+                    style={{
+                        width: isExpanded ? "100%" : "100%",
+                        height: isExpanded ? "100vh" : "400px",
+                        transition: "all 0.3s ease",
+                    }}
+                ></div>
+                <div className={`mapfilter ${isDarkMode ? "dark" : ""}`}></div>
+            </div>
+            
 
             <button
                 onClick={resetMapCenter}

@@ -5,7 +5,8 @@ import ThemeToggle from "./Components/ThemeToggle.js";
 import MapSection from "./Components/1_MapSection.js";
 import BottomSection from "./Components/1_BottomSection.js";
 import { loadCsvData, loadDroneData } from "./Components/1_DataLoader.js";
-import flowDarkImage from './Styles/image/어두운_로고.png';
+
+import "./Styles/1_Mainpage.css";
 import "./Styles/App.css";
 
 import Header from './Components/Header.js'; // 헤더 통일
@@ -87,7 +88,9 @@ function MainPage() {
             <div id="mainDiv">
                 <header className="header">
                     <a href="https://turbinecrew.co.kr/" target="_blank" rel="noopener noreferrer">
-                        <img src={flowDarkImage} alt="Flow" style={{ width: '400px', height: 'auto' }} />
+                        <img
+                            alt="Flow"
+                        />
                     </a>
                     <MenuBar />
                 </header>
@@ -116,7 +119,7 @@ function MainPage() {
 
                 </main>
 
-                <ThemeToggle />
+                <ThemeToggle/>
             </div>
         </ThemeProvider>
     );

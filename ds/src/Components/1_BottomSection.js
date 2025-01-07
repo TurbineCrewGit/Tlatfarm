@@ -2,6 +2,7 @@ import React from "react";
 import onButtonIcon from "../Styles/image/on.png";
 import offButtonIcon from "../Styles/image/off.png";
 import { useNavigate } from 'react-router-dom';
+import "../Styles/1_BottomSection.css";
 
 const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition }) => {
 
