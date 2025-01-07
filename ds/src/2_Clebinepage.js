@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
+import ThemeToggle from './Components/ThemeToggle.js';
 
 const theme = createTheme();
 
@@ -44,6 +45,7 @@ function Clebine({ tableData, onDelete, handleDataUploaded }) {
           ))}
         </main>
       </div>
+      <ThemeToggle/>
     </ThemeProvider>
   );
 }
