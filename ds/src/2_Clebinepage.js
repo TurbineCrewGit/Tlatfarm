@@ -32,7 +32,7 @@ function Clebine({ tableData, onDelete, handleDataUploaded }) {
         />
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
         <main className="main-container" style={{ position: "relative" }}>
-          {[0, 1, 2, 3, 4].map((index) => (
+          {[0, 1, 2, 3].map((index) => (
             <Section
               key={index}
               index={index}
