@@ -1,8 +1,21 @@
 import React from "react";
 import onButtonIcon from "../Styles/image/on.png";
 import offButtonIcon from "../Styles/image/off.png";
+import { useNavigate } from 'react-router-dom';
 
 const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition }) => {
+
+    
+    const navigate = useNavigate();
+
+    const handleClebineDetailClick = (id) => {
+        navigate(`/clebinepage/${id}`);
+    };
+    const handleSmartDroneDetailClick = (id) => {
+        navigate(`/smartdronepage/${id}`);
+    }
+
+    
     return (
         <div className="bottom-sections">
             {/* Clebine Section */}
@@ -75,7 +88,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                                         <td>
                                             <button
                                                 style={{ padding: "5px 10px", cursor: "pointer" }}
-                                                onClick={() => alert(`Clebine ID: ${row.ID}`)}
+                                                onClick={() => handleClebineDetailClick(row.ID)}
                                             >
                                                 Detail
                                             </button>
@@ -172,7 +185,7 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                                             <td>
                                                 <button
                                                     style={{ padding: "5px 10px", cursor: "pointer" }}
-                                                    onClick={() => alert(`SmartDrone ID: ${drone.ID}`)}
+                                                    onClick={() => handleSmartDroneDetailClick(drone.ID)}
                                                 >
                                                     Detail
                                                 </button>
