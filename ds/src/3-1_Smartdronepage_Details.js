@@ -1,7 +1,7 @@
 // planner.js
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom"; // useParams 가져오기
+import { Link, useParams } from "react-router-dom"; // useParams 가져오기
 import axios from "axios";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -209,6 +209,16 @@ function SmartDrone_Details() {
 
           <main className="main">
           {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
+          
+          <div className="toListPage-container">
+            <Link to={`/Smartdronepage`}>
+              <button className="btn">
+                <div className="toListPage">
+                  목록으로 돌아가기
+                </div>
+              </button>
+            </Link>
+          </div>
 
             <Draggable handle=".dragSpotContainer">
               <div className={`remote-control-panel ${isControllerOpen ? "open" : "closed"}`}>

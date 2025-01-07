@@ -1,6 +1,16 @@
 import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
-import { KAKAO_MAP_APPKEY } from "../Components/constants";
+import { KAKAO_MAP_APPKEY } from "./constants";
 import expandIcon from "../Styles/image/expand_button.png";
+import movingDroneIcon from "../Styles/image/이동중.gif";
+import chargingDroneIcon from "../Styles/image/충전중.gif";
+import Icon0w from "../Styles/image/0w.png";
+import Icon0_49w from "../Styles/image/0_49w.png";
+import Icon50_100w from "../Styles/image/50_100w.png";
+import Icon100_150w from "../Styles/image/100_150w.png";
+import Icon150_200w from "../Styles/image/150_200w.png";
+
+import "../Styles/MapSection.css";
+import { Icon } from "@mui/material";
 
 const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
     const mapRef = useRef(null); // 지도 객체 참조
@@ -125,69 +135,84 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
             csvData.forEach((row) => {
                 const targetID = `clebine-${row.ID}`;
                 if (!filterID.includes(targetID)) return;
-
+        
                 const lat = parseFloat(row.Latitude);
                 const lng = parseFloat(row.Longitude);
                 const power = parseFloat(row.Power);
-
+        
                 if (!isNaN(lat) && !isNaN(lng)) {
                     let markerImageSrc;
                     if (power === 0) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/0w.png`;
+                        markerImageSrc = Icon0w;
                     } else if (power >= 1 && power <= 49) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/0_49w.png`;
+                        markerImageSrc = Icon0_49w;
                     } else if (power >= 50 && power <= 99) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/50_100w.png`;
+                        markerImageSrc = Icon50_100w;
                     } else if (power >= 100 && power <= 149) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/100_150w.png`;
+                        markerImageSrc = Icon100_150w;
                     } else if (power >= 150) {
-                        markerImageSrc = `${process.env.PUBLIC_URL}/150_200w.png`;
+                        markerImageSrc = Icon150_200w;
                     }
-
+        
                     const markerImage = new window.kakao.maps.MarkerImage(
                         markerImageSrc,
                         new window.kakao.maps.Size(60, 70)
                     );
-
+        
                     const hoverImage = new window.kakao.maps.MarkerImage(
                         markerImageSrc,
                         new window.kakao.maps.Size(70, 80)
                     );
-
+        
                     const marker = new window.kakao.maps.Marker({
                         position: new window.kakao.maps.LatLng(lat, lng),
                         map: mapRef.current,
                         image: markerImage,
                         zIndex: 1,
                     });
-
+        
                     const dotOverlay = new window.kakao.maps.CustomOverlay({
                         position: new window.kakao.maps.LatLng(lat, lng),
                         content: '<div style="width: 6px; height: 6px; background-color: red; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); z-index: 2;"></div>',
                         zIndex: 2,
                     });
-
-                    const infoWindow = new window.kakao.maps.InfoWindow({
-                        content: `<div style="padding:5px; font-size:12px; color:#000;">ID: ${row.ID}<br>Power: ${row.Power}</div>`,
+        
+                    // Tooltip 생성
+                    const tooltipContent = `
+                        <div class="map-tooltip">
+                            <p><strong>ID:</strong> ${row.ID}</p>
+                            <p><strong>Power:</strong> ${row.Power}</p>
+                        </div>
+                    `;
+        
+                    const tooltipOverlay = new window.kakao.maps.CustomOverlay({
+                        position: new window.kakao.maps.LatLng(lat, lng),
+                        content: tooltipContent,
+                        yAnchor: 2.0,
+                        xAnchor: 0.5,
+                        zIndex: 6,
+                        map: null, // 초기에는 표시하지 않음
                     });
-
+        
+                    // 마커 hover 이벤트
                     window.kakao.maps.event.addListener(marker, "mouseover", () => {
-                        infoWindow.open(mapRef.current, marker);
+                        tooltipOverlay.setMap(mapRef.current);
                         marker.setImage(hoverImage);
                     });
-
+        
                     window.kakao.maps.event.addListener(marker, "mouseout", () => {
-                        infoWindow.close();
+                        tooltipOverlay.setMap(null);
                         marker.setImage(markerImage);
                     });
-
+        
                     dotOverlay.setMap(mapRef.current);
-
+        
                     markersRef.current.push(marker);
                     customOverlayRef.current.push(dotOverlay);
                 }
             });
         };
+        
 
         addClebineMarkers();
 
@@ -207,67 +232,79 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
             droneData.forEach((drone) => {
                 const targetID = `drone-${drone.ID}`;
                 if (!filterID.includes(targetID)) return;
-
+        
                 drone.waypoints
                     .filter((wp) => wp.isItme === "1")
                     .forEach((wp) => {
                         const lat = parseFloat(wp.lat);
                         const lng = parseFloat(wp.long);
-
+        
                         if (!isNaN(lat) && !isNaN(lng)) {
                             const markerImage = new window.kakao.maps.MarkerImage(
                                 wp.action === "16"
-                                    ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                    : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                    ? movingDroneIcon
+                                    : chargingDroneIcon,
                                 new window.kakao.maps.Size(65, 65),
                                 { offset: new window.kakao.maps.Point(32.5, 32.5) }
                             );
-
+        
                             const hoverImage = new window.kakao.maps.MarkerImage(
                                 wp.action === "16"
-                                    ? `${process.env.PUBLIC_URL}/이동중.gif`
-                                    : `${process.env.PUBLIC_URL}/충전중.gif`,
+                                ? movingDroneIcon
+                                : chargingDroneIcon,
                                 new window.kakao.maps.Size(80, 80),
                                 { offset: new window.kakao.maps.Point(40, 40) }
                             );
-
+        
                             const marker = new window.kakao.maps.Marker({
                                 position: new window.kakao.maps.LatLng(lat, lng),
                                 map: mapRef.current,
                                 image: markerImage,
                                 zIndex: 4,
                             });
-
-                            const infoWindow = new window.kakao.maps.InfoWindow({
-                                content: `<div style="padding:3px; font-size:12px; color:#000;">ID: ${drone.ID}<br>Status: ${(() => {
-                                    switch (wp.action) {
-                                        case "5":
-                                            return "이륙";
-                                        case "6":
-                                            return "착륙";
-                                        case "16":
-                                            return "이동";
-                                        default:
-                                            return wp.action;
-                                    }
-                                })()}</div>`
+        
+                            // Tooltip 생성
+                            const tooltipContent = `
+                                <div class="map-tooltip">
+                                    <p><strong>ID:</strong> ${drone.ID}</p>
+                                    <p><strong>Status:</strong> ${
+                                        wp.action === "16"
+                                            ? "이동 중"
+                                            : wp.action === "5"
+                                            ? "이륙"
+                                            : wp.action === "6"
+                                            ? "착륙"
+                                            : "충전 중"
+                                    }</p>
+                                </div>
+                            `;
+        
+                            const tooltipOverlay = new window.kakao.maps.CustomOverlay({
+                                position: new window.kakao.maps.LatLng(lat, lng),
+                                content: tooltipContent,
+                                yAnchor: 1.6,
+                                xAnchor: 0.5,
+                                zIndex: 6,
+                                map: null, // 초기에는 표시하지 않음
                             });
-
+        
+                            // 마커 hover 이벤트
                             window.kakao.maps.event.addListener(marker, "mouseover", () => {
-                                infoWindow.open(mapRef.current, marker);
+                                tooltipOverlay.setMap(mapRef.current);
                                 marker.setImage(hoverImage);
                             });
-
+        
                             window.kakao.maps.event.addListener(marker, "mouseout", () => {
-                                infoWindow.close();
+                                tooltipOverlay.setMap(null);
                                 marker.setImage(markerImage);
                             });
-
+        
                             markersRef.current.push(marker);
                         }
                     });
             });
         };
+        
 
         addDroneMarkers();
 

@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Papa from 'papaparse'; // CSV 파싱 라이브러리
 import MenuBar from './MenuBar';
 import ThemeToggle from "./Components/ThemeToggle.js";
-import MapSection from "./Components/MapSection";
-import BottomSection from "./Components/BottomSection";
+import MapSection from "./Components/1_MapSection.js";
+import BottomSection from "./Components/1_BottomSection.js";
+import { loadCsvData, loadDroneData } from "./Components/1_DataLoader.js";
 import flowDarkImage from './Styles/image/어두운_로고.png';
 import "./Styles/App.css";
+
+import Header from './Components/Header.js'; // 헤더 통일
 
 const theme = createTheme();
 
@@ -24,52 +26,24 @@ function MainPage() {
             console.error("reposition 함수가 정의되지 않았습니다.");
         }
     };
-
-    // CSV 데이터 로드
     useEffect(() => {
-        const loadCsvData = async () => {
+        const fetchData = async () => {
             try {
-                const response = await fetch('/mockup.csv');
-                if (!response.ok) throw new Error("CSV 파일 로드 실패");
+                // CSV 데이터 로드
+                const csv = await loadCsvData("/mockup.csv");
+                setCsvData(csv);
 
-                const csvText = await response.text();
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: (results) => {
-                        setCsvData(results.data);
-                        console.log("CSV 데이터 로드 완료:", results.data);
-                    },
-                });
+                // 드론 데이터 로드
+                const drone = await loadDroneData(["/D-1.json", "/D-2.json", "/D-3.json"]);
+                setDroneData(drone);
             } catch (error) {
-                console.error("CSV 데이터 로드 오류:", error);
+                console.error("데이터 로드 실패:", error);
             }
         };
 
-        loadCsvData();
+        fetchData();
     }, []);
 
-    // 드론 데이터 로드
-    useEffect(() => {
-        const loadDroneData = async () => {
-            try {
-                const fileUrls = ['/D-1.json', '/D-2.json', '/D-3.json'];
-                const allData = await Promise.all(
-                    fileUrls.map(async (url) => {
-                        const response = await fetch(url);
-                        if (!response.ok) throw new Error(`파일 로드 실패: ${url}`);
-                        return await response.json();
-                    })
-                );
-                setDroneData(allData);
-                console.log("드론 데이터 로드 완료:", allData);
-            } catch (error) {
-                console.error("드론 데이터 로드 오류:", error);
-            }
-        };
-
-        loadDroneData();
-    }, []);
 
     // Visibility 토글
     const toggleFilterID = (type, id) => {
@@ -81,6 +55,7 @@ function MainPage() {
         );
     };
 
+
     const turnOnButton = (type) => {
         const allIDs =
             type === "clebine"
@@ -88,7 +63,6 @@ function MainPage() {
                 : droneData.map((drone) => `drone-${drone.ID}`);
         setFilterID((prev) => [...new Set([...prev, ...allIDs])]);
     };
-
     const turnOffButton = (type) => {
         setFilterID((prev) =>
             type === "clebine"
@@ -117,6 +91,7 @@ function MainPage() {
                     </a>
                     <MenuBar />
                 </header>
+                {/*<Header /> 헤더 통일해야할 때 해당 부분 사용*/} 
 
                 <hr className="custom_hr" />
 

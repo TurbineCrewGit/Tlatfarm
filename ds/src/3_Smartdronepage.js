@@ -1,35 +1,53 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Axios를 사용하여 백엔드와 통신
 import { Link } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Header from './Components/Header.js';
-import ThemeToggle from "./Components/ThemeToggle.js";
+import Header from "./Components/Header.js";
+import ThemeToggle from "./Components/ThemeToggle.js"; // 작은 따옴표 -> 큰 따옴표로 수정
 import "./Styles/App.css";
 
 const theme = createTheme();
 
 function Smartdrone() {
-  const [drones, setDrones] = useState([
-    { id: 1, name: "Drone 1"},
-    { id: 2, name: "Drone 2"},
-    { id: 3, name: "Drone 3"},
-  ]);
-
+  const [drones, setDrones] = useState([]); // 초기 상태를 빈 배열로 설정
   const [editNameId, setEditNameId] = useState(null);
   const [tempName, setTempName] = useState("");
+  const noDronesMessage = "등록된 드론이 없습니다.";
 
-  // 삭제 기능
-  const deleteDrone = (id) => {
-    setDrones((prevDrones) => prevDrones.filter((drone) => drone.id !== id));
+  // 데이터 가져오기
+  useEffect(() => {
+    fetchDrones();
+  }, []);
+
+  const fetchDrones = async () => {
+    try {
+      const response = await axios.get("/api/drones"); // 백엔드 API 호출
+      setDrones(response.data);
+    } catch (error) {
+      console.error("드론 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
+
+  // 드론 삭제 기능
+  const deleteDrone = async (id) => {
+    try {
+      await axios.delete(`/api/drones/${id}`); // 백엔드 API 호출
+      setDrones((prevDrones) => prevDrones.filter((drone) => drone.id !== id));
+    } catch (error) {
+      console.error("드론 삭제 중 오류 발생:", error);
+    }
   };
 
   // 드론 추가 기능
-  const addDrone = () => {
-    const newDroneId = drones.length ? drones[drones.length - 1].id + 1 : 1;
-    setDrones((prevDrones) => [
-      ...prevDrones,
-      { id: newDroneId, name: `Drone ${newDroneId}`, status: "Idle" },
-    ]);
-  };
+  const addDrone = async () => {
+    try {
+      const newDrone = { name: `New Drone`, status: "Idle" };
+      await axios.post("/api/drones", newDrone); // 백엔드 API 호출
+      await fetchDrones(); // 데이터 다시 가져오기
+    } catch (error) {
+      console.error("드론 추가 중 오류 발생:", error);
+    }
+  };  
 
   // 이름 변경 시작
   const startEditName = (id, currentName) => {
@@ -38,14 +56,20 @@ function Smartdrone() {
   };
 
   // 이름 변경 저장
-  const saveNameChange = (id) => {
-    setDrones((prevDrones) =>
-      prevDrones.map((drone) =>
-        drone.id === id ? { ...drone, name: tempName } : drone
-      )
-    );
-    setEditNameId(null);
-    setTempName("");
+  const saveNameChange = async (id) => {
+    try {
+      const updatedDrone = { name: tempName };
+      await axios.put(`/api/drones/${id}`, updatedDrone); // 백엔드 API 호출
+      setDrones((prevDrones) =>
+        prevDrones.map((drone) =>
+          drone.id === id ? { ...drone, name: tempName } : drone
+        )
+      );
+      setEditNameId(null);
+      setTempName("");
+    } catch (error) {
+      console.error("드론 이름 변경 중 오류 발생:", error);
+    }
   };
 
   // 이름 변경 취소
@@ -53,9 +77,6 @@ function Smartdrone() {
     setEditNameId(null);
     setTempName("");
   };
-
-  // 드론이 없을 때 메시지
-  const noDronesMessage = "등록된 드론이 없습니다.";
 
   return (
     <ThemeProvider theme={theme}>
@@ -66,7 +87,6 @@ function Smartdrone() {
 
           {/* 드론 목록 테이블 */}
           <div className="droneListContainer">
-
             <table className="droneListTable">
               <thead>
                 <tr>
@@ -95,10 +115,7 @@ function Smartdrone() {
                             >
                               저장
                             </button>
-                            <button
-                              className="btn"
-                              onClick={cancelEditName}
-                            >
+                            <button className="btn" onClick={cancelEditName}>
                               취소
                             </button>
                           </div>
@@ -129,14 +146,11 @@ function Smartdrone() {
                   ))
                 ) : (
                   <tr className="noDrones">
-                    <td colSpan="3">
-                      {noDronesMessage}
-                    </td>
+                    <td colSpan="3">{noDronesMessage}</td>
                   </tr>
                 )}
               </tbody>
             </table>
-
           </div>
 
           {/* 추가 및 테마 토글 버튼 */}
@@ -147,8 +161,8 @@ function Smartdrone() {
             <ThemeToggle />
           </div>
         </main>
-      </div >
-    </ThemeProvider >
+      </div>
+    </ThemeProvider>
   );
 }
 
