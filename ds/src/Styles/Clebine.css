@@ -4,6 +4,7 @@
     height: 100vh;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 
 .header {
@@ -11,6 +12,7 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    width: 100%;
 }
 
 /* 두 줄로 배치 */
@@ -20,18 +22,20 @@
     gap: 10px;
     padding: 20px;
     flex: 1;
+    width: 80%;
+    max-width: 1200px;
+    justify-content: center;
+    margin: 0 auto;
 }
 
-/* 첫 번째 줄 - 3개 섹션 (각 33.33%) */
 .main-container .section:nth-child(1),
-.main-container .section:nth-child(2),
-.main-container .section:nth-child(3) {
-    flex: 0 0 calc(33.33% - 10px); /* 첫 번째 줄에는 3개의 섹션이 33.33%씩 차지, gap을 고려하여 10px 빼기 */
+.main-container .section:nth-child(2) {
+    flex: 0 0 calc(50% - 10px);
 }
 
 /* 두 번째 줄 - 2개 섹션 (각 50%) */
-.main-container .section:nth-child(4),
-.main-container .section:nth-child(5) {
+.main-container .section:nth-child(3),
+.main-container .section:nth-child(4) {
     flex: 0 0 calc(50% - 10px); /* 두 번째 줄에는 2개의 섹션이 50%씩 차지, gap을 고려하여 10px 빼기 */
 }
 
@@ -128,34 +132,3 @@
   #expandImg:hover {
     width: 20px;
   }
-
-  @font-face {
-    font-family: 'LAB디지털';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  .clock-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* 전체 화면 높이 */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .clock {
-    font-family: 'LAB디지털', sans-serif;
-    font-size: 50px !important;
-    border: 5px outset whitesmoke;
-    padding: 40px;
-    box-sizing: border-box; /* padding, border가 크기 계산에 포함되도록 */
-    color:palegoldenrod;
-    text-shadow: 5px 5px 6px rgb(104, 99, 36);
-    background-color: black;
-  }
-  
-
-  
-  
