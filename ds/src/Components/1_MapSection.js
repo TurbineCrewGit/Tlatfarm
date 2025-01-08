@@ -8,31 +8,17 @@ import Icon0_49w from "../Styles/image/0_49w.png";
 import Icon50_100w from "../Styles/image/50_100w.png";
 import Icon100_150w from "../Styles/image/100_150w.png";
 import Icon150_200w from "../Styles/image/150_200w.png";
+import center from "../Styles/images/centerOfMap.png"
 
 import "../Styles/1_MapSection.css";
-import { Icon } from "@mui/material";
 
-const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
+const MapSection =forwardRef(({ csvData, droneData, filterID, isDarkMode},ref) => {
     const mapRef = useRef(null); // 지도 객체 참조
     const markersRef = useRef([]); // 마커 객체 참조
     const customOverlayRef = useRef([]); // Custom Overlay 객체 참조
     const [isExpanded, setIsExpanded] = useState(false); // 확장 상태
     const [isMapLoaded, setIsMapLoaded] = useState(false); // 지도 로드 상태
-    const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // 다크 모드 감지
-  useEffect(() => {
-    const handleDarkModeChange = () => {
-      setIsDarkMode(document.body.classList.contains("dark-mode"));
-    };
-
-    handleDarkModeChange(); // 초기 다크 모드 상태 확인
-    window.addEventListener("dark-mode-change", handleDarkModeChange); // 다크 모드 상태 변경 감지
-
-    return () => {
-      window.removeEventListener("dark-mode-change", handleDarkModeChange);
-    };
-  }, []);
 
     // 지도 초기화 함수
     const initializeMap = () => {
@@ -88,7 +74,7 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
             return;
         }
         const defaultCenter = new window.kakao.maps.LatLng(35.222172, 126.847596);
-        mapRef.current.setCenter(defaultCenter);
+        mapRef.current.panTo(defaultCenter);
         console.log("지도 중심 재설정 완료.");
     };
 
@@ -338,9 +324,17 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
     }, []);
 
     return (
-        <div className="map-section" style={{ position: "relative" }}>
-
+        <div className="map-section" style={{position: "relative"}}>
             <div className="map-container">
+                <div className="map-filter"
+                    style={{
+                        pointerEvents: "none",
+                        borderRadius: "8px",
+                        width: "100%",
+                        height: isExpanded ? "100vh" : "400px",
+                        transition: "all 0.3s ease",
+                    }}
+                ></div>
                 <div
                     id="kakaoMap"
                     style={{
@@ -349,8 +343,8 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
                         transition: "all 0.3s ease",
                     }}
                 ></div>
-                <div className={`mapfilter ${isDarkMode ? "dark" : ""}`}></div>
             </div>
+
             
 
             <button
@@ -359,16 +353,22 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
                     position: "absolute",
                     top: "40px",
                     right: "10px",
-                    zIndex: 100,
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    border: "1px solid #ccc",
+                    zIndex: isDarkMode ? 1000:100,
+                    backgroundColor: isDarkMode?"rgba(138, 138, 138, 0.8)":"rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode? "1px solid #8d8d8d":"1px solid #ccc",
                     borderRadius: "5px",
-                    padding: "8px 16px",
+                    padding: "8px",
+                    paddingTop: "8px",
+                    paddingBottom: "3px",
                     cursor: "pointer",
                     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
                 }}
             >
-                지도 중심 재설정
+                <img
+                    src={center}
+                    alt="중심 버튼"
+                    style={{ width: "30px", height: "30px" }}
+                />
             </button>
 
             <button
@@ -378,15 +378,20 @@ const MapSection = forwardRef(({ csvData, droneData, filterID}, ref) => {
                     bottom: "30px",
                     right: "10px",
                     zIndex: 1000,
-                    background: "none",
+                    backgroundColor: isDarkMode?"rgba(138, 138, 138, 0.8)":"rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode? "1px solid #8d8d8d":"1px solid #ccc",
+                    borderRadius: "5px",
                     border: "none",
+                    borderRadius: "20%",
+                    paddingTop: "5px",
                     cursor: "pointer",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
                 }}
             >
                 <img
                     src={expandIcon}
                     alt="확장 버튼"
-                    style={{ width: "40px", height: "40px" }}
+                    style={{ width: "30px", height: "30px" }}
                 />
             </button>
         </div>

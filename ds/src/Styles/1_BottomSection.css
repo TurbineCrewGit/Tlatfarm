@@ -2,7 +2,7 @@
 .bottom-sections {
   display: flex;
   justify-content: space-between;
-  background-color: rgba(255, 255, 255, 0.9); /* 밝은 배경 */
+  background-color: rgba(255, 255, 255, 0.6); /* 밝은 배경 */
   width: 100%;
   border: 2px solid #444; /* 어두운 테두리 */
   border-radius: 10px;
@@ -28,7 +28,7 @@
   border: 1px solid #444; /* 어두운 테두리 */
   padding: 20px;
   padding-top: 5px;
-  background-color: #f9f9f9; /* 밝은 배경색 */
+  background-color: #f9f9f9; /* 밝은 배경색 #f9f9f9*/
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 가벼운 그림자 */
 }
@@ -43,7 +43,7 @@
 /* 테이블 헤더 스타일 */
 .clebine-box th,
 .smartdrone-box th {
-  background-color: #e6e6e6; /* 밝은 헤더 배경 */
+  background-color: #a8a8a8; /* 밝은 헤더 배경 #e6e6e6 */
   color: #000; /* 헤더 텍스트 색상 */
   border: 1px solid #444; /* 어두운 테두리 */
   padding: 8px 20px;
@@ -53,8 +53,8 @@
 /* 테이블 셀 스타일 */
 .clebine-box td,
 .smartdrone-box td {
-  background-color: #fff; /* 밝은 셀 배경 */
-  color: #6d6d6d; /* 셀 텍스트 색상 */
+  background-color: rgba(233, 233, 233, 0.5); /* 밝은 셀 배경 */
+  color: #000; /* 셀 텍스트 색상 */
   border: 1px solid #444; /* 어두운 테두리 */
   padding: 8px;
   text-align: center;
@@ -63,12 +63,12 @@
 /* 테이블 행 호버 효과 */
 .clebine-box tbody tr:hover,
 .smartdrone-box tbody tr:hover {
-  background-color: #f0f0f0; /* 행 호버 시 배경색 */
+  background-color: #e2e2e2; /*e2e2e 행 호버 시 배경색 */
 }
 
 /* 다크 모드 스타일 */
 body.dark-mode .bottom-sections {
-  background-color: rgba(25, 25, 25, 0.9); /* 어두운 배경 */
+  background-color: rgba(25, 25, 25, 0.5); /* 어두운 배경 */
   border-color: #666; /* 어두운 테두리 */
 }
 

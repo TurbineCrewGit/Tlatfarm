@@ -7,7 +7,6 @@ import BottomSection from "./Components/1_BottomSection.js";
 import { loadCsvData, loadDroneData } from "./Components/1_DataLoader.js";
 
 import "./Styles/1_Mainpage.css";
-import "./Styles/App.css";
 
 import Header from './Components/Header.js'; // 헤더 통일
 
@@ -18,6 +17,20 @@ function MainPage() {
     const [droneData, setDroneData] = useState([]); // 드론 데이터 저장
     const [filterID, setFilterID] = useState([]); // 표시할 Clebine 및 Drone ID 관리
     const mapSectionRef = useRef(null); // MapSection에 대한 참조
+    const [isDarkMode, setIsDarkMode] = useState(false); // 다크 모드 상태 감지
+
+    // 다크 모드 상태 감지
+    useEffect(() => {
+        const handleDarkModeChange = () => {
+            setIsDarkMode(document.body.classList.contains('dark-mode'));
+        };
+
+        handleDarkModeChange(); // 초기 다크 모드 상태 확인
+        const observer = new MutationObserver(handleDarkModeChange);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
+    }, []);
 
     const reposition = (type, id) => {
         console.log("reposition 함수 호출:", type, id);
@@ -106,6 +119,7 @@ function MainPage() {
                         csvData={csvData}
                         droneData={droneData}
                         ref={mapSectionRef}
+                        isDarkMode={isDarkMode}
                     />
                     <BottomSection
                         csvData={csvData}
@@ -115,6 +129,7 @@ function MainPage() {
                         turnOnButton={turnOnButton}
                         turnOffButton={turnOffButton}
                         reposition={reposition}
+                        isDarkMode={isDarkMode}
                     />
 
                 </main>
