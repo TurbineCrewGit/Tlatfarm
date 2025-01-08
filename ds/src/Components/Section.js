@@ -12,7 +12,7 @@ function Section({
 }) {
 
   // 섹션 이름 배열 (풍향, 풍속, 습도, 강수량 등)
-  const sectionTitles = ["풍향/풍속", "습도", "강수량", "일조량", "기온"];
+  const sectionTitles = ["풍향/풍속", "습도", "강수량", "기온"];
 
   const getSectionStyle = (index) => {
     const baseStyle = {
@@ -25,11 +25,11 @@ function Section({
 
     if (expandedSection === index) {
       const positionOffsets = [
-        { top: "10%", left: "22%" },
-        { top: "5%", left: "-12%" },
-        { top: "5%", left: "-44%" },
-        { top: "-42%", left: "10%" },
-        { top: "-43%", left: "-43%" },
+        { top: "10%", left: "10%" },
+        { top: "10%", left: "-40%" },
+        { top: "-40%", left: "10%" },
+        { top: "-37%", left: "-40%" },
+        
       ];
 
       const { top, left } = positionOffsets[index] || { top: "30%", left: "40%" };

@@ -2,6 +2,50 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
+/* 라이트 모드 및 다크 모드 변수 설정 */
+:root {
+    --primary-color: #ffffff;
+    --secondary-color: #f0f0f0;
+    --text-color: #333333;
+    --sub-text-color: #666666;
+
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+
+    --main-background: #ffffff;
+    --table-header-background: #0078d4;
+    --table-header-text-color: #ffffff;
+    --table-row-background: #f9f9f9;
+    --table-row-text-color: #333333;
+    --table-row-hover: #e1f5fe;
+
+    --button-color: #0078d4;
+    --button-hover-color: #005a9e;
+}
+
+body.dark-mode {
+    --primary-color: #333333;
+    --secondary-color: #1a1a1a;
+    --text-color: #e7e7e7;
+    --sub-text-color: #cccccc;
+
+    --main-background: #1a1a1a;
+    --table-header-background: #444444;
+    --table-header-text-color: #00ff44;
+    --table-row-background: #2a2a2a;
+    --table-row-text-color: #ffffff;
+    --table-row-hover: #333333;
+
+    --button-color: #00b418;
+    --button-hover-color: #007a12;
+}
+
+body {
+    background-color: var(--main-background);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
 
 /* 새로운 테이블 스타일 */
 .list-section {
@@ -16,7 +60,7 @@
     border: none;
     border-radius: 8px;
     padding: 15px;
-    padding-top: 5px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,7 +74,7 @@
     max-height: 150px;
     overflow-y: visible;
     margin-bottom: 10px;
-    background-color: aliceblue;
+    background-color: var(--table-row-background);
     border-radius: 4px;
 }
 
@@ -43,12 +87,16 @@
 .data-table th {
     padding: 8px 20px; /* 패딩 통일 */
     text-align: center;
-    color: white;
-    border: 1px solid white;
+    color: var(--table-header-text-color);
+    border: 1px solid #ddd;
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
     overflow: hidden; /* 내용이 넘치면 숨김 */
     text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
     box-sizing: border-box; /* 테두리와 패딩을 포함한 크기 계산 */
+    background-color: black;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
 }
 
 /* 일반 테이블 셀에 테두리 적용 */
@@ -56,29 +104,21 @@
     padding: 8px 20px; /* 패딩 통일 */
     text-align: center;
     border: 1px solid #ddd; /* 일반 테두리 적용 */
-    color: white;
+    color: var(--table-row-text-color);
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
     overflow: hidden; /* 내용이 넘치면 숨김 */
     text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
     box-sizing: border-box; /* 테두리와 패딩을 포함한 크기 계산 */
-    background-color: #292929;
+    background-color: var(--table-row-background);
 }
 
 .weatherColumn {
     background-color: gray !important;
 }
 
-/* 테이블 헤더 스타일 유지 */
-.data-table th {
-    background-color: black;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-}
-
 /* 데이터 행 스타일 */
 .data-table tbody tr {
-    background-color: aliceblue;
+    background-color: var(--table-row-hover);
 }
 
 .data-table tbody tr:hover {
@@ -165,7 +205,7 @@
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
-    color: white;
+    color: var(--table-row-text-color);
     font-weight: bold;
 }
 
