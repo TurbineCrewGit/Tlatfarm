@@ -6,8 +6,8 @@ import MenuBar from '../MenuBar';
 function Header() {
   return (
     <header className="header">
-      <Link to='/'>
-        <img src={logo} alt="Turbine Planner" width='350px' style={{marginTop:'20px', marginBottom:'10px'}} />
+      <Link to='/'style={{width:'350px', height:'150px'}} >
+        <img src={logo} alt="Turbine Planner" style={{width:'100%', height:'100%'}} />
       </Link>
       <MenuBar />
     </header>

@@ -1,7 +1,7 @@
 .remote-control-panel {
     position: absolute;
-    top: 60%;
-    right: 10%;
+    top: 50%;
+    right: 25%;
     background: rgb(44, 44, 44);
     border-radius: 12px;
     padding: 10px;
@@ -100,3 +100,31 @@
 .btn-command-stop:hover{
     background-color: rgb(161, 0, 0);
 }
+
+/* 모바일 버전 스타일 */
+@media (max-width: 768px) {
+    .remote-control-panel {
+      top: 40%;
+      right: 10%;
+      height: 300px; /* 모바일에서는 높이를 줄임 */
+      width: 200px; /* 모바일에서는 너비를 줄임 */
+      opacity: 0.9;
+    }
+
+    .remote-control-panel.closed {
+        height: 120px;
+    }
+  
+    .controller-title {
+      font-size: 24px !important; /* 모바일에서 글꼴 크기 조정 */
+    }
+  
+    .controller-toggle-btn {
+      font-size: 15px !important; /* 모바일에서 글꼴 크기 조정 */
+    }
+  
+    .btn-command {
+      height: 25px; /* 모바일에서 버튼 높이 조정 */
+      font-size: 10px !important; /* 모바일에서 글꼴 크기 조정 */
+    }
+  }

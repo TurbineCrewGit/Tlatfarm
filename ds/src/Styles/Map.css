@@ -112,3 +112,20 @@
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* 모바일 버전 스타일 */
+@media (max-width: 768px) {
+  #kakaoMap {
+    height: 200px; /* 모바일에서는 높이를 줄임 */
+  }
+
+  .map-container.open {
+    height: 300px; /* 모바일에서 지도가 열릴 때의 높이 */
+  }
+
+  .reset-map-position {
+    height: 40px; /* 모바일에서 버튼 크기 조정 */
+    bottom: 10px; /* 모바일에서 화면 아래에서 10px 위 */
+    right: 10px; /* 모바일에서 화면 오른쪽에서 10px 왼쪽 */
+  }
+}

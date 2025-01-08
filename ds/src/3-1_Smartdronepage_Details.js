@@ -214,7 +214,7 @@ function SmartDrone_Details() {
             <Link to={`/Smartdronepage`}>
               <button className="btn">
                 <div className="toListPage">
-                  목록으로 돌아가기
+                  List
                 </div>
               </button>
             </Link>
