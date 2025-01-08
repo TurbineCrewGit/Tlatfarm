@@ -1,0 +1,287 @@
+/* 모든 요소에 box-sizing 적용 */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+/* 라이트 모드 및 다크 모드 변수 설정 */
+:root {
+    --primary-color: #ffffff;
+    --secondary-color: #f0f0f0;
+    --text-color: #333333;
+    --sub-text-color: #666666;
+
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+
+    --main-background: #ffffff;
+    --table-header-background: #0078d4;
+    --table-header-text-color: #ffffff;
+    --table-row-background: #f9f9f9;
+    --table-row-text-color: #333333;
+    --table-row-hover: #e1f5fe;
+
+    --button-color: #0078d4;
+    --button-hover-color: #005a9e;
+}
+
+body.dark-mode {
+    --primary-color: #333333;
+    --secondary-color: #1a1a1a;
+    --text-color: #e7e7e7;
+    --sub-text-color: #cccccc;
+
+    --main-background: #1a1a1a;
+    --table-header-background: #444444;
+    --table-header-text-color: #00ff44;
+    --table-row-background: #2a2a2a;
+    --table-row-text-color: #ffffff;
+    --table-row-hover: #333333;
+
+    --button-color: #00b418;
+    --button-hover-color: #007a12;
+}
+
+body {
+    background-color: var(--main-background);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+/* 새로운 테이블 스타일 */
+.list-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    padding-top: 0;
+}
+
+.list-container {
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: transparent;
+    min-width: 600px;
+    width: max-content;
+}
+
+.table-wrapper {
+    width: 100%;
+    max-height: 150px;
+    overflow-y: visible;
+    margin-bottom: 10px;
+    background-color: var(--table-row-background);
+    border-radius: 4px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* 테이블 헤더에 테두리 제거 */
+.data-table th {
+    padding: 8px 20px; /* 패딩 통일 */
+    text-align: center;
+    color: var(--table-header-text-color);
+    border: 1px solid #ddd;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden; /* 내용이 넘치면 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
+    box-sizing: border-box; /* 테두리와 패딩을 포함한 크기 계산 */
+    background-color: black;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+}
+
+/* 일반 테이블 셀에 테두리 적용 */
+.data-table td {
+    padding: 8px 20px; /* 패딩 통일 */
+    text-align: center;
+    border: 1px solid #ddd; /* 일반 테두리 적용 */
+    color: var(--table-row-text-color);
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden; /* 내용이 넘치면 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
+    box-sizing: border-box; /* 테두리와 패딩을 포함한 크기 계산 */
+    background-color: var(--table-row-background);
+}
+
+.weatherColumn {
+    background-color: gray !important;
+}
+
+/* 데이터 행 스타일 */
+.data-table tbody tr {
+    background-color: var(--table-row-hover);
+}
+
+.data-table tbody tr:hover {
+    background-color: rgb(204, 204, 204);
+}
+
+/* 버튼 컨테이너 스타일 */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.upload-button, .add-button {
+    background-color: #f0f0f0;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+}
+
+.upload-button {
+    width: 75px;
+    font-size: 13px;
+}
+
+.upload-button:hover, .add-button:hover {
+    background-color: #e0e0e0;
+}
+
+.add-button {
+    width: 60px;
+    color: black;
+}
+
+.deleteBtn {
+    border: none; /* 경계선 없애기 */
+    background: none; /* 배경 없애기 */
+    color: red; /* 텍스트 색상 (x버튼) */
+    font-size: 18px; /* 글자 크기 */
+    cursor: pointer; /* 마우스 커서가 포인터로 변경 */
+    padding: 0; /* 버튼 안의 여백 없애기 */
+    width: auto; /* 너비 자동 */
+    height: auto; /* 높이 자동 */
+}
+
+.selected-file {
+    color: gray;
+    border: none;
+}
+
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detailBtn {
+    padding: 5px 10px;
+    border: none;
+    background-color: transparent;
+    color: deepskyblue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.clebine-container {
+    /* border: none;
+    border-radius: 8px; */
+    padding: 20px;
+    /* margin: 20px auto; */
+    margin-top: 60px;
+    width: max-content;
+    background-color: transparent;
+    overflow: visible;
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+.clebine-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--table-row-text-color);
+    font-weight: bold;
+}
+
+.tableImg {
+    width: 50px;
+}
+
+tr {
+    display: table-row;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+/* 추가된 툴팁 스타일 */
+/* 툴팁 컨테이너 */
+/* 툴팁 컨테이너 */
+/* 추가된 툴팁 스타일 */
+.weather-tooltip {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+/* 툴팁 텍스트 초기 상태: 숨김 */
+.weather-tooltip .tooltip-text {
+    position: absolute; /* 부모 요소를 기준으로 위치 지정 */
+    bottom: 110%; /* 부모 요소의 위쪽에 배치 */
+    left: 50%;
+    transform: translateX(-50%);
+    visibility: hidden; /* 초기 상태 숨김 */
+    opacity: 0; /* 초기 불투명도 0 */
+    width: 110px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 8px;
+    z-index: 999999;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* 부드러운 전환 효과 */
+    font-size: 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    pointer-events: none; /* 마우스 이벤트 방지 */
+}
+
+/* 툴팁 화살표 수정 */
+.weather-tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* 화살표가 툴팁의 아래쪽을 가리키도록 설정 */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent; /* 화살표 색상 및 방향 수정 */
+}
+
+/* 호버 시 툴팁 보이기 */
+.weather-tooltip:hover .tooltip-text,
+.weather-tooltip:focus .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+  /* 상위 요소들의 overflow 설정 제거 */
+  .weather-column,
+  .data-table td,
+  .table-wrapper,
+  .list-container {
+    overflow: visible !important;
+  }
+
+  /* 아이콘 호버 시 확대 효과 */
+.weather-tooltip img.tableImg {
+    transition: transform 0.3s;
+  }
+  
+  .weather-tooltip:hover img.tableImg {
+    transform: scale(1.2);
+  }
