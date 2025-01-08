@@ -1,0 +1,61 @@
+
+.map-tooltip {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.5;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.map-tooltip p {
+  margin: 0;
+}
+
+.map-box {
+  width: 100%;
+  height: 400px;
+  background-color: #e0e0e0; /* Placeholder color for fallback */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+}
+
+.map-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.map-filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-Index: 500;
+  margin-Top: 20px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+
+body.dark-mode .map-filter {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+  /* 다크 모드 적용 */
+body.dark-mode .map-box {
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+}

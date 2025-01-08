@@ -1,0 +1,114 @@
+/* 지도 스타일 조정 */
+#kakaoMap {
+  width: 100%; 
+  height: 500px;
+  /* 기본 높이 설정 */
+  margin: 20px 0;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  transition: border-color var(--transition-speed) ease;
+  position: relative;
+  z-index: 100;
+}
+
+.mapComponentsBox{
+  padding-top: 10px;
+  display:contents;
+}
+
+/* 지도 컨테이너 설정 */
+#map-box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  /* 가운데 정렬 */
+  margin-bottom: 30px;
+}
+
+.mapFilter{
+  position: absolute; /* Kakao 지도 위에 덮기 */
+  top: 0; /* 상단 위치 고정 */
+  left: 0; /* 좌측 위치 고정 */
+  margin: 20px 0;
+  width: 100%;
+  height: 100%; /* 부모 컨테이너의 전체 크기를 차지 */
+  background-color: var(--map-filter); /* 반투명한 검은색 필터 */
+  z-index: 900; /* Kakao 지도 위에 배치 */
+  pointer-events: none; /* 필터가 지도 상호작용을 방해하지 않도록 설정 */
+  transition: border-color var(--transition-speed) ease;
+}
+
+/* 지도가 닫혀 있을 때의 스타일 */
+.map-container.closed {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  transition: height 0.5s ease-out, width 0.5s ease-out, transform 0.5s ease-out;
+  transform: scaleX(0);
+  /* 가로로 줄어드는 효과 */
+  transform-origin: center;
+  /* 가운데에서 확장되도록 설정 */
+}
+
+/* 지도가 열려 있을 때의 스타일 */
+.map-container.open {
+  height: 500px;
+  /* 지도가 열릴 때의 높이 */
+  width: 100%;
+  /* 열릴 때 너비 설정 (조정 가능) */
+  transition: height 0.5s ease-in, width 0.5s ease-in, transform 0.5s ease-in;
+  transform: scaleX(1);
+  /* 가로로 펼쳐지는 효과 */
+  transform-origin: center;
+  /* 중앙에서 열리도록 설정 */
+}
+
+
+/* 지도 열기/닫기 버튼 스타일 */
+.btn-toggle-map {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-speed);
+}
+
+
+.reset-map-position{
+  margin-right: 5px;
+  height: 80px;
+  position: absolute;
+  bottom: 20px; /* 화면 아래에서 20px 위 */
+  right: 30px; /* 화면 오른쪽에서 20px 왼쪽 */
+  z-index: 1000; /* 지도 위에 표시되도록 우선순위 설정 */
+  background-color: none;
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 5px; /* 둥근 모서리 */
+  padding: 10px 15px; /* 내부 여백 */
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.reset-map-position:hover{
+  transform: translateY(-4px);
+}
+
+/* 거리 레이블 스타일 */
+.distance-label {
+  background: var(--distance-label-background);
+  border: 1px solid var(--distance-label-border);
+  padding: 2px 4px;
+  border-radius: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--distance-label-text);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

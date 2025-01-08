@@ -1,0 +1,16 @@
+@import "./Map.css";
+@import "./MarkerTable.css";
+@import "./RemoteController.css";
+@import "./DroneList.css";
+
+.toListPage{
+    font-size: 20px;
+}
+
+.toListPage-container{
+    position: absolute;
+    right: 5%;
+
+    top: 5%;
+    z-index: 2000;
+}
