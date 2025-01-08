@@ -33,22 +33,22 @@ export const loadCsvData = async (csvUrl) => {
 
 /**
  * 드론 데이터를 로드하는 함수
- * @param {Array<string>} fileUrls - JSON 파일의 경로 배열
  * @returns {Promise<Array>} - 모든 드론 데이터 배열 반환
  */
-export const loadDroneData = async (fileUrls) => {
+export const loadDroneData = async () => {
     try {
-        const allData = await Promise.all(
-            fileUrls.map(async (url) => {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`파일 로드 실패: ${url}`);
-                return await response.json();
-            })
-        );
-        console.log("드론 데이터 로드 완료:", allData);
-        return allData;
+        // API 경로 설정
+        const response = await fetch("http://localhost:8080/api/drones/with-waypoints");
+        if (!response.ok) throw new Error("드론 데이터 로드 실패");
+
+        // API 응답 데이터를 JSON 형태로 파싱
+        const data = await response.json();
+
+        // 서버에서 이미 정제된 데이터를 반환하므로 추가 변환 없이 그대로 반환
+        return data;
     } catch (error) {
         console.error("드론 데이터 로드 오류:", error);
         throw error;
     }
 };
+
