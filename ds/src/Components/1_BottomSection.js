@@ -4,7 +4,7 @@ import offButtonIcon from "../Styles/image/off.png";
 import { useNavigate } from 'react-router-dom';
 import "../Styles/1_BottomSection.css";
 
-const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition }) => {
+const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition, isDarkMode, }) => {
 
     
     const navigate = useNavigate();
@@ -15,6 +15,23 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
     const handleSmartDroneDetailClick = (id) => {
         navigate(`/smartdronepage/${id}`);
     }
+
+    const getBackgroundColor = (power) => {
+        if (isDarkMode) {
+            if (power === 0) return "#141414";
+            if (power >= 1 && power <= 49) return "#941414";
+            if (power >= 50 && power <= 99) return "#945D14";
+            if (power >= 100 && power <= 149) return "#949414";
+            if (power >= 150) return "#469446";
+        } else {
+            if (power === 0) return "#979797";
+            if (power >= 1 && power <= 49) return "#f28b82";
+            if (power >= 50 && power <= 99) return "#fbbc04";
+            if (power >= 100 && power <= 149) return "#fff475";
+            if (power >= 150) return "#ccff90";
+        }
+        return "transparent";
+    };
 
     
     return (
@@ -67,25 +84,15 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                         </thead>
                         <tbody>
                             {csvData.map((row, index) => {
-                                let powerBackgroundColor;
-
-                                if (parseFloat(row.Power) === 0) {
-                                    powerBackgroundColor = "#141414";
-                                } else if (parseFloat(row.Power) >= 1 && parseFloat(row.Power) <= 49) {
-                                    powerBackgroundColor = "#941414";
-                                } else if (parseFloat(row.Power) >= 50 && parseFloat(row.Power) <= 99) {
-                                    powerBackgroundColor = "#945D14";
-                                } else if (parseFloat(row.Power) >= 100 && parseFloat(row.Power) <= 149) {
-                                    powerBackgroundColor = "#949414";
-                                } else if (parseFloat(row.Power) >= 150) {
-                                    powerBackgroundColor = "#469446";
-                                }
-
                                 return (
                                     <tr key={index}>
                                         <td>{row.No}</td>
                                         <td>{row.ID}</td>
-                                        <td style={{ backgroundColor: powerBackgroundColor }}>{row.Power}</td>
+                                        <td 
+                                            style={{
+                                                backgroundColor: getBackgroundColor(parseFloat(row.Power)),
+                                            }}
+                                        >{row.Power}</td>
                                         <td>
                                             <button
                                                 style={{ padding: "5px 10px", cursor: "pointer" }}

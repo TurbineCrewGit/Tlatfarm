@@ -6,7 +6,7 @@
 
 /* 기본 레이아웃 */
 body {
-  background: #3B4346 url("images/bg01.jpg");
+  background: #3B4346 url("images/ddd.png");
 }
 
 .App {
@@ -109,6 +109,7 @@ html, body {
 
 /* 다크 모드 변수 */
 body.dark-mode {
+  background: #3B4346 url("images/bg01.jpg");
   --primary-color: #103310;
   --secondary-color: rgb(10, 10, 10);
   --tertiary-color:#106610;
