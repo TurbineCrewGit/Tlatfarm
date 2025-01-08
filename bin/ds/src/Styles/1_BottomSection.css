@@ -1,0 +1,100 @@
+/* Bottom Section 스타일 */
+.bottom-sections {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.6); /* 밝은 배경 */
+  width: 100%;
+  border: 2px solid #444; /* 어두운 테두리 */
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  gap: 40px;
+}
+
+/* Clebine 및 SmartDrone Section */
+.clebine-section,
+.smartdrone-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Section 박스 스타일 */
+.clebine-box,
+.smartdrone-box {
+  overflow-y: scroll;
+  max-height: 250px;
+  border: 1px solid #444; /* 어두운 테두리 */
+  padding: 20px;
+  padding-top: 5px;
+  background-color: #f9f9f9; /* 밝은 배경색 #f9f9f9*/
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 가벼운 그림자 */
+}
+
+/* 테이블 스타일 */
+.clebine-box table,
+.smartdrone-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 테이블 헤더 스타일 */
+.clebine-box th,
+.smartdrone-box th {
+  background-color: #a8a8a8; /* 밝은 헤더 배경 #e6e6e6 */
+  color: #000; /* 헤더 텍스트 색상 */
+  border: 1px solid #444; /* 어두운 테두리 */
+  padding: 8px 20px;
+  text-align: center;
+}
+
+/* 테이블 셀 스타일 */
+.clebine-box td,
+.smartdrone-box td {
+  background-color: rgba(233, 233, 233, 0.5); /* 밝은 셀 배경 */
+  color: #000; /* 셀 텍스트 색상 */
+  border: 1px solid #444; /* 어두운 테두리 */
+  padding: 8px;
+  text-align: center;
+}
+
+/* 테이블 행 호버 효과 */
+.clebine-box tbody tr:hover,
+.smartdrone-box tbody tr:hover {
+  background-color: #e2e2e2; /*e2e2e 행 호버 시 배경색 */
+}
+
+/* 다크 모드 스타일 */
+body.dark-mode .bottom-sections {
+  background-color: rgba(25, 25, 25, 0.5); /* 어두운 배경 */
+  border-color: #666; /* 어두운 테두리 */
+}
+
+body.dark-mode .clebine-box,
+body.dark-mode .smartdrone-box {
+  background-color: #1e1e1e; /* 어두운 박스 배경 */
+  border-color: #666; /* 어두운 테두리 */
+  color: #00b418;
+}
+
+body.dark-mode .clebine-box th,
+body.dark-mode .smartdrone-box th {
+  background-color: #333; /* 어두운 헤더 배경 */
+  color: #00b418; /* 밝은 텍스트 색상 */
+  border-color: #555; /* 테두리 색상 */
+}
+
+body.dark-mode .clebine-box td,
+body.dark-mode .smartdrone-box td {
+  background-color: #2b2b2b; /* 어두운 셀 배경 */
+  color: #00ec20; /* 밝은 텍스트 색상 */
+  border-color: #555; /* 테두리 색상 */
+}
+
+body.dark-mode .clebine-box tbody tr:hover,
+body.dark-mode .smartdrone-box tbody tr:hover {
+  background-color: #00b418; /* 다크 모드 행 호버 배경 */
+}
