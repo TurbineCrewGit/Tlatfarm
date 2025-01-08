@@ -23,7 +23,7 @@ function Clebine({ tableData, onDelete, handleDataUploaded }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="planner">
+      <body className="planner">
         <Header />
         <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", marginTop: "30px" }} />
         <DataSection
@@ -44,7 +44,7 @@ function Clebine({ tableData, onDelete, handleDataUploaded }) {
             />
           ))}
         </main>
-      </div>
+      </body>
       <ThemeToggle/>
     </ThemeProvider>
   );

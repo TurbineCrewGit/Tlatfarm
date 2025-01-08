@@ -5,7 +5,12 @@
     margin: 0;
     padding: 0;
     align-items: center;
+    background: #181818 url("images/ddd.png") !important;
 }
+body.dark-mode .planner {
+    background: #3B4346 url("images/bg01.jpg");
+  }
+  
 
 .header {
     display: flex;
