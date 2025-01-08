@@ -6,8 +6,9 @@
   width: 100%;
   border: 2px solid #444; /* 어두운 테두리 */
   border-radius: 10px;
-  padding: 20px;
+  padding: 25px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  gap: 40px;
 }
 
 /* Clebine 및 SmartDrone Section */

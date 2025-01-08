@@ -170,49 +170,34 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                             </tr>
                         </thead>
                         <tbody>
-                            {droneData.map((drone) =>
-                                drone.waypoints
-                                    .filter((wp) => wp.isItme === "1")
-                                    .map((wp, idx) => (
-                                        <tr key={`${drone.ID}-${idx}`}>
-                                            <td>{drone.ID}</td>
-                                            <td>
-                                                {(() => {
-                                                    switch (wp.action) {
-                                                        case "5":
-                                                            return "이륙";
-                                                        case "6":
-                                                            return "착륙";
-                                                        case "16":
-                                                            return "이동";
-                                                        default:
-                                                            return wp.action;
-                                                    }
-                                                })()}
-                                            </td>
-                                            <td>
-                                                <button
-                                                    style={{ padding: "5px 10px", cursor: "pointer" }}
-                                                    onClick={() => handleSmartDroneDetailClick(drone.ID)}
-                                                >
-                                                    Detail
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button
-                                                    style={{ padding: "5px 10px", cursor: "pointer" }}
-                                                    onClick={() => reposition("drone", drone.ID)}
-                                                >
-                                                    Reposition
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button onClick={() => toggleFilterID("drone", drone.ID)}>
-                                                    {filterID.includes(`drone-${drone.ID}`) ? "Shown" : "Hidden"}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
+                            {droneData.map((drone, idx) =>
+                                <tr key={`${drone.droneId}-${idx}`}>
+                                    <td>{drone.droneId}</td>
+                                    <td>
+                                        {drone.action === "16" ? "이동 중" : "대기 중"}
+                                    </td>
+                                    <td>
+                                        <button
+                                            style={{ padding: "5px 10px", cursor: "pointer" }}
+                                            onClick={() => handleSmartDroneDetailClick(drone.droneId)}
+                                        >
+                                            Detail
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button
+                                            style={{ padding: "5px 10px", cursor: "pointer" }}
+                                            onClick={() => reposition("drone", drone.droneId)}
+                                        >
+                                            Reposition
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => toggleFilterID("drone", drone.droneId)}>
+                                            {filterID.includes(`drone-${drone.droneId}`) ? "Shown" : "Hidden"}
+                                        </button>
+                                    </td>
+                                </tr>
                             )}
                         </tbody>
                     </table>

@@ -48,7 +48,7 @@ function MainPage() {
                 setCsvData(csv);
 
                 // 드론 데이터 로드
-                const drone = await loadDroneData(["/D-1.json", "/D-2.json", "/D-3.json"]);
+                const drone = await loadDroneData();
                 setDroneData(drone);
             } catch (error) {
                 console.error("데이터 로드 실패:", error);
@@ -74,7 +74,7 @@ function MainPage() {
         const allIDs =
             type === "clebine"
                 ? csvData.map((row) => `clebine-${row.ID}`)
-                : droneData.map((drone) => `drone-${drone.ID}`);
+                : droneData.map((drone) => `drone-${drone.droneId}`);
         setFilterID((prev) => [...new Set([...prev, ...allIDs])]);
     };
     const turnOffButton = (type) => {
@@ -87,10 +87,11 @@ function MainPage() {
 
     // 모든 ID를 기본적으로 filterID에 추가
     useEffect(() => {
+        console.log("droneData:", droneData);
         if (csvData.length > 0 || droneData.length > 0) {
             const allIDs = [
                 ...csvData.map((row) => `clebine-${row.ID}`),
-                ...droneData.map((drone) => `drone-${drone.ID}`),
+                ...droneData.map((drone) => `drone-${drone.droneId}`),
             ];
             setFilterID(allIDs); // filterID를 모든 ID로 초기화
         }
