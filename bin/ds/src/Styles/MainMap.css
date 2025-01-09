@@ -1,0 +1,57 @@
+.map-container {
+  width: 80%;
+  height: 500px; /* 원하는 높이로 조정 */
+  margin: 20px auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* 모서리 둥글게 */
+  overflow: hidden; /* 자식 요소가 넘칠 경우 숨김 */
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: flex-start; /* 상단 정렬 */
+}
+
+.marker-list-container {
+  display: flex; /* 리스트를 가로로 배치 */
+  justify-content: space-between; /* 리스트 간의 간격 조정 */
+  width: 100%; /* 전체 너비 사용 */
+  padding: 0 5px; /* 리스트 간의 여백을 줄임 */
+}
+
+.marker-list {
+  width: 30%; /* 각 리스트의 너비를 30%로 조정 */
+  padding: 5px; /* 리스트 패딩을 줄임 */
+  background-color: #f9f9f9; /* 배경색 */
+  border: 1px solid #ddd; /* 테두리 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 */
+  max-height: 500px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 가능 */
+  margin: 0 5px; /* 리스트 간의 마진을 줄임 */
+}
+
+.marker-list h3 {
+  margin: 0 0 10px; /* 제목 아래 여백 */
+  font-size: 1.5em; /* 제목 크기 */
+  color: #333; /* 제목 색상 */
+}
+
+.marker-list ul {
+  list-style-type: none; /* 기본 리스트 스타일 제거 */
+  padding: 0; /* 패딩 제거 */
+  margin: 0; /* 마진 제거 */
+}
+
+.marker-list li {
+  padding: 8px; /* 리스트 항목 패딩 */
+  border-bottom: 1px solid #ddd; /* 항목 구분선 */
+  color: #3dbd48; /* 항목 색상 */
+  transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.marker-list li:last-child {
+  border-bottom: none; /* 마지막 항목 구분선 제거 */
+}
+
+.marker-list li:hover {
+  background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
+}

@@ -4,7 +4,7 @@ import offButtonIcon from "../Styles/image/off.png";
 import { useNavigate } from 'react-router-dom';
 import "../Styles/1_BottomSection.css";
 
-const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition, isDarkMode, }) => {
+const BottomSection = ({ smartPoleData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition, isDarkMode, }) => {
 
     
     const navigate = useNavigate();
@@ -83,20 +83,20 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                             </tr>
                         </thead>
                         <tbody>
-                            {csvData.map((row, index) => {
+                            {smartPoleData.map((row, index) => {
                                 return (
                                     <tr key={index}>
-                                        <td>{row.No}</td>
-                                        <td>{row.ID}</td>
+                                        <td>{index+1}</td>
+                                        <td>{row.id}</td>
                                         <td 
                                             style={{
-                                                backgroundColor: getBackgroundColor(parseFloat(row.Power)),
+                                                backgroundColor: getBackgroundColor(parseFloat(row.powerProduction)),
                                             }}
-                                        >{row.Power}</td>
+                                        >{row.powerProduction}</td>
                                         <td>
                                             <button
                                                 style={{ padding: "5px 10px", cursor: "pointer" }}
-                                                onClick={() => handleClebineDetailClick(row.ID)}
+                                                onClick={() => handleClebineDetailClick(row.id)}
                                             >
                                                 Detail
                                             </button>
@@ -104,14 +104,14 @@ const BottomSection = ({ csvData, droneData, filterID, toggleFilterID, turnOnBut
                                         <td>
                                             <button
                                                 style={{ padding: "5px 10px", cursor: "pointer" }}
-                                                onClick={() => reposition("clebine", row.ID)}
+                                                onClick={() => reposition("clebine", row.id)}
                                             >
                                                 Reposition
                                             </button>
                                         </td>
                                         <td>
-                                            <button onClick={() => toggleFilterID("clebine", row.ID)}>
-                                                {filterID.includes(`clebine-${row.ID}`) ? "Shown" : "Hidden"}
+                                            <button onClick={() => toggleFilterID("clebine", row.id)}>
+                                                {filterID.includes(`clebine-${row.id}`) ? "Shown" : "Hidden"}
                                             </button>
                                         </td>
                                     </tr>

@@ -8,7 +8,7 @@ import Clebine from "./2_Clebinepage.js";
 import Smartdrone from "./3_Smartdronepage.js";
 import Management from "./4_Managementpage.js";
 
-import ClebineDetail from "./ClebineDetail"; // 상세 페이지 컴포넌트 임포트
+import ClebineDetail from "./2-1_ClebineDetail.js"; // 상세 페이지 컴포넌트 임포트
 import TestPage from "./TestPage.js";
 import SmartDronepage_Details from "./3-1_Smartdronepage_Details.js";
 
@@ -22,7 +22,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    setTableData(prevData => prevData.filter(row => row.id !== id));
+    setTableData((prevData) => prevData.filter((row) => row.id !== id));
   };
 
   return (

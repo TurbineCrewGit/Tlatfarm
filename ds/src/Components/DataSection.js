@@ -1,9 +1,8 @@
-// DataSection.js
 import React from 'react';
 import DataTable from './DataTable';
 import FileUpload from './FileUpload';
 
-function DataSection({ tableData, handleDelete, handleDataUploaded }) { // handleDelete로 prop 이름 일치
+function DataSection({ tableData, handleDelete, handleDataUploaded }) {
   return (
     <div className="list-section" style={{ marginTop: '2px' }}>
       <div className="list-container">

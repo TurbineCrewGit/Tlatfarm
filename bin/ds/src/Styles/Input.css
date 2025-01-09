@@ -1,0 +1,278 @@
+/* 입력 필드 스타일 */
+.input-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.input-container input,
+.input-container select,
+.input-container button {
+  margin: 5px;
+}
+
+/* input */
+input {
+  padding: 8px;
+  margin-right: 10px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
+  color: var(--sub-text-color);
+  font-size: 16px;
+  transition: border-color var(--transition-speed) ease,
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease;
+}
+
+input:focus {
+  border-color: #5aff91;
+  outline: none;
+}
+
+.input-alt {
+  width: 90px;
+  font-size: 16px;
+}
+
+/* select */
+select {
+  width: 65px;
+  padding: 8px;
+  margin-right: 10px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
+  color: var(--sub-text-color);
+  font-size: 16px;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="%2372BF44" d="M5 8l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  transition: border-color var(--transition-speed) ease,
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease;
+}
+
+.select-inmain {
+  width: 65px;
+}
+
+select:hover {
+  border-color: #5aff91;
+}
+
+select:focus {
+  border-color: #5aff91;
+  outline: none;
+}
+
+select:disabled {
+  color: rgb(200, 200, 200);
+  cursor: not-allowed;
+}
+
+/* btn */
+.btn {
+  padding: 10px;
+  background-color: var(--button-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color var(--transition-speed) ease,
+    transform var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.btn:hover {
+  background-color: var(--button-hover-color);
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  background-color: var(--button-disabled);
+  cursor: not-allowed;
+}
+
+.btn-theme-toggle {
+  position: absolute;
+  top: 90%;
+  left: 2%;
+  padding: 8px 16px;
+  border-radius: 30px;
+  width: 5%;
+  height: 7%;
+  min-width: fit-content;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.btn-move-up,
+.btn-move-down,
+.btn-remove,
+.btn-add,
+.btn-reset,
+.btn-submit,
+.btn-optimize,
+.btn-reset-position,
+.btn-toggle-map {
+  margin-right: 5px;
+  height: 50px;
+}
+
+.btn-toggle-map {
+  width: 200px;
+  margin-top: 5vh;
+  font-size: 20px;
+}
+
+.btn-reset-position {
+  position: absolute;
+  bottom: 20px; /* 화면 아래에서 20px 위 */
+  right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+  z-index: 1000; /* 지도 위에 표시되도록 우선순위 설정 */
+  background-color: #ffffff; /* 버튼 배경색 */
+  color: #000000; /* 버튼 텍스트 색 */
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 5px; /* 둥근 모서리 */
+  padding: 10px 15px; /* 내부 여백 */
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.btn-reset-position:hover {
+  transform: translateY(-4px);
+}
+
+.btn-reset,
+.btn-submit,
+.btn-optimize {
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+.btn-optimize {
+  width: 100%;
+  max-width: 200px;
+}
+
+.btn-optimize:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* 모바일 버전 스타일 */
+@media (max-width: 768px) {
+  /* 입력 필드 스타일 */
+  .input-container {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  .input-container input,
+  .input-container select,
+  .input-container button {
+    margin: 2px;
+  }
+
+  /* input */
+  input {
+    width: 70px;
+    padding: 10px;
+    margin-right: 10px;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color);
+    color: var(--sub-text-color);
+    font-size: 12px;
+    transition: border-color var(--transition-speed) ease,
+      background-color var(--transition-speed) ease,
+      color var(--transition-speed) ease;
+  }
+
+  .input-alt {
+    width: 50px;
+    font-size: 12px;
+  }
+
+  /* btn */
+  .btn {
+    padding: 10px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+  }
+
+  .btn-theme-toggle {
+    position: absolute;
+    top: 90%;
+    left: 2%;
+    padding: 8px 16px;
+    border-radius: 30px;
+    width: 5%;
+    height: 7%;
+    min-width: fit-content;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .btn-move-up,
+  .btn-move-down,
+  .btn-remove,
+  .btn-add,
+  .btn-reset,
+  .btn-submit,
+  .btn-optimize,
+  .btn-reset-position,
+  .btn-toggle-map {
+    margin-right: 5px;
+    height: 40px;
+    font-size: 10px;
+  }
+
+  .btn-remove {
+    width: 40px;
+  }
+
+  .btn-toggle-map {
+    width: 200px;
+    margin-top: 5vh;
+    font-size: 20px;
+  }
+
+  .btn-reset-position {
+    position: absolute;
+    bottom: 20px; /* 화면 아래에서 20px 위 */
+    right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+    z-index: 1000; /* 지도 위에 표시되도록 우선순위 설정 */
+    background-color: #ffffff; /* 버튼 배경색 */
+    color: #000000; /* 버튼 텍스트 색 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 10px 15px; /* 내부 여백 */
+  }
+
+  .btn-reset,
+  .btn-submit,
+  .btn-optimize {
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    margin-right: 5px;
+  }
+
+  /* select */
+  select {
+    width: 50px;
+    padding: 8px;
+    margin-right: 10px;
+    font-size: 10px;
+  }
+}

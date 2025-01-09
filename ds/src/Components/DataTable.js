@@ -1,12 +1,28 @@
-// DataTable.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import "../Styles/DataTable.css";
 
-const DataTable = ({ tableData, onDelete }) => {
+const DataTable = ({ onDelete }) => {
   const navigate = useNavigate();
+  const [tableData, setTableData] = useState([]);
   const [weatherData, setWeatherData] = useState({});
 
+  // 백엔드에서 데이터를 가져오는 useEffect
+  useEffect(() => {
+    const fetchTableData = async () => {
+      try {
+        const response = await axios.get('/api/smartpoles');
+        setTableData(response.data); // API에서 가져온 데이터를 상태에 저장
+      } catch (error) {
+        console.error("Error fetching table data:", error);
+      }
+    };
+
+    fetchTableData();
+  }, []); // 빈 배열로 한 번만 실행되도록 설정
+
+  // 날씨 데이터를 가져오는 useEffect
   useEffect(() => {
     const fetchWeatherData = async () => {
       const newWeatherData = {};
@@ -164,19 +180,6 @@ const DataTable = ({ tableData, onDelete }) => {
     return "over30c";
   };
 
-  // 디버깅용 로그 추가
-  useEffect(() => {
-    console.log('DataTable props:', { tableData, onDelete });
-  }, [tableData, onDelete]);
-
-  const handleDeleteClick = (id) => {
-    if (typeof onDelete === 'function') {
-      onDelete(id);
-    } else {
-      console.error('onDelete is not a function');
-    }
-  };
-
   return (
     <div className="clebine-container">
       <h1 className="clebine-title">Clebine</h1>
@@ -196,7 +199,7 @@ const DataTable = ({ tableData, onDelete }) => {
           {tableData.length === 0 ? (
             <tr>
               <td colSpan="7" style={{ textAlign: "center" }}>
-                파일을 올려주세요
+                데이터가 없습니다.
               </td>
             </tr>
           ) : (
@@ -227,7 +230,7 @@ const DataTable = ({ tableData, onDelete }) => {
                   <td>
                     <button
                       className="deleteBtn"
-                      onClick={() => handleDeleteClick(row.id)} // 수정된 부분
+                      onClick={() => onDelete(row.id)}
                     >
                       x
                     </button>
