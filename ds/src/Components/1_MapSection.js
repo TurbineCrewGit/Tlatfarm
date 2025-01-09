@@ -12,7 +12,7 @@ import center from "../Styles/images/centerOfMap.png"
 
 import "../Styles/1_MapSection.css";
 
-const MapSection =forwardRef(({ csvData, droneData, filterID, isDarkMode},ref) => {
+const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},ref) => {
     const mapRef = useRef(null); // 지도 객체 참조
     const markersRef = useRef([]); // 마커 객체 참조
     const customOverlayRef = useRef([]); // Custom Overlay 객체 참조
@@ -88,25 +88,26 @@ const MapSection =forwardRef(({ csvData, droneData, filterID, isDarkMode},ref) =
         let targetCoordinates = null;
 
         if (type === "clebine") {
-            const clebine = csvData.find((row) => row.ID === id);
-            if (clebine && clebine.Latitude && clebine.Longitude) {
+            const clebine = smartPoleData.find((row) => row.id === id);
+            if (clebine && clebine.latitude && clebine.longitude) {
                 targetCoordinates = new window.kakao.maps.LatLng(
-                    parseFloat(clebine.Latitude),
-                    parseFloat(clebine.Longitude)
+                    parseFloat(clebine.latitude),
+                    parseFloat(clebine.longitude)
                 );
             } else {
                 console.warn(`Clebine ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
             }
         } else if (type === "drone") {
             for (const drone of droneData) {
-                if (drone.ID === id) {
-                    const waypoint = drone.waypoints.find((wp) => wp.isItme === "1");
-                    if (waypoint && waypoint.lat && waypoint.long) {
-                        targetCoordinates = new window.kakao.maps.LatLng(
-                            parseFloat(waypoint.lat),
-                            parseFloat(waypoint.long)
-                        );
-                        break;
+                if (drone.droneId === id) {
+                    const lat = parseFloat(drone.latitude);
+                    const lng = parseFloat(drone.longitude);
+            
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        targetCoordinates = new window.kakao.maps.LatLng(lat, lng);
+                        break; // 드론 ID를 찾았으므로 반복 종료
+                    } else {
+                        console.warn(`Drone ID: ${id}에 대한 유효한 좌표가 없습니다.`);
                     }
                 }
             }
@@ -130,16 +131,16 @@ const MapSection =forwardRef(({ csvData, droneData, filterID, isDarkMode},ref) =
 
     // Clebine 마커 추가
     useEffect(() => {
-        if (!isMapLoaded || csvData.length === 0) return;
+        if (!isMapLoaded || smartPoleData.length === 0) return;
 
         const addClebineMarkers = () => {
-            csvData.forEach((row) => {
-                const targetID = `clebine-${row.ID}`;
+            smartPoleData.forEach((row) => {
+                const targetID = `clebine-${row.id}`;
                 if (!filterID.includes(targetID)) return;
         
-                const lat = parseFloat(row.Latitude);
-                const lng = parseFloat(row.Longitude);
-                const power = parseFloat(row.Power);
+                const lat = parseFloat(row.latitude);
+                const lng = parseFloat(row.longitude);
+                const power = parseFloat(row.powerProduction);
         
                 if (!isNaN(lat) && !isNaN(lng)) {
                     let markerImageSrc;
@@ -181,8 +182,8 @@ const MapSection =forwardRef(({ csvData, droneData, filterID, isDarkMode},ref) =
                     // Tooltip 생성
                     const tooltipContent = `
                         <div class="map-tooltip">
-                            <p><strong>ID:</strong> ${row.ID}</p>
-                            <p><strong>Power:</strong> ${row.Power}</p>
+                            <p><strong>ID:</strong> ${row.id}</p>
+                            <p><strong>Power:</strong> ${row.powerProduction}</p>
                         </div>
                     `;
         
@@ -223,7 +224,7 @@ const MapSection =forwardRef(({ csvData, droneData, filterID, isDarkMode},ref) =
             customOverlayRef.current.forEach((overlay) => overlay.setMap(null));
             customOverlayRef.current = [];
         };
-    }, [isMapLoaded, csvData, filterID]);
+    }, [isMapLoaded, smartPoleData, filterID]);
 
     // SmartDrone 마커 추가
     useEffect(() => {

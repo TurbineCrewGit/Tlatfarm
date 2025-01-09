@@ -1,19 +1,25 @@
 package com.tlatfarm.tbcrew_tlatfarm.mapper;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import com.tlatfarm.tbcrew_tlatfarm.model.Drone;
 
 import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface DroneMapper {
-    /*
+    
     @Select("SELECT * FROM SmartDrone")
     List<Drone> getAllDrones();
 
     @Select("SELECT * FROM SmartDrone WHERE id = #{id}")
-    Drone getDroneById(int id);
+    Drone getDroneById(String id);
 
     @Insert("INSERT INTO SmartDrone (status) VALUES (#{status})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
@@ -23,8 +29,8 @@ public interface DroneMapper {
     void updateDrone(Drone drone);
 
     @Delete("DELETE FROM SmartDrone WHERE id = #{id}")
-    void deleteDrone(int id);
-    */
+    void deleteDrone(String id);
+    
 
     @Select("""
         SELECT 

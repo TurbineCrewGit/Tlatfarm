@@ -1,5 +1,5 @@
 /* 1_Mainpage.css */
-#mainDiv {
+#main_Div {
     background: #101010 url("images/ddd.png");
     color: #000;
     display: flex;
@@ -7,8 +7,12 @@
     align-items: center;
     padding: 10px;
   }
-  
-  .header {
+
+  body{
+    background: #101010 url("images/ddd.png");
+  }
+
+  .mainheader {
     height: 15vh;
     display: flex;
     align-items: center;
@@ -38,7 +42,7 @@
     width: 100%;
     max-width: 1200px;
   }
-  .header a img {
+  .mainheader a img {
     content: url('image/밝은_로고.png'); /* 기본 로고 */
     display: flex;
     width: 400px;
@@ -46,17 +50,17 @@
     transition: content 0.3s ease; /* 부드러운 전환 */
   }
   
-  body.dark-mode .header a img {
+  body.dark-mode .mainheader a img {
     content: url('image/어두운_로고.png'); /* 다크 모드에서 로고 */
     color: #f0f0f0;
   }
   
   /* 다크 모드 적용 */
-  body.dark-mode #mainDiv {
+  body.dark-mode #main_Div {
     background: #3B4346 url("images/bg01.png");
   }
   
-  body.dark-mode .header {
+  body.dark-mode .mainheader {
     background: #3B4346 url("images/bg01.jpg");
   }
   
