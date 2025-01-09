@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Header from "./Components/Header.js";
+import ThemeToggle from "./Components/ThemeToggle.js";
+
+const theme = createTheme();
 
 const PredictionDashboard = () => {
   const [weatherData, setWeatherData] = useState({
@@ -50,72 +54,97 @@ const PredictionDashboard = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Header />
+    <ThemeProvider theme={theme}>
+      <div className="planner">
+        
+        <Header />
 
-      <main className="main">
-        <div style={{ marginBottom: "20px" }}>
-          <label>
-            Temperature (°C):
-            <input
-              type="number"
-              name="temperature"
-              value={weatherData.temperature}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Sunlight (hours):
-            <input
-              type="number"
-              name="sunlight"
-              value={weatherData.sunlight}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Wind Speed (m/s):
-            <input
-              type="number"
-              name="windSpeed"
-              value={weatherData.windSpeed}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label>
-            Rainfall (mm):
-            <input
-              type="number"
-              name="rainfall"
-              value={weatherData.rainfall}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
+        <hr className="custom_hr" />
 
-        <div>
-          <button onClick={handleEnergyPrediction}>Predict Energy</button>
-          <button onClick={handleNdviPrediction}>Predict NDVI</button>
-        </div>
+        <main className="main">
+          
+          <table>
+            <tr>
+              <th colSpan={2}>Weather Data</th>
+            </tr>
+            <tr>
+              <td>Temperature (°C):</td>
+              <td>
+                <input
+                  type="number"
+                  name="temperature"
+                  value={weatherData.temperature}
+                  onChange={handleInputChange}
+                />
+              </td>
+            </tr>
 
-        {energyPrediction && (
-          <div>
-            <h3>Energy Prediction</h3>
-            <p>Solar Power: {energyPrediction[0].toFixed(2)}</p>
-            <p>Wind Power: {energyPrediction[1].toFixed(2)}</p>
-          </div>
-        )}
+            <tr>
+              <td>Sunlight (hours):</td>
+              <td>
+                <input
+                  type="number"
+                  name="sunlight"
+                  value={weatherData.sunlight}
+                  onChange={handleInputChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Wind Speed (m/s):</td>
+              <td>
+                <input
+                  type="number"
+                  name="windSpeed"
+                  value={weatherData.windSpeed}
+                  onChange={handleInputChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Rainfall (mm):</td>
+              <td>
+                <input
+                  type="number"
+                  name="rainfall"
+                  value={weatherData.rainfall}
+                  onChange={handleInputChange}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td colSpan={2}>
+                <button className="btn" onClick={handleEnergyPrediction}>
+                  Predict Energy
+                </button>
+                <button className="btn" onClick={handleNdviPrediction}>
+                  Predict NDVI
+                </button>
+              </td>
+            </tr>
+          </table>
 
-        {ndviPrediction && (
-          <div>
-            <h3>NDVI Prediction</h3>
-            <p>NDVI: {ndviPrediction.toFixed(2)}</p>
-          </div>
-        )}
+          {energyPrediction && (
+            <div>
+              <h3>Energy Prediction</h3>
+              <p>Solar Power: {energyPrediction[0].toFixed(2)}</p>
+              <p>Wind Power: {energyPrediction[1].toFixed(2)}</p>
+            </div>
+          )}
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </main>
-    </div>
+          {ndviPrediction && (
+            <div>
+              <h3>NDVI Prediction</h3>
+              <p>NDVI: {ndviPrediction.toFixed(2)}</p>
+            </div>
+          )}
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <ThemeToggle />
+        </main>
+      </div>
+    </ThemeProvider>
   );
 };
 
