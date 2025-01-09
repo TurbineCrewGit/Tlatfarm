@@ -4,16 +4,16 @@ import MenuBar from './MenuBar';
 import ThemeToggle from "./Components/ThemeToggle.js";
 import MapSection from "./Components/1_MapSection.js";
 import BottomSection from "./Components/1_BottomSection.js";
-import { loadCsvData, loadDroneData } from "./Components/1_DataLoader.js";
+import { loadSmartPoleData, loadDroneData } from "./Components/1_DataLoader.js";
 
 import "./Styles/1_Mainpage.css";
 
-import Header from './Components/Header.js'; // 헤더 통일
+//import Header from './Components/Header.js'; // 헤더 통일
 
 const theme = createTheme();
 
 function MainPage() {
-    const [csvData, setCsvData] = useState([]); // CSV 데이터 저장
+    const [smartPoleData, setSmartPoleData] = useState([]); // SmartPole 데이터 상태
     const [droneData, setDroneData] = useState([]); // 드론 데이터 저장
     const [filterID, setFilterID] = useState([]); // 표시할 Clebine 및 Drone ID 관리
     const mapSectionRef = useRef(null); // MapSection에 대한 참조
@@ -40,12 +40,13 @@ function MainPage() {
             console.error("reposition 함수가 정의되지 않았습니다.");
         }
     };
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // CSV 데이터 로드
-                const csv = await loadCsvData("/mockup.csv");
-                setCsvData(csv);
+                // Clebine 데이터 로드
+                const smartPoles = await loadSmartPoleData();
+                setSmartPoleData(smartPoles);
 
                 // 드론 데이터 로드
                 const drone = await loadDroneData();
@@ -73,7 +74,7 @@ function MainPage() {
     const turnOnButton = (type) => {
         const allIDs =
             type === "clebine"
-                ? csvData.map((row) => `clebine-${row.ID}`)
+                ? smartPoleData.map((row) => `clebine-${row.id}`)
                 : droneData.map((drone) => `drone-${drone.droneId}`);
         setFilterID((prev) => [...new Set([...prev, ...allIDs])]);
     };
@@ -87,20 +88,19 @@ function MainPage() {
 
     // 모든 ID를 기본적으로 filterID에 추가
     useEffect(() => {
-        console.log("droneData:", droneData);
-        if (csvData.length > 0 || droneData.length > 0) {
+        if (smartPoleData.length > 0 || droneData.length > 0) {
             const allIDs = [
-                ...csvData.map((row) => `clebine-${row.ID}`),
+                ...smartPoleData.map((row) => `clebine-${row.id}`),
                 ...droneData.map((drone) => `drone-${drone.droneId}`),
             ];
             setFilterID(allIDs); // filterID를 모든 ID로 초기화
         }
-    }, [csvData, droneData]);
+    }, [smartPoleData, droneData]);
 
     return (
         <ThemeProvider theme={theme}>
-            <div id="mainDiv">
-                <header className="header">
+            <div id="main_Div" >
+                <header className="mainheader">
                     <a href="https://turbinecrew.co.kr/" target="_blank" rel="noopener noreferrer">
                         <img
                             alt="Flow"
@@ -117,13 +117,13 @@ function MainPage() {
                     <MapSection
                         filterID={filterID}
                         setFilterID={setFilterID}
-                        csvData={csvData}
+                        smartPoleData={smartPoleData}
                         droneData={droneData}
                         ref={mapSectionRef}
                         isDarkMode={isDarkMode}
                     />
                     <BottomSection
-                        csvData={csvData}
+                        smartPoleData={smartPoleData}
                         droneData={droneData}
                         toggleFilterID={toggleFilterID}
                         filterID={filterID}
