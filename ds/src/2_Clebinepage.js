@@ -5,6 +5,7 @@ import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
 import ThemeToggle from './Components/ThemeToggle.js';
+import axios from 'axios';
 
 const theme = createTheme();
 
