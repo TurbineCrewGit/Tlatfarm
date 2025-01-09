@@ -22,7 +22,7 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    setTableData(prevData => prevData.filter(row => row.id !== id));
+    setTableData((prevData) => prevData.filter((row) => row.id !== id));
   };
 
   return (
