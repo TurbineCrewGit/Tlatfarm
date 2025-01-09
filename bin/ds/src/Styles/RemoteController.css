@@ -1,0 +1,130 @@
+.remote-control-panel {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    background: rgb(44, 44, 44);
+    border-radius: 12px;
+    padding: 10px;
+    height: 500px;
+    width: 300px;
+    text-align: center;
+    /* 드래그 가능 표시 */
+    z-index: 1000;
+    /* 다른 요소 위에 표시 */
+}
+
+.remote-control-panel.closed {
+    height: 180px;
+}
+
+.dragSpot {
+    text-align: right;
+    margin-bottom: 10px;
+    width: 100%;
+    color: #000000;
+}
+
+.dragSpotContainer{
+    cursor:grab;
+}
+
+.dragSpotContainer:active {
+    cursor:grabbing;
+}
+
+.controller-title {
+    color: rgb(194, 194, 194);
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.controller-toggle-btn {
+    margin-top: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.controller-toggle-btn:hover{
+    color: #d5ec00;
+    transform: translateY(-2px);
+}
+
+.port-input {
+    display: inline-block;
+}
+
+.port-input select {
+    background-color: rgb(41, 41, 41);
+    border-color: rgb(114, 114, 114);
+    width: 100%;
+    /* 입력 필드 너비 설정 */
+    padding: 8px;
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+}
+
+
+.port-input select::placeholder {
+    color: #252525;
+}
+
+.command-btn-container {
+    margin-top: 10%;
+}
+
+.btn-command {
+    height: 40px;
+    width: 100%;
+    background: none;
+    border: 1px solid #1d1d1d;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-command-start:hover{
+    background-color: rgb(0, 83, 151);
+}
+
+.btn-command-arming:hover{
+    background-color: rgb(15, 131, 0);
+}
+
+.btn-command-stop:hover{
+    background-color: rgb(161, 0, 0);
+}
+
+/* 모바일 버전 스타일 */
+@media (max-width: 768px) {
+    .remote-control-panel {
+      top: 40%;
+      right: 10%;
+      height: 300px; /* 모바일에서는 높이를 줄임 */
+      width: 200px; /* 모바일에서는 너비를 줄임 */
+      opacity: 0.9;
+    }
+
+    .remote-control-panel.closed {
+        height: 120px;
+    }
+  
+    .controller-title {
+      font-size: 24px !important; /* 모바일에서 글꼴 크기 조정 */
+    }
+  
+    .controller-toggle-btn {
+      font-size: 15px !important; /* 모바일에서 글꼴 크기 조정 */
+    }
+  
+    .btn-command {
+      height: 25px; /* 모바일에서 버튼 높이 조정 */
+      font-size: 10px !important; /* 모바일에서 글꼴 크기 조정 */
+    }
+  }

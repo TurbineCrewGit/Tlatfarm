@@ -1,0 +1,245 @@
+
+/* Dashboard 스타일 */
+
+.dashboard-header {
+    position: relative !important;
+  }
+  
+  .dashboard-grid {
+    margin-top: 20px;
+  }
+  
+  .card-wrapper {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .dashboard-card {
+    height: 100%;
+    background: linear-gradient(135deg, #1f1f1f 0%, #2e2e2e 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card-title {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-icon {
+    margin-right: 10px;
+    font-size: 28px;
+  }
+  
+  .card-text {
+    margin-bottom: 20px;
+  }
+  
+  .card-button {
+    background-color: #BB86FC;
+    color: #ffffff;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card-button:hover {
+    background-color: #9f5ce3;
+  }
+  
+  .chart-card {
+    background: linear-gradient(135deg, #2e2e2e 0%, #3b3b3b 100%);
+  }
+  
+  .chart-title {
+    color: #BB86FC;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .chart-container {
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+  }
+  
+  .slider-label {
+    margin-top: 20px;
+  }
+  
+  .slider {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  
+  /* Trading 스타일 */
+  .trading-container {
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .trading-table {
+    width: 100%;
+    margin-top: 40px;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  .trading-table thead {
+    background-color: #1f1f1f;
+  }
+  
+  .trading-table th,
+  .trading-table td {
+    padding: 15px;
+    border: 1px solid #333333;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .trading-table th {
+    color: #BB86FC;
+    font-weight: bold;
+  }
+  
+  .trading-table tbody tr:nth-child(even) {
+    background-color: #1a1a1a;
+  }
+  
+  .trading-table tbody tr:hover {
+    background-color: #333333;
+  }
+  
+  .trading-table td {
+    color: #ffffff;
+  }
+  
+  
+  /* Alerts 스타일 */
+  .alerts-container {
+    margin-top: 20px;
+  }
+  
+  .alert-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .alert-error {
+    background-color: #e70000 !important;
+  }
+  
+  .alert-warning {
+    background-color: #ffc800 !important;
+  }
+  
+  .alert-info {
+    background-color: #007bff !important;
+  }
+  
+  
+  
+  
+  /* Settings 스타일 */
+  .settings-container {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .settings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .settings-table th,
+  .settings-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .settings-table th {
+    background-color: #1f1f1f;
+    color: #BB86FC;
+    font-weight: bold;
+  }
+  
+  .settings-table tr:nth-child(even) {
+    background-color: #1a1a1a;
+  }
+  
+  .settings-table tr:hover {
+    background-color: #333333;
+  }
+  
+  .settings-table td {
+    color: #ffffff;
+  }
+  
+  
+  
+  
+  /* Resources 스타일 */
+  .slider-container {
+    margin-top: 20px !important;
+    text-align: left !important;
+  }
+  
+  .slider-label {
+    font-size: 18px !important;
+  }
+  
+  .slider {
+    display: block !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    background-color: #BB86FC !important;
+    border: none !important;
+    border-radius: 50% !important;
+    height: 20px !important;
+    width: 20px !important;
+    cursor: pointer !important;
+  }
+  
+  .slider::-webkit-slider-runnable-track {
+    background-color: #3b3b3b !important;
+    height: 5px !important;
+    border-radius: 5px !important;
+  }
+  
+  
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .page-title,
+    .dashboard-title {
+      font-size: 24px;
+    }
+  
+    .card-title {
+      font-size: 18px;
+    }
+  
+    .card-icon {
+      font-size: 24px;
+    }
+  }
+  

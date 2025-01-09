@@ -1,0 +1,62 @@
+/* 1_Mainpage.css */
+#mainDiv {
+    background: #101010 url("images/ddd.png");
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .header {
+    height: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #181818 url("images/ddd.png");
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom_hr {
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #000;
+  }
+  
+  .main-content {
+    margin-top: 15vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .header a img {
+    content: url('image/밝은_로고.png'); /* 기본 로고 */
+    display: flex;
+    width: 400px;
+    height: auto;
+    transition: content 0.3s ease; /* 부드러운 전환 */
+  }
+  
+  body.dark-mode .header a img {
+    content: url('image/어두운_로고.png'); /* 다크 모드에서 로고 */
+    color: #f0f0f0;
+  }
+  
+  /* 다크 모드 적용 */
+  body.dark-mode #mainDiv {
+    background: #3B4346 url("images/bg01.png");
+  }
+  
+  body.dark-mode .header {
+    background: #3B4346 url("images/bg01.jpg");
+  }
+  
