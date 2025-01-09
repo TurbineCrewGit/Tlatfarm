@@ -3,7 +3,7 @@ import { parseCSV, parseXLSX } from '../Components/FileParsing.js';
 import { checkDuplicateIds } from '../Components/CheckDuplicateIds.js';
 import FileSelector from '../Components/FileSelector.js';
 import IdInput from '../Components/IdInput.js';
-import "../Styles/DataTable.css";
+import '../Styles/DataTable.css';
 
 const FileUpload = ({ onDataUploaded, tableData }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,7 +36,10 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
           let newData;
           if (file.name.toLowerCase().endsWith('.csv')) {
             newData = await parseCSV(file);
-          } else if (file.name.toLowerCase().endsWith('.xlsx') || file.name.toLowerCase().endsWith('.xls')) {
+          } else if (
+            file.name.toLowerCase().endsWith('.xlsx') ||
+            file.name.toLowerCase().endsWith('.xls')
+          ) {
             newData = await parseXLSX(file);
           } else {
             throw new Error('지원하지 않는 파일 형식입니다.');
@@ -51,13 +54,9 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
           }
 
           const { duplicates, uniqueData } = checkDuplicateIds(newData, tableData);
-          if (duplicates.length > 0) {
-            const duplicateIds = duplicates.map((item) => item.id).join(', ');
-            alert(`다음 ID는 이미 존재하여 추가되지 않았습니다: ${duplicateIds}`);
-          }
 
           if (uniqueData.length > 0) {
-            onDataUploaded(uniqueData);
+            onDataUploaded(uniqueData); // Clebine 컴포넌트로 데이터 전달
             if (!filterById) {
               setFilterId('');
             }
@@ -75,21 +74,21 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
   };
 
   return (
-
     <div className="file-upload-container">
       {selectedFile && (
         <div className="file-name">
           선택된 파일: {selectedFile}
-          <button className="deleteBtn" onClick={clearSelectedFile} style={{marginLeft: "10px"}}>
+          <button
+            className="deleteBtn"
+            onClick={clearSelectedFile}
+            style={{ marginLeft: '10px' }}
+          >
             x
           </button>
         </div>
       )}
       <div className="button-container">
-        <FileSelector
-          selectedFile={selectedFile}
-          onFileChange={handleFileChange}
-        />
+        <FileSelector selectedFile={selectedFile} onFileChange={handleFileChange} />
         <IdInput filterId={filterId} onIdChange={handleIdChange} />
         <button
           id="idAddBtn"
@@ -108,7 +107,6 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
         </button>
       </div>
     </div>
-    
   );
 };
 
