@@ -1,6 +1,8 @@
 package com.tlatfarm.tbcrew_tlatfarm.service;
 
 import com.tlatfarm.tbcrew_tlatfarm.mapper.DroneMapper;
+import com.tlatfarm.tbcrew_tlatfarm.model.Drone;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +16,11 @@ public class DroneService {
         this.droneMapper = droneMapper;
     }
 
-    /*
     public List<Drone> getAllDrones() {
         return droneMapper.getAllDrones();
     }
 
-    public Drone getDroneById(int id) {
+    public Drone getDroneById(String id) {
         return droneMapper.getDroneById(id);
     }
 
@@ -31,10 +32,9 @@ public class DroneService {
         droneMapper.updateDrone(drone);
     }
 
-    public void deleteDrone(int id) {
+    public void deleteDrone(String id) {
         droneMapper.deleteDrone(id);
     }
-    */
 
     public List<Map<String, Object>> getAllDronesWithWaypoints() {
         return droneMapper.getAllDronesWithWaypoints();
