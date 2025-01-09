@@ -1,53 +1,41 @@
-// Clebine.js
+// ClebineDetail.js
 import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Section from './Components/Section.js';
-import DataSection from './Components/DataSection.js';
-import Header from './Components/Header.js';
-import ThemeToggle from './Components/ThemeToggle.js';
+import { useParams, useNavigate } from 'react-router-dom';
+import Header from './Components/Header';
+import './Styles/ClebineDetail.css'
 
-const theme = createTheme();
+const ClebineDetail = ({ tableData }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-function Clebine({ tableData, onDelete, handleDataUploaded }) {
-  const [expandedSection, setExpandedSection] = React.useState(null);
-  const [selectedTint, setSelectedTint] = React.useState(null);
+  // tableData에서 해당 id의 데이터를 찾습니다.
+  const detailData = tableData.find(row => row.id === id);
 
-  const handleToggleSection = (index) => {
-    setExpandedSection(expandedSection === index ? null : index);
-    setSelectedTint(null);
-  };
-
-  const handleButtonClick = (tintColor) => {
-    setSelectedTint(tintColor);
-  };
+  if (!detailData) {
+    return (
+      <div>
+        <h2>해당 ID의 데이터를 찾을 수 없습니다: {id}</h2>
+        <button onClick={() => navigate(-1)} style={{ marginTop: "20px" }}>
+          뒤로가기
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <body className="planner">
+    <>
+        <div>
         <Header />
-        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", marginTop: "30px" }} />
-        <DataSection
-          tableData={tableData}
-          handleDelete={onDelete}
-          handleDataUploaded={handleDataUploaded}
-        />
-        <hr style={{ border: "1px solid rgb(36, 36, 36)", width: "100vw", margin: "0" }} />
-        <main className="main-container" style={{ position: "relative" }}>
-          {[0, 1, 2, 3].map((index) => (
-            <Section
-              key={index}
-              index={index}
-              expandedSection={expandedSection}
-              handleToggleSection={handleToggleSection}
-              selectedTint={selectedTint}
-              handleButtonClick={handleButtonClick}
-            />
-          ))}
-        </main>
-      </body>
-      <ThemeToggle/>
-    </ThemeProvider>
+        </div>
+        <div className='detail_body' style={{marginTop:'130px'}}>
+            <h2>ID: {id} 상세 페이지</h2>
+            <button className='backBtn' onClick={() => navigate(-1)}>
+                뒤로가기
+            </button>
+        </div>
+    </>
+    
   );
-}
+};
 
-export default Clebine;
+export default ClebineDetail;
