@@ -1,4 +1,3 @@
-// DataTable.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../Styles/DataTable.css";
@@ -164,19 +163,6 @@ const DataTable = ({ tableData, onDelete }) => {
     return "over30c";
   };
 
-  // 디버깅용 로그 추가
-  useEffect(() => {
-    console.log('DataTable props:', { tableData, onDelete });
-  }, [tableData, onDelete]);
-
-  const handleDeleteClick = (id) => {
-    if (typeof onDelete === 'function') {
-      onDelete(id);
-    } else {
-      console.error('onDelete is not a function');
-    }
-  };
-
   return (
     <div className="clebine-container">
       <h1 className="clebine-title">Clebine</h1>
@@ -227,7 +213,7 @@ const DataTable = ({ tableData, onDelete }) => {
                   <td>
                     <button
                       className="deleteBtn"
-                      onClick={() => handleDeleteClick(row.id)} // 수정된 부분
+                      onClick={() => onDelete(row.id)}
                     >
                       x
                     </button>
