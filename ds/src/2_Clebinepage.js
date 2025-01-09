@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
@@ -11,7 +11,6 @@ const theme = createTheme();
 function Clebine({ tableData, onDelete, handleDataUploaded }) {
   const [expandedSection, setExpandedSection] = React.useState(null);
   const [selectedTint, setSelectedTint] = React.useState(null);
-  const [error, setError] = useState(null); // Error state
 
   const handleToggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);
