@@ -71,6 +71,11 @@
 	        <artifactId>mysql-connector-java</artifactId>
 	        <version>8.0.33</version> <!-- MySQL 사용 시 -->
 	    </dependency>
+		<dependency>
+		    <groupId>com.microsoft.onnxruntime</groupId>
+		    <artifactId>onnxruntime</artifactId>
+		    <version>1.16.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
