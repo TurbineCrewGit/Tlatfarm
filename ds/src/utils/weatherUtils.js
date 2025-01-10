@@ -1,14 +1,40 @@
 // src/utils/weatherUtils.js
 
-export const getPowerBackgroundColor = (powerValue) => {
+export const getPowerBackgroundColor = (powerValue, mode) => {
+    console.log("powerValue:", powerValue, "mode:", mode); // 디버깅
     const value = parseFloat(powerValue);
-    if (value === 0) return "#141414";
-    if (value >= 1 && value <= 49) return "#941414";
-    if (value >= 50 && value <= 99) return "#945D14";
-    if (value >= 100 && value <= 149) return "#949414";
-    if (value >= 150) return "#469446";
+    
+    const colors = {
+      dark: {
+        zero: "rgb(20, 20, 20)", 
+        low: "rgb(148, 20, 20)",  
+        medium: "rgb(148, 93, 20)", 
+        high: "rgb(148, 148, 20)", 
+        veryHigh: "rgb(70, 148, 70)", 
+      },
+      light: {
+        zero: "rgb(151, 151, 151)", 
+        low: "rgb(242, 139, 130)",  
+        medium: "rgb(251, 188, 4)", 
+        high: "rgb(255, 244, 117)", 
+        veryHigh: "rgb(204, 255, 144)", 
+      },
+    };
+  
+    const currentColors = colors[mode]; // 현재 mode에 따른 색상 선택
+    if (!currentColors) {
+      console.error("Invalid mode:", mode); // mode가 유효하지 않을 경우 에러 확인
+      return ""; 
+    }
+  
+    if (value === 0) return currentColors.zero;
+    if (value >= 1 && value <= 49) return currentColors.low;
+    if (value >= 50 && value <= 99) return currentColors.medium;
+    if (value >= 100 && value <= 149) return currentColors.high;
+    if (value >= 150) return currentColors.veryHigh;
     return "";
   };
+  
   
   export const getWindDirectionImage = (windDirect) => {
     if (windDirect >= 22.5 && windDirect < 67.5) return "225_675";

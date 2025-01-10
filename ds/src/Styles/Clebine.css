@@ -19,7 +19,7 @@ html, body {
 /* CSS 변수 정의: 기본 라이트 모드 */
 :root {
   /* 주요 색상 */
-  --primary-color: #191919;
+  --primary-color: #a8a8a8;
   --secondary-color: #ffffff;
   --tertiary-color: #10aa10;
   --text-color: #e7e7e7;
@@ -30,20 +30,21 @@ html, body {
 
   --main-background: rgb(250, 250, 250);
   --table-header-background: var(--primary-color);
-  --table-header-text-color: #ffffff; /* 헤더 텍스트 색상 */
+  --table-header-text-color: black; /* 헤더 텍스트 색상 */
   --table-row-background: rgb(235, 235, 235);
   --table-row-text-color: rgb(10, 10, 10);
   --table-row-hover: var(--tertiary-color);
 
-  --distance-label-background: white;
+  /* --distance-label-background: white;
   --distance-label-border: var(--primary-color);
-  --distance-label-text: black;
+  --distance-label-text: black; */
 
   --button-disabled: white;
   --button-color: var(--primary-color);
   --button-hover-color: var(--tertiary-color);
 
   --map-filter: rgba(0, 0, 0, 0);
+  --detail-btn-color: blue;
 }
 
 /* 다크 모드 변수 */
@@ -59,9 +60,9 @@ body.dark-mode {
 
   --main-background: rgb(20, 20, 20);
   --table-header-background: #0f0f0f;
-  --table-header-text-color: #00b418;
+  --table-header-text-color: #00ec20;;
   --table-row-background: #0f0f0f;
-  --table-row-text-color: #00b418;
+  --table-row-text-color: #00ec20;;
   --table-row-hover: var(--tertiary-color);
 
   --distance-label-background: #ffffff;
@@ -73,6 +74,7 @@ body.dark-mode {
   --button-hover-color: var(--tertiary-color);
 
   --map-filter: rgba(0, 0, 0, 0.7);
+  --detail-btn-color: deepskyblue;
 }
 
 body.dark-mode .header {

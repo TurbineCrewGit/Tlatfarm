@@ -3,9 +3,9 @@ import React from "react";
 import WeatherInfo from './WeatherInfo';
 import { getPowerBackgroundColor } from '../utils/weatherUtils';
 
-const TableRow = ({ row, weatherData, onDelete, navigate }) => {
+const TableRow = ({ row, weatherData, onDelete, navigate, mode }) => {
   const powerValue = parseFloat(row.powerProduction);
-  const powerBackgroundColor = getPowerBackgroundColor(powerValue);
+  const powerBackgroundColor = getPowerBackgroundColor(powerValue, mode); // mode 전달
 
   const handleDetailClick = () => {
     navigate(`/clebinepage/${row.id}`);
