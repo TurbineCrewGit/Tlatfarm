@@ -56,12 +56,15 @@ function Clebine() {
   const handleDataUploaded = async (newData) => {
     try {
       // 백엔드에 새 데이터 저장
+      console.log("Uploading new data: ", newData);
       const uploadPromises = newData.map(async (data) => {
         const response = await axios.post('/api/smartpoles', data);
-        return response.data; // 서버에서 처리된 데이터 반환
+        console.log("Response data:", response.data); // 추가된 로그
+        return data; // 서버에서 처리된 데이터 반환. response.data를 반환하는 것이 아닌 data를 반환하기 때문에 추후 문제 발생 가능성 있음.
       });
   
       const uploadedData = await Promise.all(uploadPromises);
+      console.log("Uploaded data from server", uploadedData);
       setTableData(prevData => [...prevData, ...uploadedData]); // 서버에서 반환된 데이터로 상태 업데이트
       
     } catch (error) {

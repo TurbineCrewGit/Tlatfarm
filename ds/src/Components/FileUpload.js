@@ -49,6 +49,7 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
         } else {
           throw new Error('지원하지 않는 파일 형식입니다.');
         }
+        console.log("Parsed newData: ", newData);
 
         if (filterById && filterId) {
           newData = newData.filter((row) => row.id === filterId);
