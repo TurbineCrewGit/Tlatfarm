@@ -1,3 +1,4 @@
+// src/Components/FileUpload.js
 import React, { useState } from 'react';
 import { parseCSV, parseXLSX } from '../Components/FileParsing.js';
 import { checkDuplicateIds } from '../Components/CheckDuplicateIds.js';
@@ -28,45 +29,54 @@ const FileUpload = ({ onDataUploaded, tableData }) => {
   };
 
   const handleFileUpload = async (filterById = true) => {
-    if (selectedFile) {
-      const fileInput = document.querySelector('input[type="file"]');
-      if (fileInput && fileInput.files[0]) {
-        const file = fileInput.files[0];
-        try {
-          let newData;
-          if (file.name.toLowerCase().endsWith('.csv')) {
-            newData = await parseCSV(file);
-          } else if (
-            file.name.toLowerCase().endsWith('.xlsx') ||
-            file.name.toLowerCase().endsWith('.xls')
-          ) {
-            newData = await parseXLSX(file);
-          } else {
-            throw new Error('지원하지 않는 파일 형식입니다.');
-          }
+    if (!selectedFile) {
+      alert('파일을 선택해주세요.');
+      return;
+    }
 
-          if (filterById && filterId) {
-            newData = newData.filter((row) => row.id === filterId);
-            if (newData.length === 0) {
-              alert('해당 ID의 데이터를 찾을 수 없습니다.');
-              return;
-            }
-          }
-
-          const { duplicates, uniqueData } = checkDuplicateIds(newData, tableData);
-
-          if (uniqueData.length > 0) {
-            onDataUploaded(uniqueData); // Clebine 컴포넌트로 데이터 전달
-            if (!filterById) {
-              setFilterId('');
-            }
-          } else {
-            alert('추가할 수 있는 새로운 데이터가 없습니다.');
-          }
-        } catch (error) {
-          console.error('파일 처리 중 오류 발생:', error);
-          alert('파일 처리 중 오류가 발생했습니다.');
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      try {
+        let newData;
+        if (file.name.toLowerCase().endsWith('.csv')) {
+          newData = await parseCSV(file);
+        } else if (
+          file.name.toLowerCase().endsWith('.xlsx') ||
+          file.name.toLowerCase().endsWith('.xls')
+        ) {
+          newData = await parseXLSX(file);
+        } else {
+          throw new Error('지원하지 않는 파일 형식입니다.');
         }
+
+        if (filterById && filterId) {
+          newData = newData.filter((row) => row.id === filterId);
+          if (newData.length === 0) {
+            alert('해당 ID의 데이터를 찾을 수 없습니다.');
+            return;
+          }
+        }
+
+        const { duplicates, uniqueData } = checkDuplicateIds(newData, tableData);
+
+        if (duplicates.length > 0) {
+          const duplicateIds = duplicates.map((item) => item.id).join(', ');
+          alert(`다음 ID는 이미 존재하여 추가되지 않았습니다: ${duplicateIds}`);
+        }
+
+        if (uniqueData.length > 0) {
+          onDataUploaded(uniqueData); // Clebine 컴포넌트로 데이터 전달
+          if (!filterById) {
+            setFilterId('');
+          }
+          clearSelectedFile();
+        } else {
+          alert('추가할 수 있는 새로운 데이터가 없습니다.');
+        }
+      } catch (error) {
+        console.error('파일 처리 중 오류 발생:', error);
+        alert('파일 처리 중 오류가 발생했습니다.');
       }
     } else {
       alert('파일을 선택해주세요.');

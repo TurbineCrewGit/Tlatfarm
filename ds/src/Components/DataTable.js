@@ -1,26 +1,11 @@
+// src/Components/DataTable.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import "../Styles/DataTable.css";
 
-const DataTable = ({ onDelete }) => {
+const DataTable = ({ tableData, onDelete }) => {
   const navigate = useNavigate();
-  const [tableData, setTableData] = useState([]);
   const [weatherData, setWeatherData] = useState({});
-
-  // 백엔드에서 데이터를 가져오는 useEffect
-  useEffect(() => {
-    const fetchTableData = async () => {
-      try {
-        const response = await axios.get('/api/smartpoles');
-        setTableData(response.data); // API에서 가져온 데이터를 상태에 저장
-      } catch (error) {
-        console.error("Error fetching table data:", error);
-      }
-    };
-
-    fetchTableData();
-  }, []); // 빈 배열로 한 번만 실행되도록 설정
 
   // 날씨 데이터를 가져오는 useEffect
   useEffect(() => {

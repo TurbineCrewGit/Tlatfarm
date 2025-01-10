@@ -1,7 +1,8 @@
+// src/Clebine.js
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Section from './Components/Section.js';
-import DataSection from './Components/DataSection.js';
+import DataSection from './Components/DataSection.js'; // DataSection 유지
 import Header from './Components/Header.js';
 import ThemeToggle from './Components/ThemeToggle.js';
 import axios from 'axios';
@@ -52,13 +53,26 @@ function Clebine() {
   };
 
   // 데이터 업로드 핸들러
-  const handleDataUploaded = (newData) => {
-    setTableData((prevData) => [...prevData, ...newData]); // 기존 데이터에 새 데이터 추가
+  const handleDataUploaded = async (newData) => {
+    try {
+      // 백엔드에 새 데이터 저장
+      const uploadPromises = newData.map(async (data) => {
+        const response = await axios.post('/api/smartpoles', data);
+        return response.data; // 서버에서 처리된 데이터 반환
+      });
+  
+      const uploadedData = await Promise.all(uploadPromises);
+      setTableData(prevData => [...prevData, ...uploadedData]); // 서버에서 반환된 데이터로 상태 업데이트
+      
+    } catch (error) {
+      console.error('데이터 추가 중 오류 발생:', error);
+      alert('데이터 추가 실패');
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="planner">
+      <body className="planner">
         {/* 헤더 */}
         <Header />
 
@@ -85,7 +99,7 @@ function Clebine() {
 
         {/* 테마 토글 */}
         <ThemeToggle />
-      </div>
+      </body>
     </ThemeProvider>
   );
 }
