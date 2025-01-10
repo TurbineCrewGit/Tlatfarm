@@ -85,7 +85,6 @@ function Clebine() {
           handleDelete={handleDelete}
           handleDataUploaded={handleDataUploaded}
         />
-
         {/* 섹션 영역 */}
         <main className="main-container" style={{ position: "relative" }}>
           {[0, 1, 2, 3].map((index) => (
