@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from './Components/Header';
 import axios from 'axios';
 import './Styles/ClebineDetail.css';
+import ThemeToggle from './Components/ThemeToggle.js';
 
 const ClebineDetail = () => {
   const { id } = useParams();
@@ -49,18 +50,20 @@ const ClebineDetail = () => {
   return (
     <>
       <Header />
-      <div className='detail_body' style={{ marginTop: '130px' }}>
-        <h2>ID: {id} 상세 페이지</h2>
-        <button className='backBtn' onClick={() => navigate(-1)}>
-          뒤로가기
-        </button>
-        <div>
-          <p>전력 생산량: {detailData.powerProduction}</p>
-          <p>위도: {detailData.latitude}</p>
-          <p>경도: {detailData.longitude}</p>
-          {/* 필요에 따라 추가 정보 표시 */}
+      <div className='body'>
+        <div className='detail_body' style={{ marginTop: '150px' }}>
+          <h2>ID: {id} 상세 페이지</h2>
+          <button className='backBtn' onClick={() => navigate(-1)}>
+            뒤로가기
+          </button>
+          <div>
+            <p>전력 생산량: {detailData.powerProduction}</p>
+            <p>위도: {detailData.latitude}</p>
+            <p>경도: {detailData.longitude}</p>
+          </div>
         </div>
       </div>
+      <ThemeToggle />
     </>
   );
 };
