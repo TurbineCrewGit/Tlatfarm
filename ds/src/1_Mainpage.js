@@ -43,6 +43,7 @@ function MainPage() {
     
     useEffect(() => {
         const fetchData = async () => {
+            console.log("데이터 로드 시작");
             try {
                 // Clebine 데이터 로드
                 const smartPoles = await loadSmartPoleData();
@@ -57,7 +58,7 @@ function MainPage() {
         };
 
         fetchData();
-    }, []);
+    }, [setFilterID]);
 
 
     // Visibility 토글
