@@ -7,6 +7,20 @@ import TableRow from './TableRow';
 const DataTable = ({ tableData, onDelete }) => {
   const navigate = useNavigate();
   const [weatherData, setWeatherData] = useState({});
+  const [isDarkMode, setIsDarkMode] = useState(false); // 다크 모드 상태 감지
+
+  // 다크 모드 상태 감지
+  useEffect(() => {
+      const handleDarkModeChange = () => {
+          setIsDarkMode(document.body.classList.contains('dark-mode'));
+      };
+
+      handleDarkModeChange(); // 초기 다크 모드 상태 확인
+      const observer = new MutationObserver(handleDarkModeChange);
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+      return () => observer.disconnect();
+  }, []);
 
   // 날씨 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -41,6 +55,7 @@ const DataTable = ({ tableData, onDelete }) => {
     }
   }, [tableData]);
 
+  console.log('isDarkMode changed: ', isDarkMode);
   return (
     <div className="clebine-container">
       <h1 className="clebine-title">Clebine</h1>
@@ -71,6 +86,7 @@ const DataTable = ({ tableData, onDelete }) => {
                 weatherData={weatherData[row.id]}
                 onDelete={onDelete}
                 navigate={navigate}
+                mode={isDarkMode ? 'dark' : 'light'}
               />
             ))
           )}

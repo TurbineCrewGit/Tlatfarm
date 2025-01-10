@@ -1,7 +1,5 @@
-// src/utils/weatherUtils.js
-
-export const getPowerBackgroundColor = (powerValue, mode) => {
-    console.log("powerValue:", powerValue, "mode:", mode); // 디버깅
+export const getPowerBackgroundColor = (powerValue, mode = 'light') => { // mode의 기본값을 'light'로 설정
+    console.log("powerValue:", powerValue, "mode:", mode);
     const value = parseFloat(powerValue);
     
     const colors = {
@@ -21,11 +19,8 @@ export const getPowerBackgroundColor = (powerValue, mode) => {
       },
     };
   
-    const currentColors = colors[mode]; // 현재 mode에 따른 색상 선택
-    if (!currentColors) {
-      console.error("Invalid mode:", mode); // mode가 유효하지 않을 경우 에러 확인
-      return ""; 
-    }
+    // mode가 undefined일 경우 'light' 모드를 사용
+    const currentColors = colors[mode] || colors['light'];
   
     if (value === 0) return currentColors.zero;
     if (value >= 1 && value <= 49) return currentColors.low;
@@ -33,7 +28,7 @@ export const getPowerBackgroundColor = (powerValue, mode) => {
     if (value >= 100 && value <= 149) return currentColors.high;
     if (value >= 150) return currentColors.veryHigh;
     return "";
-  };
+};
   
   
   export const getWindDirectionImage = (windDirect) => {

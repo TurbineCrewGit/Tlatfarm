@@ -20,61 +20,37 @@ html, body {
 :root {
   /* 주요 색상 */
   --primary-color: #a8a8a8;
-  --secondary-color: #ffffff;
-  --tertiary-color: #10aa10;
-  --text-color: #e7e7e7;
-  --sub-text-color: black;
 
   --border-radius: 5px;        /* 테두리 반경 */
   --transition-speed: 0.3s;    /* 전환 속도 */
 
-  --main-background: rgb(250, 250, 250);
   --table-header-background: var(--primary-color);
   --table-header-text-color: black; /* 헤더 텍스트 색상 */
   --table-row-background: rgb(235, 235, 235);
   --table-row-text-color: rgb(10, 10, 10);
-  --table-row-hover: var(--tertiary-color);
-
-  /* --distance-label-background: white;
-  --distance-label-border: var(--primary-color);
-  --distance-label-text: black; */
 
   --button-disabled: white;
-  --button-color: var(--primary-color);
-  --button-hover-color: var(--tertiary-color);
-
-  --map-filter: rgba(0, 0, 0, 0);
   --detail-btn-color: blue;
+
+  --weather-info-row: rgb(235, 235, 235);
 }
 
 /* 다크 모드 변수 */
 body.dark-mode {
-  --primary-color: #103310;
-  --secondary-color: rgb(10, 10, 10);
-  --tertiary-color: #106610;
-  --text-color: #e7e7e7;
-  --sub-text-color: #e7e7e7;
+  --primary-color: #333;
 
   --border-radius: 5px;        /* 테두리 반경 */
   --transition-speed: 0.3s;    /* 전환 속도 */
 
-  --main-background: rgb(20, 20, 20);
-  --table-header-background: #0f0f0f;
+  --table-header-background: var(--primary-color);
   --table-header-text-color: #00ec20;;
-  --table-row-background: #0f0f0f;
-  --table-row-text-color: #00ec20;;
-  --table-row-hover: var(--tertiary-color);
-
-  --distance-label-background: #ffffff;
-  --distance-label-border: var(--primary-color);
-  --distance-label-text: #1a1a2e;
+  --table-row-background: #2b2b2b;
+  --table-row-text-color: #00ec20;
 
   --button-disabled: rgb(37, 37, 37);
-  --button-color: var(--primary-color);
-  --button-hover-color: var(--tertiary-color);
-
-  --map-filter: rgba(0, 0, 0, 0.7);
   --detail-btn-color: deepskyblue;
+
+  --weather-info-row: rgb(235, 235, 235);
 }
 
 body.dark-mode .header {

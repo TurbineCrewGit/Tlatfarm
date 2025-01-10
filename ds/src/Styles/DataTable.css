@@ -2,47 +2,8 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
-/* 라이트 모드 및 다크 모드 변수 설정 */
-/* :root {
-    --primary-color: #a8a8a8;
-    --secondary-color: #f0f0f0;
-    --text-color: #333333;
-    --sub-text-color: #666666;
-
-    --border-radius: 8px;
-    --transition-speed: 0.3s;
-
-    --main-background: #ffffff;
-    --table-header-background: #0078d4;
-    --table-header-text-color: black;
-    --table-row-background: #f9f9f9;
-    --table-row-text-color: #333333;
-    --table-row-hover: #e1f5fe;
-
-    --button-color: #0078d4;
-    --button-hover-color: #005a9e;
-}
-
-body.dark-mode {
-    --primary-color: #333333;
-    --secondary-color: #1a1a1a;
-    --text-color: #e7e7e7;
-    --sub-text-color: #cccccc;
-
-    --main-background: #1a1a1a;
-    --table-header-background: #444444;
-    --table-header-text-color: #00ff44;
-    --table-row-background: #2a2a2a;
-    --table-row-text-color: #ffffff;
-    --table-row-hover: #333333;
-
-    --button-color: #00b418;
-    --button-hover-color: #007a12;
-} */
 
 body {
-    background-color: var(--main-background);
-    color: var(--text-color);
     font-family: 'Arial', sans-serif;
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
@@ -113,7 +74,7 @@ body {
 }
 
 .weatherColumn {
-    background-color: gray !important;
+    background-color: var(--weather-info-row) !important;
 }
 
 /* 데이터 행 스타일 */
