@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MenuBar from './MenuBar';
 import ThemeToggle from "./Components/ThemeToggle.js";
@@ -43,21 +43,28 @@ function MainPage() {
     
     useEffect(() => {
         const fetchData = async () => {
+            console.log("데이터 로드 시작");
             try {
                 // Clebine 데이터 로드
                 const smartPoles = await loadSmartPoleData();
-                setSmartPoleData(smartPoles);
-
+                if(JSON.stringify(smartPoleData) !== JSON.stringify(smartPoles)){
+                    setSmartPoleData(smartPoles);
+                }
+                
                 // 드론 데이터 로드
                 const drone = await loadDroneData();
-                setDroneData(drone);
+                if(JSON.stringify(droneData) !== JSON.stringify(drone)){
+                    setDroneData(drone);
+                }
             } catch (error) {
                 console.error("데이터 로드 실패:", error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [filterID]);
+
+    
 
 
     // Visibility 토글
@@ -86,16 +93,22 @@ function MainPage() {
         );
     };
 
-    // 모든 ID를 기본적으로 filterID에 추가
-    useEffect(() => {
-        if (smartPoleData.length > 0 || droneData.length > 0) {
-            const allIDs = [
-                ...smartPoleData.map((row) => `clebine-${row.id}`),
-                ...droneData.map((drone) => `drone-${drone.droneId}`),
-            ];
-            setFilterID(allIDs); // filterID를 모든 ID로 초기화
-        }
+    // useMemo를 사용하여 filterID 계산
+    const memoizedFilterID = useMemo(() => {
+        if (smartPoleData.length === 0 && droneData.length === 0) return filterID;
+
+        const allIDs = [
+            ...smartPoleData.map((row) => `clebine-${row.id}`),
+            ...droneData.map((drone) => `drone-${drone.droneId}`),
+        ];
+
+        return allIDs;
     }, [smartPoleData, droneData]);
+
+    // filterID 상태 업데이트
+    useEffect(() => {
+        setFilterID(memoizedFilterID);
+    }, [memoizedFilterID]);
 
     return (
         <ThemeProvider theme={theme}>

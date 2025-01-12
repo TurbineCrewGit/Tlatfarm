@@ -1,4 +1,18 @@
+body.dark-mode {
+    background: #3B4346 url("images/bg01.jpg");
+    transition: 0.3s ease;
+}
+
+body {
+    background: #101010 url("images/ddd.png");
+    transition: 0.3s ease;
+}
+
 .detail_body {
-    padding: 20px;
-    color: black;
+    background: transparent;
+    display: inline-block;
+    padding: 10px; /* 내부 여백을 추가해서 보기 좋게 설정 */
+    margin: 0 auto; /* 가운데 정렬 (부모 요소의 너비에 따라 조정) */
+    max-width: 100%; /* 부모 요소를 넘어가지 않도록 설정 */
+    box-sizing: border-box; /* 패딩 포함 크기 계산 */
 }
