@@ -1,9 +1,11 @@
+// src/ClebineDetail.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Components/Header';
 import ThemeToggle from './Components/ThemeToggle';
 import './Styles/ClebineDetail.css';
+import './utils/weatherUtils.js'
 
 const ClebineDetail = () => {
   const { id } = useParams();
@@ -12,25 +14,35 @@ const ClebineDetail = () => {
   const [detailData, setDetailData] = useState(null);
   const [error, setError] = useState(null);
   const [energyPrediction, setEnergyPrediction] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
+  const [predictionError, setPredictionError] = useState(null); // 에너지 예측 오류 상태
 
   // 에너지 예측값 로딩
   useEffect(() => {
-    const fetchPrediction = async () => {
-      try {
-        const inputData = [20.5, 300, 5.5, 0.2]; // 예시 입력값 배열, 전 페이지에서 받아오기
-        // 순서대로 온도, 습도, 풍향, 강수량 (임시 데이터)
-        const response = await axios.post('http://localhost:8080/predict/energy', inputData, {
-          headers: { 'Content-Type': 'application/json' },
-        });
-        setEnergyPrediction(response.data);
-      } catch (err) {
-        console.error('API 호출 중 오류 발생:', err);
-        setError(err.message);
-      }
-    };
+    // weatherData가 존재할 때만 예측값을 가져옵니다.
+    if (weatherData) {
+      const fetchPrediction = async () => {
+        try {
+          const inputData = [
+            parseFloat(weatherData.temperature),
+            parseFloat(weatherData.windDirect),
+            parseFloat(weatherData.humidity),
+            parseFloat(weatherData.rainfall)
+          ]; // 입력값 배열: 온도, 풍향, 습도, 강수량
+          const response = await axios.post('http://localhost:8080/predict/energy', inputData, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+          setEnergyPrediction(response.data);
+          setPredictionError(null); // 성공 시 오류 상태 초기화
+        } catch (err) {
+          console.error('API 호출 중 오류 발생:', err);
+          setPredictionError(err.message);
+        }
+      };
 
-    fetchPrediction();
-  }, []);
+      fetchPrediction();
+    }
+  }, [weatherData]); // weatherData가 변경될 때마다 실행
 
   // 스마트폴 데이터 로딩
   useEffect(() => {
@@ -47,6 +59,36 @@ const ClebineDetail = () => {
     fetchDetailData();
   }, [id]);
 
+  // 날씨 데이터 로딩
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const response = await fetch(`${process.env.PUBLIC_URL}/${id}.csv`);
+        const csvText = await response.text();
+
+        const lines = csvText.split('\n');
+        if (lines.length > 1) {
+          const latestData = lines[1].split(',');
+          setWeatherData({
+            temperature: latestData[2],
+            humidity: latestData[3],
+            windDirect: parseFloat(latestData[5]),
+            windSpeed: `${latestData[4]}m/s`,
+            rainfall: latestData[8],
+          });
+        } else {
+          setWeatherData(null); // 데이터가 없을 경우 null 설정
+        }
+      } catch (error) {
+        console.error(`ID ${id}의 CSV 로딩 오류:`, error);
+        setWeatherData(null); // 오류 발생 시 null 설정
+      }
+    };
+
+    fetchWeatherData();
+  }, [id]);
+
+  // 전체 에러 상태가 아닌 개별 에러 상태 사용
   if (error) {
     return (
       <div>
@@ -79,17 +121,37 @@ const ClebineDetail = () => {
               <p>경도: {detailData.longitude}</p>
             </div>
 
-            <div className='predictContainer'>
-              <h3>{id} 에너지 예측 결과</h3>
-              {energyPrediction ? (
-                <div style={{ marginTop: '10px' }}>
-                  <p>태양광 발전량: {energyPrediction[0]}</p>
-                  <p>풍력 발전량: {energyPrediction[1]}</p>
+            <div className='weatherInfoContainer'>
+              <h3>날씨 정보</h3>
+              {weatherData ? (
+                <div className="weather-text">
+                  <p>온도: {weatherData.temperature}°C</p>
+                  <p>습도: {weatherData.humidity}%</p>
+                  <p>풍향: {weatherData.windDirect}°</p>
+                  <p>풍속: {weatherData.windSpeed}</p>
+                  <p>강수량: {weatherData.rainfall}mm</p>
                 </div>
               ) : (
-                <p>예측 데이터를 로드 중...</p>
+                <p>-</p>
               )}
+            </div>
 
+            <div className='predictContainer'>
+              <h3>{id} 에너지 예측 결과</h3>
+              {weatherData ? (
+                predictionError ? (
+                  <p>-</p>
+                ) : energyPrediction ? (
+                  <div style={{ marginTop: '10px' }}>
+                    <p>태양광 발전량: {energyPrediction[0]}</p>
+                    <p>풍력 발전량: {energyPrediction[1]}</p>
+                  </div>
+                ) : (
+                  <p>예측 데이터를 로드 중...</p>
+                )
+              ) : (
+                <p>-</p>
+              )}
             </div>
           </div>
           

@@ -7,6 +7,7 @@ const WeatherInfo = ({ data }) => {
 
   const { windDirect, humidity, rainfall, temperature, windSpeed } = data;
 
+  
   return (
     <div className="weather-column">
       {/* 풍향 */}

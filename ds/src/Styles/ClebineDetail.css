@@ -28,7 +28,7 @@ body {
     box-sizing: border-box; /* 패딩 포함 크기 계산 */
 
 }
-.detailContainer, .predictContainer {
+.detailContainer, .predictContainer, .weatherInfoContainer {
     background-color: var(--table-row-background);
     border: 1px solid var(--table-header-text-color);
     padding: 10px;
