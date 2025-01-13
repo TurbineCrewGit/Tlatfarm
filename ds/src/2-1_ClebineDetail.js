@@ -72,25 +72,28 @@ const ClebineDetail = () => {
       <div className='body'>
         <div className='detail_body' style={{ marginTop: '150px' }}>
           <h2 id='detail-title'>ID: {id} 상세 페이지</h2>
-          <div className='detailContainer'>
-            <p>전력 생산량: {detailData.powerProduction}</p>
-            <p>위도: {detailData.latitude}</p>
-            <p>경도: {detailData.longitude}</p>
-          </div>
+          <div className='infoContainer'>
+            <div className='detailContainer'>
+              <p>전력 생산량: {detailData.powerProduction}</p>
+              <p>위도: {detailData.latitude}</p>
+              <p>경도: {detailData.longitude}</p>
+            </div>
 
-          <div className='predictContainer'>
-            <h3>{id} 에너지 예측 결과</h3>
-            {energyPrediction ? (
-              <div style={{ marginTop: '10px' }}>
-                <p>태양광 발전량: {energyPrediction[0]}</p>
-                <p>풍력 발전량: {energyPrediction[1]}</p>
-              </div>
-            ) : (
-              <p>예측 데이터를 로드 중...</p>
-            )}
-            
+            <div className='predictContainer'>
+              <h3>{id} 에너지 예측 결과</h3>
+              {energyPrediction ? (
+                <div style={{ marginTop: '10px' }}>
+                  <p>태양광 발전량: {energyPrediction[0]}</p>
+                  <p>풍력 발전량: {energyPrediction[1]}</p>
+                </div>
+              ) : (
+                <p>예측 데이터를 로드 중...</p>
+              )}
+
+            </div>
           </div>
-          <button onClick={() => navigate(-1)} style={{ marginTop: '20px' }}>
+          
+          <button id='backBtn' onClick={() => navigate(-1)} style={{ marginTop: '20px' }}>
             뒤로가기
           </button>
         </div>
