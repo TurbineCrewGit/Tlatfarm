@@ -13,7 +13,7 @@ const WeatherInfo = ({ data }) => {
       <WeatherIcon
         type="wind"
         value={windDirect}
-        additionalInfo={`풍속: ${windSpeed}`}
+        additionalInfo={`풍향: ${windDirect}°`}
       />
       {/* 습도 */}
       <WeatherIcon

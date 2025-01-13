@@ -81,7 +81,7 @@ html, body {
 :root {
   /* 주요 색상 */
   --primary-color: #191919;
-  --secondary-color: #ffffff;
+  --secondary-color: #ffffff url(./images/ddd.png);
   --tertiary-color:#10aa10;
   --text-color: #e7e7e7;
   --sub-text-color: black;
@@ -111,7 +111,7 @@ html, body {
 body.dark-mode {
   background: #3B4346 url("images/bg01.jpg");
   --primary-color: #103310;
-  --secondary-color: rgb(10, 10, 10);
+  --secondary-color: #3B4346 url("images/bg01.jpg");
   --tertiary-color:#106610;
   --text-color: #e7e7e7;
   --sub-text-color: #e7e7e7;
