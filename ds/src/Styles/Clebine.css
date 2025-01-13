@@ -28,6 +28,8 @@ html, body {
   --table-header-text-color: black; /* 헤더 텍스트 색상 */
   --table-row-background: rgb(235, 235, 235);
   --table-row-text-color: rgb(10, 10, 10);
+  --bar-color: #8884d8;
+  --bar-sub-color: #82ca9d;
 
   --button-disabled: white;
   --detail-btn-color: blue;
@@ -48,6 +50,9 @@ body.dark-mode {
   --table-header-text-color: #00ec20;;
   --table-row-background: #2b2b2b;
   --table-row-text-color: #00ec20;
+
+  --bar-color: #00ec20;
+  --bar-sub-color: deepskyblue;
 
   --button-disabled: rgb(37, 37, 37);
   --detail-btn-color: deepskyblue;
@@ -288,4 +293,13 @@ body.dark-mode .section {
 
 #expandImg:hover {
   width: 20px;
+}
+
+.section-container {
+  background-color: var(--table-row-background);
+}
+
+.section-title {
+  color: var(--table-header-text-color);
+  font-size: 24px;
 }

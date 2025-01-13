@@ -15,7 +15,6 @@ function Section({
 
   const getSectionStyle = (index) => {
     const baseStyle = {
-      backgroundColor: "white",
       transition: "all 0.3s ease",
       overflow: "hidden",
       position: "relative",
@@ -23,7 +22,7 @@ function Section({
       width: "500px",
       height: "400px",
       margin: "20px auto",
-      border: "1px solid #ccc",
+      border: "none",
       borderRadius: "10px",
     };
 
@@ -57,22 +56,6 @@ function Section({
     }
 
     return baseStyle;
-  };
-
-  const getImageStyle = () => {
-    if (expandedSection === index) {
-      switch (selectedTint) {
-        case "red":
-          return { filter: "sepia(100%) saturate(200%) hue-rotate(0deg)" };
-        case "orange":
-          return { filter: "sepia(100%) saturate(200%) hue-rotate(30deg)" };
-        case "yellow":
-          return { filter: "sepia(100%) saturate(200%) hue-rotate(60deg)" };
-        default:
-          return {};
-      }
-    }
-    return {};
   };
 
   // 데이터 준비
@@ -174,7 +157,7 @@ function Section({
     <div className="section-container" style={getSectionStyle(index)}>
       {/* 섹션 제목 부분 */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 style={{ color: "black", fontSize: "24px", fontWeight: "bold" }}>{sectionTitle}</h2>
+        <h2 className='section-title'>{sectionTitle}</h2>
       </div>
 
       {/* 그래프 또는 '-' 표시 */}
@@ -183,25 +166,25 @@ function Section({
       </div>
 
       {/* 버튼 부분 */}
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
+      <div>
         <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
           <img
             id='expandImg'
             src={expandIcon}
             alt='확장 버튼'
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "15px", height: "15px" }}
           />
         </button>
       </div>
 
       {/* 확장 시 버튼 표시 */}
-      {expandedSection === index && (
+      {/* {expandedSection === index && (
         <div style={{ position: "absolute", bottom: "5px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "30px" }}>
           <button onClick={() => handleButtonClick("red")}>일봉</button>
           <button onClick={() => handleButtonClick("orange")}>주봉</button>
           <button onClick={() => handleButtonClick("yellow")}>월봉</button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
