@@ -1,10 +1,10 @@
 body.dark-mode {
-    background: #3B4346 url("images/bg01.jpg");
+    background: #3B4346 url("images/bg01.jpg") !important;
     transition: 0.3s ease;
 }
 
 body {
-    background: #101010 url("images/ddd.png");
+    background: #101010 url("images/ddd.png") !important;
     transition: 0.3s ease;
 }
 
@@ -15,4 +15,20 @@ body {
     margin: 0 auto; /* 가운데 정렬 (부모 요소의 너비에 따라 조정) */
     max-width: 100%; /* 부모 요소를 넘어가지 않도록 설정 */
     box-sizing: border-box; /* 패딩 포함 크기 계산 */
+}
+.detailContainer {
+    border: 1px solid var(--table-header-text-color);
+    padding: 10px;
+    color: var(--table-header-text-color);
+}
+
+.predictContainer {
+    border: 1px solid var(--table-header-text-color);
+    padding: 10px;
+    margin-top: 15px;
+    color: var(--table-header-text-color);
+}
+
+#detail-title {
+    color: var(--table-header-text-color);
 }
