@@ -1,18 +1,17 @@
+// src/Components/Section.js
 import React from 'react';
-import graph from '../Styles/image/graph.png';
-import graph2 from '../Styles/image/graph2.png';
 import expandIcon from '../Styles/image/expand_button.png';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function Section({
   index,
+  sectionTitle,
   expandedSection,
   handleToggleSection,
   selectedTint,
   handleButtonClick,
+  data, // 배열 형태의 집계된 날씨 데이터 [{id, temperature, humidity, windDirect, windSpeed, rainfall}, ...]
 }) {
-
-  // 섹션 이름 배열 (풍향, 풍속, 습도, 강수량 등)
-  const sectionTitles = ["풍향/풍속", "습도", "강수량", "기온"];
 
   const getSectionStyle = (index) => {
     const baseStyle = {
@@ -21,6 +20,11 @@ function Section({
       overflow: "hidden",
       position: "relative",
       transformOrigin: "top left",
+      width: "500px",
+      height: "400px",
+      margin: "20px auto",
+      border: "1px solid #ccc",
+      borderRadius: "10px",
     };
 
     if (expandedSection === index) {
@@ -29,7 +33,6 @@ function Section({
         { top: "10%", left: "-40%" },
         { top: "-40%", left: "10%" },
         { top: "-37%", left: "-40%" },
-        
       ];
 
       const { top, left } = positionOffsets[index] || { top: "30%", left: "40%" };
@@ -38,7 +41,7 @@ function Section({
         ...baseStyle,
         top,
         left,
-        transform: "scale(1.7)", 
+        transform: "scale(1.7)",
         zIndex: 1000,
         padding: "20px",
         paddingBottom: "35px",
@@ -72,34 +75,126 @@ function Section({
     return {};
   };
 
+  // 데이터 준비
+  let chartData = [];
+  let chartContent = null;
+
+  switch (sectionTitle) {
+    case "풍향/풍속":
+      if (data.length > 0 && data.some(item => !isNaN(item.windDirect) && !isNaN(item.windSpeed))) {
+        chartData = data.map(item => ({
+          name: item.id, // 폴의 ID 사용
+          windDirect: item.windDirect,
+          windSpeed: item.windSpeed
+        }));
+        chartContent = (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="windDirect" fill="#8884d8" name="풍향 (°)" />
+              <Bar dataKey="windSpeed" fill="#82ca9d" name="풍속 (m/s)" />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      } else {
+        chartContent = <p>-</p>;
+      }
+      break;
+    case "습도":
+      if (data.length > 0 && data.some(item => !isNaN(item.humidity))) {
+        chartData = data.map(item => ({
+          name: item.id, // 폴의 ID 사용
+          humidity: item.humidity
+        }));
+        chartContent = (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="humidity" fill="#8884d8" name="습도 (%)" />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      } else {
+        chartContent = <p>-</p>;
+      }
+      break;
+    case "강수량":
+      if (data.length > 0 && data.some(item => !isNaN(item.rainfall))) {
+        chartData = data.map(item => ({
+          name: item.id, // 폴의 ID 사용
+          rainfall: item.rainfall
+        }));
+        chartContent = (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="rainfall" fill="#8884d8" name="강수량 (mm)" />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      } else {
+        chartContent = <p>-</p>;
+      }
+      break;
+    case "기온":
+      if (data.length > 0 && data.some(item => !isNaN(item.temperature))) {
+        chartData = data.map(item => ({
+          name: item.id, // 폴의 ID 사용
+          temperature: item.temperature
+        }));
+        chartContent = (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="temperature" fill="#8884d8" name="온도 (°C)" />
+            </BarChart>
+          </ResponsiveContainer>
+        );
+      } else {
+        chartContent = <p>-</p>;
+      }
+      break;
+    default:
+      chartContent = <p>-</p>;
+  }
+
   return (
-    <div key={index} className="section" style={getSectionStyle(index)}>
+    <div className="section-container" style={getSectionStyle(index)}>
       {/* 섹션 제목 부분 */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 style={{ color: "black", fontSize: "24px", fontWeight: "bold" }}>{sectionTitles[index]}</h2>
-   
+        <h2 style={{ color: "black", fontSize: "24px", fontWeight: "bold" }}>{sectionTitle}</h2>
       </div>
 
-      {/* 그래프 이미지 */}
-      <div style={{ textAlign: "center" }}>
-        <img
-          src={index % 2 === 0 ? graph : graph2}
-          alt={`graph${index + 1}`}
-          width="400px"
-          style={getImageStyle()}
-        />
+      {/* 그래프 또는 '-' 표시 */}
+      <div style={{ textAlign: "center", width: "100%", height: "250px" }}>
+        {chartContent}
       </div>
 
       {/* 버튼 부분 */}
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
-          <img id='expandImg'
+          <img
+            id='expandImg'
             src={expandIcon}
             alt='확장 버튼'
+            style={{ width: "30px", height: "30px" }}
           />
         </button>
       </div>
 
+      {/* 확장 시 버튼 표시 */}
       {expandedSection === index && (
         <div style={{ position: "absolute", bottom: "5px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "30px" }}>
           <button onClick={() => handleButtonClick("red")}>일봉</button>
