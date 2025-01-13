@@ -9,7 +9,6 @@ body {
 }
 
 .detail_body {
-    background: transparent;
     display: inline-block;
     padding: 10px; /* 내부 여백을 추가해서 보기 좋게 설정 */
     margin: 0 auto; /* 가운데 정렬 (부모 요소의 너비에 따라 조정) */
