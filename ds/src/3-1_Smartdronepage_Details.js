@@ -9,19 +9,19 @@ import Draggable from "react-draggable";
 import "./Styles/App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Header from './Components/Header.js';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Header from "./Components/Header.js";
 import ThemeToggle from "./Components/ThemeToggle.js";
-import MapComponent from './Components/MapComponents.js';
-import useMarkers from './Components/useMarkers.js';
-import MarkerTable from './Components/MarkerTable.js';
-import { API_BASE_URL } from './Components/constants.js';
-
+import MapComponent from "./Components/MapComponents.js";
+import useMarkers from "./Components/useMarkers.js";
+import MarkerTable from "./Components/MarkerTable.js";
+import DraggableRemoteControlPanel from "./Components/DraggableRemoteControlPanel";
+import DroneMenu from "./Components/DroneMenu.js";
+import { API_BASE_URL } from "./Components/constants.js";
 
 const theme = createTheme();
 
 function SmartDrone_Details() {
-
   const { id } = useParams(); // URL에서 id 가져오기
 
   const mapRef = useRef(null);
@@ -50,7 +50,6 @@ function SmartDrone_Details() {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [isControllerOpen, setIsControllerOpen] = useState(true);
 
-
   const toggleControllerContent = () => {
     setIsControllerOpen((prev) => !prev);
   };
@@ -64,7 +63,10 @@ function SmartDrone_Details() {
     }
 
     try {
-      const response = await axios.post(`${API_BASE_URL}`, { coordinates, port: inputPort });
+      const response = await axios.post(`${API_BASE_URL}`, {
+        coordinates,
+        port: inputPort,
+      });
       console.log("서버 응답:", response.data);
       toast.success("데이터가 성공적으로 전송되었습니다!");
     } catch (error) {
@@ -74,23 +76,24 @@ function SmartDrone_Details() {
   }, [coordinates, inputPort]);
 
   // 명령 전송
-  const sendCommandToServer = useCallback(async (command) => {
-    if (!inputPort) {
-      alert("포트 번호를 입력해 주세요.");
-      return;
-    }
+  const sendCommandToServer = useCallback(
+    async (command) => {
+      if (!inputPort) {
+        alert("포트 번호를 입력해 주세요.");
+        return;
+      }
 
-    try {
-      const response = await axios.post(`${API_BASE_URL}`, { command });
-      console.log("서버 응답:", response.data);
-      toast.success("명령이 성공적으로 전송되었습니다!");
-    } catch (error) {
-      console.error("명령 전송 실패:", error);
-      toast.error("명령 전송에 실패했습니다. 다시 시도해주세요.");
-    }
-  }, [coordinates, inputPort]);
-
-
+      try {
+        const response = await axios.post(`${API_BASE_URL}`, { command });
+        console.log("서버 응답:", response.data);
+        toast.success("명령이 성공적으로 전송되었습니다!");
+      } catch (error) {
+        console.error("명령 전송 실패:", error);
+        toast.error("명령 전송에 실패했습니다. 다시 시도해주세요.");
+      }
+    },
+    [coordinates, inputPort]
+  );
 
   // 최적화 함수
   const optimizeMarkers = useCallback(() => {
@@ -104,11 +107,13 @@ function SmartDrone_Details() {
     setLoadingFixed(false); // 초기 상태
 
     // 비동기 작업으로 최적화 처리
-    setTimeout(() => { // 실제로는 복잡한 계산이 필요할 수 있으므로 예시로 setTimeout 사용
+    setTimeout(() => {
+      // 실제로는 복잡한 계산이 필요할 수 있으므로 예시로 setTimeout 사용
       // 초기 경로: 현재 좌표 순서
       let optimized = [...coordinates];
 
-      const calculateTotalDistance = mapComponentRef.current.calculateTotalDistance;
+      const calculateTotalDistance =
+        mapComponentRef.current.calculateTotalDistance;
 
       // 2-opt 알고리즘 적용
       const twoOpt = () => {
@@ -143,19 +148,137 @@ function SmartDrone_Details() {
 
       optimized = twoOpt();
 
+      // 브루트 포스 알고리즘 적용
+      // const bruteForce = () => {
+      //   const permute = (arr, l, r) => {
+      //     if (l === r) {
+      //       const currentDistance = calculateTotalDistance(arr);
+      //       if (currentDistance < bestDistance) {
+      //         bestDistance = currentDistance;
+      //         bestRoute = [...arr];
+      //       }
+      //     } else {
+      //       for (let i = l; i <= r; i++) {
+      //         [arr[l], arr[i]] = [arr[i], arr[l]];
+      //         permute(arr, l + 1, r);
+      //         [arr[l], arr[i]] = [arr[i], arr[l]]; // backtrack
+      //       }
+      //     }
+      //   };
+
+      //   let bestDistance = Infinity;
+      //   let bestRoute = [...optimized];
+      //   permute(optimized, 0, optimized.length - 1);
+      //   return bestRoute;
+      // };
+
+      // optimized = bruteForce();
+
+      // // 유전 알고리즘 적용
+      // const geneticAlgorithm = () => {
+      //   const populationSize = 100;
+      //   const generations = 500;
+      //   const mutationRate = 0.01;
+
+      //   const createIndividual = () => {
+      //     return optimized.slice().sort(() => Math.random() - 0.5);
+      //   };
+
+      //   const createPopulation = () => {
+      //     return Array.from({ length: populationSize }, createIndividual);
+      //   };
+
+      //   const calculateFitness = (individual) => {
+      //     return 1 / calculateTotalDistance(individual);
+      //   };
+
+      //   const selectParents = (population) => {
+      //     const fitnesses = population.map(calculateFitness);
+      //     const totalFitness = fitnesses.reduce((a, b) => a + b, 0);
+      //     const probabilities = fitnesses.map(
+      //       (fitness) => fitness / totalFitness
+      //     );
+
+      //     const selectOne = () => {
+      //       let r = Math.random();
+      //       let index = 0;
+      //       while (r > 0) {
+      //         r -= probabilities[index];
+      //         index++;
+      //       }
+      //       return population[index - 1];
+      //     };
+
+      //     return [selectOne(), selectOne()];
+      //   };
+
+      //   const crossover = (parent1, parent2) => {
+      //     const start = Math.floor(Math.random() * parent1.length);
+      //     const end =
+      //       start + Math.floor(Math.random() * (parent1.length - start));
+      //     const child = parent1.slice(start, end);
+
+      //     parent2.forEach((gene) => {
+      //       if (!child.includes(gene)) {
+      //         child.push(gene);
+      //       }
+      //     });
+
+      //     return child;
+      //   };
+
+      //   const mutate = (individual) => {
+      //     for (let i = 0; i < individual.length; i++) {
+      //       if (Math.random() < mutationRate) {
+      //         const j = Math.floor(Math.random() * individual.length);
+      //         [individual[i], individual[j]] = [individual[j], individual[i]];
+      //       }
+      //     }
+      //   };
+
+      //   let population = createPopulation();
+
+      //   for (let generation = 0; generation < generations; generation++) {
+      //     const newPopulation = [];
+
+      //     for (let i = 0; i < populationSize; i++) {
+      //       const [parent1, parent2] = selectParents(population);
+      //       let child = crossover(parent1, parent2);
+      //       mutate(child);
+      //       newPopulation.push(child);
+      //     }
+
+      //     population = newPopulation;
+      //   }
+
+      //   const bestIndividual = population.reduce((best, individual) => {
+      //     return calculateTotalDistance(individual) <
+      //       calculateTotalDistance(best)
+      //       ? individual
+      //       : best;
+      //   });
+
+      //   return bestIndividual;
+      // };
+
+      // optimized = geneticAlgorithm();
+
       // 최적화된 순서로 상태 업데이트
+
       setCoordinates(optimized);
 
       // 마커 순서도 업데이트
-      const newMarkers = optimized.map(coord => {
-        return markersRef.current.find(marker => {
-          const pos = marker.getPosition();
-          return (
-            pos.getLat().toFixed(6) === coord.lat.toFixed(6) &&
-            pos.getLng().toFixed(6) === coord.lng.toFixed(6)
-          );
-        });
-      }).filter(marker => marker !== undefined);
+      const newMarkers = optimized
+        .map((coord) => {
+          return markersRef.current.find((marker) => {
+            const pos = marker.getPosition();
+            return (
+              pos.getLat().toFixed(6) === coord.lat.toFixed(6) &&
+              pos.getLng().toFixed(6) === coord.lng.toFixed(6)
+            );
+          });
+        })
+        .filter((marker) => marker !== undefined);
 
       markersRef.current = newMarkers;
 
@@ -168,16 +291,19 @@ function SmartDrone_Details() {
       setLoadingFixed(true); // 로딩 위치 고정
       toast.success("경로가 최적화되었습니다!");
     }, 1000); // 최적화 소요 시간에 따라 조정
-  }, [coordinates, markersRef, mapComponentRef, setCoordinates, updateMarkerImages, updateFlightModes]);
-
-
-
-
-
+  }, [
+    coordinates,
+    markersRef,
+    mapComponentRef,
+    setCoordinates,
+    updateMarkerImages,
+    updateFlightModes,
+  ]);
 
   // 마커 수동 추가 함수
   const handleAddMarker = useCallback(() => {
-    if (inputLat && inputLng && inputAlt) { // 모든 필드가 입력되었는지 확인
+    if (inputLat && inputLng && inputAlt) {
+      // 모든 필드가 입력되었는지 확인
       const lat = parseFloat(inputLat);
       const lng = parseFloat(inputLng);
       const alt = parseFloat(inputAlt);
@@ -196,69 +322,15 @@ function SmartDrone_Details() {
     }
   }, [inputLat, inputLng, inputAlt, addMarker]);
 
-
-
-
   // return 시작
   return (
     <ThemeProvider theme={theme}>
       <DndProvider backend={HTML5Backend}>
         <div className="planner">
-
           <Header />
 
           <main className="main">
-          {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
-          
-          <div className="toListPage-container">
-            <Link to={`/Smartdronepage`}>
-              <button className="btn">
-                <div className="toListPage">
-                  List
-                </div>
-              </button>
-            </Link>
-          </div>
-
-            <Draggable handle=".dragSpotContainer">
-              <div className={`remote-control-panel ${isControllerOpen ? "open" : "closed"}`}>
-                <div className="controller-header">
-                  <div className="dragSpotContainer">
-                    <div className="dragSpot">=</div>
-                    <div className="controller-title">비행 컨트롤러</div>
-                  </div>
-                  <button className="controller-toggle-btn" onClick={toggleControllerContent}>
-                    {isControllerOpen ? "∧" : "∨"}
-                  </button>
-                </div>
-
-                {isControllerOpen && (
-                  <div className="controller-contents">
-                    <hr />
-                    {/* 포트 입력 및 비행 제어 버튼 */}
-                    <div className="input-container port-input">
-                      <select
-                        className="port-number"
-                        value={inputPort}
-                        onChange={(e) => setInputPort(e.target.value)}
-                      >
-                        <option value="" disabled>포트 선택</option>
-                        {Array.from({ length: 9 }, (_, i) => (
-                          <option key={`COM${i + 1}`} value={`COM${i + 1}`}>
-                            {`COM${i + 1}`}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="command-btn-container">
-                        <button className="btn btn-command btn-command-arming" onClick={() => sendCommandToServer("ARMING")}>시동</button>
-                        <button className="btn btn-command btn-command-start" onClick={() => sendCommandToServer("START")}>비행 시작</button>
-                        <button className="btn btn-command btn-command-stop" onClick={() => sendCommandToServer("STOP")}>비행 종료</button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Draggable>
+            {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
 
             <MapComponent
               ref={mapComponentRef}
@@ -269,8 +341,10 @@ function SmartDrone_Details() {
               setIsMapOpen={setIsMapOpen}
             />
 
-
-            <div id="coordInfo" className={isMapOpen ? 'map-open' : 'map-closed'}>
+            <div
+              id="coordInfo"
+              className={isMapOpen ? "map-open" : "map-closed"}
+            >
               <MarkerTable
                 coordinates={coordinates}
                 moveItem={moveItem}
@@ -307,20 +381,14 @@ function SmartDrone_Details() {
                     step="1"
                     className="input-alt"
                   />
-                  <button
-                    className="btn btn-add"
-                    onClick={handleAddMarker}
-                  >마커 추가</button>
+                  <button className="btn btn-add" onClick={handleAddMarker}>
+                    마커 추가
+                  </button>
                 </div>
 
                 {/* **버튼을 별도의 컨테이너로 이동** */}
                 <div className="optimize-button-container">
-
-
-                  <button
-                    className="btn btn-reset"
-                    onClick={resetMap}
-                  >
+                  <button className="btn btn-reset" onClick={resetMap}>
                     초기화
                   </button>
 
@@ -338,11 +406,15 @@ function SmartDrone_Details() {
                   >
                     최적화
                   </button>
-
                 </div>
-
               </div>
             </div>
+
+            <DroneMenu
+              inputPort={inputPort}
+              setInputPort={setInputPort}
+              sendCommandToServer={sendCommandToServer}
+            />
 
             <ThemeToggle />
 
@@ -358,7 +430,11 @@ function SmartDrone_Details() {
               pauseOnHover
             />
             {/* 로딩 인디케이터 추가 */}
-            {isOptimizing && <div className={`loading ${loadingFixed ? 'fixed' : ''}`}>최적화 중...</div>}
+            {isOptimizing && (
+              <div className={`loading ${loadingFixed ? "fixed" : ""}`}>
+                최적화 중...
+              </div>
+            )}
           </main>
         </div>
       </DndProvider>
