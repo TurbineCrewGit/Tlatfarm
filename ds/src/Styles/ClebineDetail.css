@@ -14,6 +14,11 @@ body {
     align-items: stretch;
     gap: 20px;
 }
+/* 
+.infoContainer {
+    padding-right: 50px;
+    padding-left: 50px;
+} */
 
 .detail_body {
     background-color: var(--table-header-background);
@@ -31,8 +36,9 @@ body {
 .detailContainer, .predictContainer, .weatherInfoContainer {
     background-color: var(--table-row-background);
     border: 1px solid var(--table-header-text-color);
-    padding: 10px;
     color: var(--table-header-text-color);
+    margin-top: 30px;
+    padding: 20px;
 }
 
 #detail-title {
