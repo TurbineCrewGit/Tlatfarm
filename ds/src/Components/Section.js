@@ -151,8 +151,8 @@ function Section({
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="temperature" fill="#8884d8" name="온도 (°C)" />
-                <ReferenceLine y={0} strokeWidth={2} stroke="#a9a9a9" 
-                  label={{value:'0', position:'left'}}
+                <ReferenceLine y={0} strokeWidth={1} stroke="#666666" 
+                  label={{value:'0', position:'left', fill:"#666666"}}
                 /> {/* 기준선 색상 유지 */}
               </BarChart>
             </ResponsiveContainer>
