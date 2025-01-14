@@ -30,7 +30,6 @@ export const getPowerBackgroundColor = (powerValue, mode = 'light') => { // mode
     return "";
 };
   
-  
   export const getWindDirectionImage = (windDirect) => {
     if (windDirect >= 22.5 && windDirect < 67.5) return "225_675";
     if (windDirect >= 67.5 && windDirect < 112.5) return "675_1125";
