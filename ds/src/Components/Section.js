@@ -1,15 +1,14 @@
-// src/Components/Section.js
+
 import React from 'react';
 import expandIcon from '../Styles/image/expand_button.png';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+
 
 function Section({
   index,
   sectionTitle,
   expandedSection,
   handleToggleSection,
-  selectedTint,
-  handleButtonClick,
   data, // 배열 형태의 집계된 날씨 데이터 [{id, temperature, humidity, windDirect, windSpeed, rainfall}, ...]
 }) {
 
@@ -128,27 +127,45 @@ function Section({
         chartContent = <p>-</p>;
       }
       break;
-    case "기온":
-      if (data.length > 0 && data.some(item => !isNaN(item.temperature))) {
-        chartData = data.map(item => ({
-          name: item.id, // 폴의 ID 사용
-          temperature: item.temperature
-        }));
-        chartContent = (
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="temperature" fill="#8884d8" name="온도 (°C)" />
-            </BarChart>
-          </ResponsiveContainer>
-        );
-      } else {
-        chartContent = <p>-</p>;
-      }
-      break;
+
+      case "기온":
+        if (data.length > 0 && data.some(item => !isNaN(item.temperature))) {
+          chartData = data.map(item => ({
+            name: item.id, // 폴의 ID 사용
+            temperature: item.temperature,
+          }));
+
+          chartContent = (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <XAxis
+                  dataKey="name"
+                  
+                />
+                <YAxis
+                  domain={[
+                    Math.floor(data.reduce((min, item) => Math.min(min, item.temperature), 0)), // 최소값 계산
+                    Math.ceil(data.reduce((max, item) => Math.max(max, item.temperature), 0)), // 최대값 계산
+                  ]}
+                />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="temperature" fill="#8884d8" name="온도 (°C)" />
+                <ReferenceLine y={0} strokeWidth={2} stroke="#a9a9a9" 
+                  label={{value:'0', position:'left'}}
+                /> {/* 기준선 색상 유지 */}
+              </BarChart>
+            </ResponsiveContainer>
+          );
+        } else {
+          chartContent = <p>-</p>;
+        }
+        break;
+
+
+
+
+
     default:
       chartContent = <p>-</p>;
   }
@@ -176,15 +193,6 @@ function Section({
           />
         </button>
       </div>
-
-      {/* 확장 시 버튼 표시 */}
-      {/* {expandedSection === index && (
-        <div style={{ position: "absolute", bottom: "5px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "30px" }}>
-          <button onClick={() => handleButtonClick("red")}>일봉</button>
-          <button onClick={() => handleButtonClick("orange")}>주봉</button>
-          <button onClick={() => handleButtonClick("yellow")}>월봉</button>
-        </div>
-      )} */}
     </div>
   );
 }
