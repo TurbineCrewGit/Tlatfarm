@@ -23,6 +23,7 @@ function Section({
       margin: "20px auto",
       border: "none",
       borderRadius: "10px",
+      padding: "15px",
     };
 
     if (expandedSection === index) {
@@ -73,11 +74,20 @@ function Section({
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <XAxis dataKey="name" />
-              <YAxis />
+              <YAxis 
+                yAxisId="left" 
+                orientation="left" 
+                label={{ value: "풍향 (°)", angle: -90, position: 'insideLeft' }} 
+              />
+              <YAxis 
+                yAxisId="right" 
+                orientation="right" 
+                label={{ value: "풍속 (m/s)", angle: -90, position: 'insideRight' }} 
+              />
               <Tooltip />
               <Legend />
-              <Bar dataKey="windDirect" fill="#8884d8" name="풍향 (°)" />
-              <Bar dataKey="windSpeed" fill="#82ca9d" name="풍속 (m/s)" />
+              <Bar yAxisId="left" dataKey="windDirect" fill="#8884d8" name="풍향 (°)" />
+              <Bar yAxisId="right" dataKey="windSpeed" fill="#82ca9d" name="풍속 (m/s)" />
             </BarChart>
           </ResponsiveContainer>
         );
