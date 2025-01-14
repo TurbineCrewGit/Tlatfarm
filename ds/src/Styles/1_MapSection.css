@@ -117,3 +117,12 @@ body.dark-mode .map-box {
 .marker-popout {
   animation: popout 0.5s ease forwards;
 }
+
+.marker {
+  pointer-events: none; /* 마커와의 모든 상호작용 제거 */
+}
+
+/*
+.map-tooltip {
+  pointer-events: auto; // 툴팁은 호버 시 작동하도록 설정
+}*/

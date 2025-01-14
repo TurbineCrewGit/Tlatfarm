@@ -53,6 +53,7 @@ const Marker = ({ type, lat, lng, imageSrc, tooltipContent, map, isVisible }) =>
             dot.style.bottom = "0";
             dot.style.left = "50%";
             dot.style.transform = "translate(-50%, -50%)";
+            dot.style.zIndex = "1";
             content.appendChild(dot);
         }
 

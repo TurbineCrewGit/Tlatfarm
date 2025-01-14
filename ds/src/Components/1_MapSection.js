@@ -97,16 +97,13 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode 
                 }}
             ></div>
 
-            <div
-                className="map-filter"
+            <div className="map-filter"
                 style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: isDarkMode ? "rgba(0, 0, 0, 0.5)" : "transparent",
                     pointerEvents: "none",
+                    borderRadius: "8px",
+                    width: "100%",
+                    height: isExpanded ? "100vh" : "400px",
+                    transition: "all 0.3s ease",
                 }}
             ></div>
 
@@ -117,10 +114,22 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode 
                     position: "absolute",
                     top: "40px",
                     right: "10px",
-                    zIndex: 1000,
+                    zIndex: isDarkMode ? 1000 : 100,
+                    backgroundColor: isDarkMode ? "rgba(138, 138, 138, 0.8)" : "rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode ? "1px solid #8d8d8d" : "1px solid #ccc",
+                    borderRadius: "5px",
+                    padding: "8px",
+                    paddingTop: "8px",
+                    paddingBottom: "3px",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
                 }}
             >
-                <img src={centerIcon} alt="중심 버튼" style={{ width: "30px", height: "30px" }} />
+                <img
+                    src={centerIcon}
+                    alt="중심 버튼"
+                    style={{ width: "30px", height: "30px" }}
+                />
             </button>
 
             {/* 지도 크기 확장 버튼 */}
@@ -131,9 +140,19 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode 
                     bottom: "30px",
                     right: "10px",
                     zIndex: 1000,
+                    backgroundColor: isDarkMode ? "rgba(138, 138, 138, 0.8)" : "rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode ? "1px solid #8d8d8d" : "1px solid #ccc",
+                    borderRadius: "20%",
+                    paddingTop: "5px",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
                 }}
             >
-                <img src={expandIcon} alt="확장 버튼" style={{ width: "30px", height: "30px" }} />
+                <img
+                    src={expandIcon}
+                    alt="확장 버튼"
+                    style={{ width: "30px", height: "30px" }}
+                />
             </button>
 
             {/* 스마트폴 마커 */}
