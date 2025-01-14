@@ -64,9 +64,6 @@ function MainPage() {
         fetchData();
     }, [filterID]);
 
-    
-
-
     // Visibility 토글
     const toggleFilterID = (type, id) => {
         const targetID = `${type}-${id}`;
@@ -121,8 +118,7 @@ function MainPage() {
                     </a>
                     <MenuBar />
                 </header>
-                {/*<Header /> 헤더 통일해야할 때 해당 부분 사용*/} 
-
+                {/*<Header /> 헤더 통일해야할 때 해당 부분 사용*/}
                 <hr className="custom_hr" />
 
                 <main className="main-content">

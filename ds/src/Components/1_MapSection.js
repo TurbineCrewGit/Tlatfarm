@@ -8,19 +8,16 @@ import Icon0_49w from "../Styles/image/0_49w.png";
 import Icon50_100w from "../Styles/image/50_100w.png";
 import Icon100_150w from "../Styles/image/100_150w.png";
 import Icon150_200w from "../Styles/image/150_200w.png";
-import center from "../Styles/images/centerOfMap.png"
+import center from "../Styles/images/centerOfMap.png";
 
 import "../Styles/1_MapSection.css";
 
-const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},ref) => {
-    const mapRef = useRef(null); // 지도 객체 참조
-    const markersRef = useRef([]); // 마커 객체 참조
-    const customOverlayRef = useRef([]); // Custom Overlay 객체 참조
-    const [isExpanded, setIsExpanded] = useState(false); // 확장 상태
-    const [isMapLoaded, setIsMapLoaded] = useState(false); // 지도 로드 상태
+const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode }, ref) => {
+    const mapRef = useRef(null);
+    const customOverlayRef = useRef(new Map()); // Map으로 변경
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-
-    // 지도 초기화 함수
     const initializeMap = () => {
         const container = document.getElementById("kakaoMap");
         const options = {
@@ -33,7 +30,6 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
         console.log("카카오맵 초기화 완료");
     };
 
-    // Kakao Map 스크립트 로드 함수
     const loadKakaoMapScript = () => {
         const script = document.createElement("script");
         script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_APPKEY}&autoload=false`;
@@ -56,7 +52,6 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
         };
     };
 
-    // 지도 확장/축소 토글 함수
     const toggleMapSize = () => {
         setIsExpanded((prev) => !prev);
         setTimeout(() => {
@@ -67,7 +62,6 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
         }, 300);
     };
 
-    // 지도 중심 재설정 함수
     const resetMapCenter = () => {
         if (!mapRef.current) {
             console.error("지도 객체가 초기화되지 않았습니다.");
@@ -78,7 +72,6 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
         console.log("지도 중심 재설정 완료.");
     };
 
-    // Reposition 기능
     const reposition = (type, id) => {
         if (!mapRef.current) {
             console.error("지도 객체가 초기화되지 않았습니다.");
@@ -102,10 +95,10 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
                 if (drone.droneId === id) {
                     const lat = parseFloat(drone.latitude);
                     const lng = parseFloat(drone.longitude);
-            
+
                     if (!isNaN(lat) && !isNaN(lng)) {
                         targetCoordinates = new window.kakao.maps.LatLng(lat, lng);
-                        break; // 드론 ID를 찾았으므로 반복 종료
+                        break;
                     } else {
                         console.warn(`Drone ID: ${id}에 대한 유효한 좌표가 없습니다.`);
                     }
@@ -124,145 +117,201 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
         }
     };
 
-    // `useImperativeHandle`로 `reposition` 함수 노출
     useImperativeHandle(ref, () => ({
         reposition,
     }));
 
-    // Clebine 마커 추가
+    const createMarkerWithAnimation = (type, lat, lng, imageSrc, targetID, tooltipContent) => {
+        const content = document.createElement("div");
+        content.style.position = "relative";
+        content.className = "marker-popin"; // 생성 시 pop-in 애니메이션 적용
+    
+        const image = document.createElement("img");
+        image.src = imageSrc;
+        image.alt = "marker";
+        if(type === "clebine"){
+            image.style.width = "60px";
+            image.style.height = "70px";
+        }else if(type === "drone"){
+            image.style.width = "60px";
+            image.style.height = "60px";
+        }
+        image.style.transition = "transform 0.3s ease";
+    
+        const tooltip = document.createElement("div");
+        tooltip.className = "map-tooltip";
+        tooltip.innerHTML = tooltipContent;
+        tooltip.style.position = "absolute";
+        tooltip.style.top = "0";
+        tooltip.style.left = "0";
+        tooltip.style.transform = "translate(-15%, -100%)";
+        tooltip.style.zIndex = "1";
+        tooltip.style.display = "none";
+    
+        // Hover 이벤트 추가
+        content.addEventListener("mouseover", () => {
+            image.style.transform = "scale(1.1)";
+            tooltip.style.display = "block";
+        });
+    
+        content.addEventListener("mouseout", () => {
+            image.style.transform = "scale(1.0)";
+            tooltip.style.display = "none";
+        });
+    
+        content.appendChild(image);
+        content.appendChild(tooltip);
+    
+        // 애니메이션 종료 후 클래스 제거
+        content.addEventListener("animationend", () => {
+            if (content.classList.contains("marker-popin")) {
+                content.classList.remove("marker-popin"); // 팝인 클래스 제거
+            }
+        });
+
+        if(type === "clebine"){
+            // Dot 생성 및 추가
+            const dot = document.createElement("div");
+            dot.style.width = "4px";
+            dot.style.height = "4px";
+            dot.style.backgroundColor = "red";
+            dot.style.borderRadius = "100%";
+            dot.style.position = "absolute";
+            dot.style.bottom = "0";
+            dot.style.left = "50%";
+            dot.style.transform = "translate(-50%, -50%)";
+            content.appendChild(dot);
+        }
+    
+        const customOverlay = new window.kakao.maps.CustomOverlay({
+            position: new window.kakao.maps.LatLng(lat, lng),
+            content,
+            yAnchor: type === "clebine" ? 1.0 : 0.55,
+            xAnchor: 0.5,
+            zIndex: 3,
+        });
+    
+        customOverlay.setMap(mapRef.current);
+        customOverlayRef.current.set(targetID, customOverlay);
+    };
+    
+
+    const removeMarkerWithAnimation = (targetID) => {
+        const overlay = customOverlayRef.current.get(targetID);
+    
+        if (!overlay) return;
+    
+        const content = overlay.getContent();
+        if (content) {
+            content.classList.add("marker-popout"); // 팝아웃 애니메이션 추가
+    
+            content.addEventListener("animationend", () => {
+                overlay.setMap(null); // 지도에서 제거
+                customOverlayRef.current.delete(targetID); // 마커 상태 제거
+            });
+        }
+    };
+    
+
     useEffect(() => {
         if (!isMapLoaded || smartPoleData.length === 0) return;
 
-        const addClebineMarkers = () => {
+        const updateOrAddCustomOverlays = () => {
             smartPoleData.forEach((row) => {
                 const targetID = `clebine-${row.id}`;
-                if (!filterID.includes(targetID)) return;
-        
                 const lat = parseFloat(row.latitude);
                 const lng = parseFloat(row.longitude);
                 const power = parseFloat(row.powerProduction);
+
+        
+                if (!filterID.includes(targetID)) {
+                    // 마커 제거
+                    removeMarkerWithAnimation(targetID);
+                    return;
+                }
         
                 if (!isNaN(lat) && !isNaN(lng)) {
-                    let markerImageSrc;
+                    let imageSrc;
                     if (power === 0) {
-                        markerImageSrc = Icon0w;
+                        imageSrc = Icon0w;
                     } else if (power >= 1 && power <= 49) {
-                        markerImageSrc = Icon0_49w;
+                        imageSrc = Icon0_49w;
                     } else if (power >= 50 && power <= 99) {
-                        markerImageSrc = Icon50_100w;
+                        imageSrc = Icon50_100w;
                     } else if (power >= 100 && power <= 149) {
-                        markerImageSrc = Icon100_150w;
+                        imageSrc = Icon100_150w;
                     } else if (power >= 150) {
-                        markerImageSrc = Icon150_200w;
+                        imageSrc = Icon150_200w;
                     }
+
+//                    console.log("현재 customOverlay: ", customOverlayRef.current);
         
-                    const markerImage = new window.kakao.maps.MarkerImage(
-                        markerImageSrc,
-                        new window.kakao.maps.Size(60, 70)
-                    );
-        
-                    const hoverImage = new window.kakao.maps.MarkerImage(
-                        markerImageSrc,
-                        new window.kakao.maps.Size(70, 80)
-                    );
-        
-                    const marker = new window.kakao.maps.Marker({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        map: mapRef.current,
-                        image: markerImage,
-                        zIndex: 1,
-                    });
-        
-                    const dotOverlay = new window.kakao.maps.CustomOverlay({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        content: '<div style="width: 6px; height: 6px; background-color: red; border-radius: 50%; position: absolute; transform: translate(-50%, -50%); z-index: 2;"></div>',
-                        zIndex: 2,
-                    });
-        
-                    // Tooltip 생성
-                    const tooltipContent = `
-                        <div class="map-tooltip">
-                            <p><strong>ID:</strong> ${row.id}</p>
-                            <p><strong>Power:</strong> ${row.powerProduction}</p>
-                        </div>
-                    `;
-        
-                    const tooltipOverlay = new window.kakao.maps.CustomOverlay({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        content: tooltipContent,
-                        yAnchor: 2.0,
-                        xAnchor: 0.5,
-                        zIndex: 6,
-                        map: null, // 초기에는 표시하지 않음
-                    });
-        
-                    // 마커 hover 이벤트
-                    window.kakao.maps.event.addListener(marker, "mouseover", () => {
-                        tooltipOverlay.setMap(mapRef.current);
-                        marker.setImage(hoverImage);
-                    });
-        
-                    window.kakao.maps.event.addListener(marker, "mouseout", () => {
-                        tooltipOverlay.setMap(null);
-                        marker.setImage(markerImage);
-                    });
-        
-                    dotOverlay.setMap(mapRef.current);
-        
-                    markersRef.current.push(marker);
-                    customOverlayRef.current.push(dotOverlay);
+                    if (customOverlayRef.current.has(targetID)) {
+                        // 이미 존재하는 마커 → 위치만 업데이트 (애니메이션 재생 X)
+                        console.log(targetID, ": 마커 업데이트");
+                        const overlay = customOverlayRef.current.get(targetID);
+                        overlay.setPosition(new window.kakao.maps.LatLng(lat, lng));
+                    } else {
+                        // 새로운 마커 → 팝인 애니메이션 추가
+                        console.log(targetID, ": 마커 추가");
+                        createMarkerWithAnimation(
+                            "clebine",
+                            parseFloat(row.latitude),
+                            parseFloat(row.longitude),
+                            imageSrc,
+                            targetID,
+                            `<p><strong>ID:</strong> ${row.id}</p><p><strong>Power:</strong> ${row.powerProduction}</p>`
+                        );
+                    }
                 }
             });
         };
         
 
-        addClebineMarkers();
+        updateOrAddCustomOverlays();
 
         return () => {
-            markersRef.current.forEach((marker) => marker.setMap(null));
-            markersRef.current = [];
-            customOverlayRef.current.forEach((overlay) => overlay.setMap(null));
-            customOverlayRef.current = [];
+            /*
+            customOverlayRef.current.forEach((overlay) => {
+                overlay.setMap(null);
+            });
+            customOverlayRef.current.clear(); */
         };
     }, [isMapLoaded, smartPoleData, filterID]);
 
-    // SmartDrone 마커 추가
     useEffect(() => {
-        if (!isMapLoaded) return;
+        if (!isMapLoaded || droneData.length === 0) return;
 
-        const addDroneMarkers = () => {
+        const addDroneOverlays = () => {
             droneData.forEach((drone) => {
                 const targetID = `drone-${drone.droneId}`;
-                if (!filterID.includes(targetID)) return; // filterID에 포함되지 않으면 처리하지 않음
-
                 const lat = parseFloat(drone.latitude);
                 const lng = parseFloat(drone.longitude);
-
+        
+                // 필터링된 ID가 아니면 마커 제거
+                if (!filterID.includes(targetID)) {
+                    removeMarkerWithAnimation(targetID); // 마커 제거
+                    return;
+                }
+        
+                // 유효한 좌표인지 확인
                 if (!isNaN(lat) && !isNaN(lng)) {
-                    const markerImage = new window.kakao.maps.MarkerImage(
-                        drone.action === "16" ? movingDroneIcon : chargingDroneIcon,
-                        new window.kakao.maps.Size(65, 65),
-                        { offset: new window.kakao.maps.Point(32.5, 32.5) }
-                    );
-
-                    const hoverImage = new window.kakao.maps.MarkerImage(
-                        drone.action === "16" ? movingDroneIcon : chargingDroneIcon,
-                        new window.kakao.maps.Size(80, 80),
-                        { offset: new window.kakao.maps.Point(40, 40) }
-                    );
-
-                    const marker = new window.kakao.maps.Marker({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        map: mapRef.current,
-                        image: markerImage,
-                        zIndex: 4,
-                    });
-
-                    // Tooltip 생성
-                    const tooltipContent = `
-                        <div class="map-tooltip">
-                            <p><strong>ID:</strong> ${drone.droneId}</p>
-                            <p><strong>Status:</strong> ${
+                    const imageSrc = drone.action === "16" ? movingDroneIcon : chargingDroneIcon;
+        
+                    if (customOverlayRef.current.has(targetID)) {
+                        // 이미 존재하는 마커 → 위치만 업데이트
+                        const overlay = customOverlayRef.current.get(targetID);
+                        overlay.setPosition(new window.kakao.maps.LatLng(lat, lng));
+                        console.log(targetID, ": 마커 업데이트");
+                    } else {
+                        // 새로 추가되는 마커 → 팝인 애니메이션
+                        createMarkerWithAnimation(
+                            "drone",
+                            lat,
+                            lng,
+                            imageSrc,
+                            targetID,
+                            `<p><strong>ID:</strong> ${drone.droneId}</p><p><strong>Status:</strong> ${
                                 drone.action === "16"
                                     ? "이동 중"
                                     : drone.action === "5"
@@ -270,46 +319,26 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
                                     : drone.action === "6"
                                     ? "착륙"
                                     : "충전 중"
-                            }</p>
-                        </div>
-                    `;
-
-                    const tooltipOverlay = new window.kakao.maps.CustomOverlay({
-                        position: new window.kakao.maps.LatLng(lat, lng),
-                        content: tooltipContent,
-                        yAnchor: 1.6,
-                        xAnchor: 0.5,
-                        zIndex: 6,
-                        map: null, // 초기에는 표시하지 않음
-                    });
-
-                    // 마커 hover 이벤트
-                    window.kakao.maps.event.addListener(marker, "mouseover", () => {
-                        tooltipOverlay.setMap(mapRef.current);
-                        marker.setImage(hoverImage);
-                    });
-
-                    window.kakao.maps.event.addListener(marker, "mouseout", () => {
-                        tooltipOverlay.setMap(null);
-                        marker.setImage(markerImage);
-                    });
-
-                    markersRef.current.push(marker);
+                            }</p>`
+                        );
+                        console.log(targetID, ": 마커 추가");
+                    }
                 }
             });
         };
+        
 
-        addDroneMarkers();
+        addDroneOverlays();
 
         return () => {
-            markersRef.current.forEach((marker) => marker.setMap(null));
-            markersRef.current = [];
+            /*
+            customOverlayRef.current.forEach((overlay) => {
+                overlay.setMap(null);
+            });
+            customOverlayRef.current.clear(); */
         };
     }, [isMapLoaded, droneData, filterID]);
 
-
-
-    // Kakao Map 스크립트 로드 처리
     useEffect(() => {
         const cleanUpScript = loadKakaoMapScript();
         return () => {
@@ -318,7 +347,7 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
     }, []);
 
     return (
-        <div className="map-section" style={{position: "relative"}}>
+        <div className="map-section" style={{ position: "relative" }}>
             <div className="map-container">
                 <div className="map-filter"
                     style={{
@@ -339,17 +368,15 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
                 ></div>
             </div>
 
-            
-
             <button
                 onClick={resetMapCenter}
                 style={{
                     position: "absolute",
                     top: "40px",
                     right: "10px",
-                    zIndex: isDarkMode ? 1000:100,
-                    backgroundColor: isDarkMode?"rgba(138, 138, 138, 0.8)":"rgba(255, 255, 255, 0.8)",
-                    border: isDarkMode? "1px solid #8d8d8d":"1px solid #ccc",
+                    zIndex: isDarkMode ? 1000 : 100,
+                    backgroundColor: isDarkMode ? "rgba(138, 138, 138, 0.8)" : "rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode ? "1px solid #8d8d8d" : "1px solid #ccc",
                     borderRadius: "5px",
                     padding: "8px",
                     paddingTop: "8px",
@@ -372,8 +399,8 @@ const MapSection =forwardRef(({ smartPoleData, droneData, filterID, isDarkMode},
                     bottom: "30px",
                     right: "10px",
                     zIndex: 1000,
-                    backgroundColor: isDarkMode?"rgba(138, 138, 138, 0.8)":"rgba(255, 255, 255, 0.8)",
-                    border: isDarkMode? "1px solid #8d8d8d":"1px solid #ccc",
+                    backgroundColor: isDarkMode ? "rgba(138, 138, 138, 0.8)" : "rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode ? "1px solid #8d8d8d" : "1px solid #ccc",
                     borderRadius: "20%",
                     paddingTop: "5px",
                     cursor: "pointer",

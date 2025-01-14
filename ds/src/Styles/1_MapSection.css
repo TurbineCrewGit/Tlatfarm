@@ -21,7 +21,7 @@
 .map-box {
   width: 100%;
   height: 400px;
-  background-color: #e0e0e0; /* Placeholder color for fallback */
+  background-color: #e0e0e08f; /* Placeholder color for fallback */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
 }
@@ -59,4 +59,61 @@ body.dark-mode .map-filter {
 body.dark-mode .map-box {
   background-color: #1a1a1a;
   border: 1px solid #444;
+}
+
+/* Pop-in 애니메이션 */
+.pop-in {
+  animation: popIn 0.3s ease-in-out forwards;
+}
+
+@keyframes popIn {
+  0% {
+      opacity: 0;
+      transform: scale(0);
+  }
+  50% {
+      opacity: 1;
+      transform: scale(1.05);
+  }
+  100% {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+@keyframes popin {
+  0% {
+      transform: scale(0);
+      opacity: 0;
+  }
+  50% {
+      transform: scale(1.05);
+      opacity: 1;
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+@keyframes popout {
+  0% {
+      transform: scale(1);
+      opacity: 1;
+  }
+  50% {
+      transform: scale(1.05);
+      opacity: 1;
+  }
+  100% {
+      transform: scale(0);
+      opacity: 0;
+  }
+}
+
+.marker-popin {
+  animation: popin 0.5s ease forwards;
+}
+
+.marker-popout {
+  animation: popout 0.5s ease forwards;
 }
