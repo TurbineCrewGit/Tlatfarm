@@ -12,7 +12,7 @@ const theme = createTheme();
 function Clebine() {
   const [tableData, setTableData] = useState([]); // 테이블 데이터를 관리하는 상태
   const [expandedSection, setExpandedSection] = useState(null);
-  const [selectedTint, setSelectedTint] = useState(null);
+  // const [selectedTint, setSelectedTint] = useState(null);
   const [aggregatedWeatherData, setAggregatedWeatherData] = useState([]); // 집계된 날씨 데이터
 
   console.log("table: ", tableData);
@@ -80,13 +80,13 @@ function Clebine() {
   // 섹션 토글 핸들러
   const handleToggleSection = (index) => {
     setExpandedSection(expandedSection === index ? null : index);
-    setSelectedTint(null);
+    // setSelectedTint(null);
   };
 
   // Tint 버튼 클릭 핸들러
-  const handleButtonClick = (tintColor) => {
-    setSelectedTint(tintColor);
-  };
+  // const handleButtonClick = (tintColor) => {
+  //   setSelectedTint(tintColor);
+  // };
 
   // 데이터 삭제 핸들러
   const handleDelete = async (id) => {
@@ -144,8 +144,8 @@ function Clebine() {
               sectionTitle={title}
               expandedSection={expandedSection}
               handleToggleSection={handleToggleSection}
-              selectedTint={selectedTint}
-              handleButtonClick={handleButtonClick}
+              // selectedTint={selectedTint}
+              // handleButtonClick={handleButtonClick}
               data={aggregatedWeatherData} // 집계된 날씨 데이터 전달
             />
           ))}

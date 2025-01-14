@@ -1,2 +1,2 @@
 timestamp,ip,temp,humidity,ws,wd,north_direction,atmospheric_pressure,rainfall,voltage
-1724292727,58.72.215.20,20,47.1,0.3,270,297.1,1002.2,0.7,12.5
+1724292727,58.72.215.20,20,74,0.3,270,297.1,1002.2,0.7,12.5
