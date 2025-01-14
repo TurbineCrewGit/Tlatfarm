@@ -107,7 +107,7 @@ function Clebine() {
       const uploadPromises = newData.map(async (data) => {
         const response = await axios.post('/api/smartpoles', data);
         console.log("Response data:", response.data); // 추가된 로그
-        return response.data; // 서버에서 처리된 데이터 반환
+        return data; // 서버에서 처리없이 데이터 반환
       });
 
       const uploadedData = await Promise.all(uploadPromises);

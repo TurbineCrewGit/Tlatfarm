@@ -1,21 +1,19 @@
-// src/Components/Section.js
+
 import React from 'react';
 import expandIcon from '../Styles/image/expand_button.png';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+
 
 function Section({
   index,
   sectionTitle,
   expandedSection,
   handleToggleSection,
-  selectedTint,
-  handleButtonClick,
   data, // 배열 형태의 집계된 날씨 데이터 [{id, temperature, humidity, windDirect, windSpeed, rainfall}, ...]
 }) {
 
   const getSectionStyle = (index) => {
     const baseStyle = {
-      backgroundColor: "white",
       transition: "all 0.3s ease",
       overflow: "hidden",
       position: "relative",
@@ -23,7 +21,7 @@ function Section({
       width: "500px",
       height: "400px",
       margin: "20px auto",
-      border: "1px solid #ccc",
+      border: "none",
       borderRadius: "10px",
     };
 
@@ -57,22 +55,6 @@ function Section({
     }
 
     return baseStyle;
-  };
-
-  const getImageStyle = () => {
-    if (expandedSection === index) {
-      switch (selectedTint) {
-        case "red":
-          return { filter: "sepia(100%) saturate(200%) hue-rotate(0deg)" };
-        case "orange":
-          return { filter: "sepia(100%) saturate(200%) hue-rotate(30deg)" };
-        case "yellow":
-          return { filter: "sepia(100%) saturate(200%) hue-rotate(60deg)" };
-        default:
-          return {};
-      }
-    }
-    return {};
   };
 
   // 데이터 준비
@@ -145,27 +127,45 @@ function Section({
         chartContent = <p>-</p>;
       }
       break;
-    case "기온":
-      if (data.length > 0 && data.some(item => !isNaN(item.temperature))) {
-        chartData = data.map(item => ({
-          name: item.id, // 폴의 ID 사용
-          temperature: item.temperature
-        }));
-        chartContent = (
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="temperature" fill="#8884d8" name="온도 (°C)" />
-            </BarChart>
-          </ResponsiveContainer>
-        );
-      } else {
-        chartContent = <p>-</p>;
-      }
-      break;
+
+      case "기온":
+        if (data.length > 0 && data.some(item => !isNaN(item.temperature))) {
+          chartData = data.map(item => ({
+            name: item.id, // 폴의 ID 사용
+            temperature: item.temperature,
+          }));
+
+          chartContent = (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <XAxis
+                  dataKey="name"
+                  
+                />
+                <YAxis
+                  domain={[
+                    Math.floor(data.reduce((min, item) => Math.min(min, item.temperature), 0)), // 최소값 계산
+                    Math.ceil(data.reduce((max, item) => Math.max(max, item.temperature), 0)), // 최대값 계산
+                  ]}
+                />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="temperature" fill="#8884d8" name="온도 (°C)" />
+                <ReferenceLine y={0} strokeWidth={1} stroke="#666666" 
+                  label={{value:'0', position:'left', fill:"#666666"}}
+                /> {/* 기준선 색상 유지 */}
+              </BarChart>
+            </ResponsiveContainer>
+          );
+        } else {
+          chartContent = <p>-</p>;
+        }
+        break;
+
+
+
+
+
     default:
       chartContent = <p>-</p>;
   }
@@ -174,7 +174,7 @@ function Section({
     <div className="section-container" style={getSectionStyle(index)}>
       {/* 섹션 제목 부분 */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <h2 style={{ color: "black", fontSize: "24px", fontWeight: "bold" }}>{sectionTitle}</h2>
+        <h2 className='section-title'>{sectionTitle}</h2>
       </div>
 
       {/* 그래프 또는 '-' 표시 */}
@@ -183,25 +183,16 @@ function Section({
       </div>
 
       {/* 버튼 부분 */}
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
+      <div>
         <button id="toggleBtn" onClick={() => handleToggleSection(index)}>
           <img
             id='expandImg'
             src={expandIcon}
             alt='확장 버튼'
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "15px", height: "15px" }}
           />
         </button>
       </div>
-
-      {/* 확장 시 버튼 표시 */}
-      {expandedSection === index && (
-        <div style={{ position: "absolute", bottom: "5px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "30px" }}>
-          <button onClick={() => handleButtonClick("red")}>일봉</button>
-          <button onClick={() => handleButtonClick("orange")}>주봉</button>
-          <button onClick={() => handleButtonClick("yellow")}>월봉</button>
-        </div>
-      )}
     </div>
   );
 }
