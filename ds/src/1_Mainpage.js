@@ -153,6 +153,7 @@ function MainPage() {
                         smartPoleData={smartPoleData}
                         droneData={droneData}
                         ref={mapSectionRef}
+                        reposition={reposition} // reposition 함수 전달
                         isDarkMode={isDarkMode} // 다크 모드
                         timeRemaining={timeRemaining} // 타이머 남은 시간 전달
                         onRefresh={fetchData} // MapSection에서 fetchData 호출 가능

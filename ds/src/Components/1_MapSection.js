@@ -74,6 +74,57 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode,
         console.log("지도 중심 재설정 완료.");
     };
 
+    // Reposition 기능
+    const reposition = (type, id) => {
+        if (!mapRef.current) {
+            console.error("지도 객체가 초기화되지 않았습니다.");
+            return;
+        }
+
+        let targetCoordinates = null;
+
+        if (type === "clebine") {
+            const clebine = smartPoleData.find((row) => row.id === id);
+            if (clebine && clebine.latitude && clebine.longitude) {
+                targetCoordinates = new window.kakao.maps.LatLng(
+                    parseFloat(clebine.latitude),
+                    parseFloat(clebine.longitude)
+                );
+            } else {
+                console.warn(`Clebine ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+            }
+        } else if (type === "drone") {
+            for (const drone of droneData) {
+                if (drone.droneId === id) {
+                    const lat = parseFloat(drone.latitude);
+                    const lng = parseFloat(drone.longitude);
+            
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        targetCoordinates = new window.kakao.maps.LatLng(lat, lng);
+                        break; // 드론 ID를 찾았으므로 반복 종료
+                    } else {
+                        console.warn(`Drone ID: ${id}에 대한 유효한 좌표가 없습니다.`);
+                    }
+                }
+            }
+            if (!targetCoordinates) {
+                console.warn(`Drone ID: ${id}에 해당하는 좌표를 찾을 수 없습니다.`);
+            }
+        }
+
+        if (targetCoordinates) {
+            mapRef.current.panTo(targetCoordinates);
+            console.log(`지도 중심이 ${type} ID: ${id}의 좌표로 이동되었습니다.`);
+        } else {
+            console.error(`ID: ${id}에 해당하는 ${type}의 좌표를 찾을 수 없습니다.`);
+        }
+    };
+
+    // `useImperativeHandle`로 `reposition` 함수 노출
+    useImperativeHandle(ref, () => ({
+        reposition,
+    }));
+
     const toggleMapSize = () => {
         setIsExpanded((prev) => !prev);
         setTimeout(() => {
