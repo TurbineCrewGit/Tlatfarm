@@ -1,4 +1,3 @@
-
 /**
  * SmartPole 데이터를 로드하는 함수
  * @returns {Promise<Array>} - SmartPole 데이터 배열 반환

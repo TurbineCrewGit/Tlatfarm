@@ -13,7 +13,7 @@ import centerIcon from "../Styles/images/centerOfMap.png";
 
 import "../Styles/1_MapSection.css";
 
-const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode }, ref) => {
+const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode, timeRemaining, onRefresh }, ref) => {
     const mapRef = useRef(null);
     const [isMapLoaded, setIsMapLoaded] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -106,6 +106,25 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode 
                     transition: "all 0.3s ease",
                 }}
             ></div>
+
+            {/* 타이머 및 지도 갱신 */}
+            <button
+                onClick={onRefresh}
+                style={{
+                    position: "absolute",
+                    top: "40px",
+                    left: "10px",
+                    zIndex: isDarkMode ? 1000 : 100,
+                    backgroundColor: isDarkMode ? "rgba(138, 138, 138, 0.8)" : "rgba(255, 255, 255, 0.8)",
+                    border: isDarkMode ? "1px solid #8d8d8d" : "1px solid #ccc",
+                    borderRadius: "5px",
+                    padding: "8px",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+                }}
+            >
+                {timeRemaining}초 후 지도 갱신
+            </button>
 
             {/* 지도 중심 버튼 */}
             <button
