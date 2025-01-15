@@ -14,6 +14,7 @@ const Marker = ({ type, lat, lng, imageSrc, tooltipContent, map, isVisible }) =>
         image.alt = type === "clebine" ? "clebine marker" : "drone marker";
         image.style.width = type === "clebine" ? "60px" : "50px";
         image.style.height = type === "clebine" ? "70px" : "50px";
+        image.draggable = false;
 
         content.appendChild(image);
 
