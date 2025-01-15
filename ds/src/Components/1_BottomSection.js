@@ -7,8 +7,7 @@ import "../Styles/1_BottomSection.css";
 const BottomSection = ({ smartPoleData, droneData, filterID, toggleFilterID, turnOnButton, turnOffButton, reposition, isDarkMode, }) => {
 
     
-    const navigate = useNavigate();
-
+    const navigate = useNavigate(); // detail에서 기기 이름을 클릭하면 페이지 이동을 시킬 수 있게 하는 hook
     const handleClebineDetailClick = (id) => {
         navigate(`/clebinepage/${id}`);
     };

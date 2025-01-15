@@ -18,6 +18,9 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode,
     const [isMapLoaded, setIsMapLoaded] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
 
+    
+    /*=====================================================================*/
+
     const initializeMap = () => {
         const container = document.getElementById("kakaoMap");
         const options = {
@@ -51,6 +54,16 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode,
         };
     };
 
+    // 카카오맵 스크립트 로드 초기화
+    useEffect(() => {
+        const cleanUpScript = loadKakaoMapScript();
+        return () => {
+            if (cleanUpScript) cleanUpScript();
+        };
+    }, []);
+    
+    /*=====================================================================*/
+
     const resetMapCenter = () => {
         if (!mapRef.current) {
             console.error("지도 객체가 초기화되지 않았습니다.");
@@ -70,6 +83,8 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode,
             }
         }, 300);
     };
+    
+    /*=====================================================================*/
 
     const getClebineImageSrc = (power) => {
         if (power === 0) return Icon0w;
@@ -80,12 +95,6 @@ const MapSection = forwardRef(({ smartPoleData, droneData, filterID, isDarkMode,
         return Icon0w; // Default image
     };
 
-    useEffect(() => {
-        const cleanUpScript = loadKakaoMapScript();
-        return () => {
-            if (cleanUpScript) cleanUpScript();
-        };
-    }, []);
 
     return (
         <div className="map-section" style={{ position: "relative" }}>

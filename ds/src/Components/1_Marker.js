@@ -24,22 +24,25 @@ const Marker = ({ type, lat, lng, imageSrc, tooltipContent, map, isVisible }) =>
         tooltip.innerHTML = tooltipContent;
         tooltip.style.position = "absolute";
         tooltip.style.top = "0";
-        tooltip.style.left = "0";
+        tooltip.style.left = "0.5";
         tooltip.style.transform = "translate(-15%, -100%)";
         tooltip.style.display = "none";
         tooltip.style.zIndex = "1";
+        tooltip.draggable = false;
 
         content.appendChild(tooltip);
 
         // Hover 이벤트 추가
         content.addEventListener("mouseover", () => {
-            image.style.transform = "scale(1.1)";
+            image.style.transform = "scale(1.2)";
+            image.style.transition = "transform 0.5s";
             tooltip.style.display = "block";
         });
 
         content.addEventListener("mouseout", () => {
             
             image.style.transform = "scale(1.0)";
+            image.style.transition = "transform 0.2s";
             tooltip.style.display = "none";
         });
 

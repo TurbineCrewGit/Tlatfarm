@@ -21,7 +21,7 @@ export const loadSmartPoleData = async () => {
 export const loadDroneData = async () => {
     try {
         // API 경로 설정
-        const response = await fetch("http://localhost:8080/api/drones/with-waypoints");
+        const response = await fetch("http://localhost:8080/api/drones/with-waypoints"); // 이미 isItme가 1인 정보만 가져옴. (DB 상에서)
         if (!response.ok) throw new Error("드론 데이터 로드 실패");
 
         // API 응답 데이터를 JSON 형태로 파싱

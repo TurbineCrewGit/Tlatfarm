@@ -5,11 +5,10 @@ import ThemeToggle from "./Components/ThemeToggle.js";
 import MapSection from "./Components/1_MapSection.js";
 import BottomSection from "./Components/1_BottomSection.js";
 import { loadSmartPoleData, loadDroneData } from "./Components/1_DataLoader.js";
-//import { createWebSocketConnection } from "./utils/1_WebSocketClient.js";
 
 import "./Styles/1_Mainpage.css";
 
-//import Header from './Components/Header.js'; // 헤더 통일
+//import Header from './Components/Header.js'; // 추후에 헤더 통일 필요하면 사용
 
 const theme = createTheme();
 
@@ -19,7 +18,6 @@ function MainPage() {
     const [filterID, setFilterID] = useState([]); // 표시할 Clebine 및 Drone ID 관리
     const mapSectionRef = useRef(null); // MapSection에 대한 참조
     const [isDarkMode, setIsDarkMode] = useState(false); // 다크 모드 상태 감지
-    //const [dataChanged, setDataChanged] = useState(true); // 데이터 변경 감지
     const [refreshTime, setRefreshTime] = useState(null);
     const [timeRemaining, setTimeRemaining] = useState(60); // 타이머 상태
 
@@ -45,37 +43,10 @@ function MainPage() {
             console.error("reposition 함수가 정의되지 않았습니다.");
         }
     };
-    
-    /*/ 데이터 로드
-    useEffect(() => {
-        //if (!dataChanged) return;
-        let intervalTime;
-        const fetchData = async () => {
-            clearInterval(intervalTime);
-            console.log("데이터 로드 시작");
-            try {
-                // Clebine 데이터 로드
-                const smartPoles = await loadSmartPoleData();
-                if(JSON.stringify(smartPoleData) !== JSON.stringify(smartPoles)){
-                    setSmartPoleData(smartPoles);
-                }
-                
-                // 드론 데이터 로드
-                const drone = await loadDroneData();
-                if(JSON.stringify(droneData) !== JSON.stringify(drone)){
-                    setDroneData(drone);
-                }
-            } catch (error) {
-                console.error("데이터 로드 실패:", error);
-            }
-            intervalTime = setInterval(fetchData, 60000);
-            setRefreshTime(intervalTime);
-            //setDataChanged(false);
-        };
-        fetchData();
-    }, []); // filterID와 연결 해제. 첫 렌더링 시에만 데이터 로드
-    */
 
+    /*=====================================================================*/
+    
+    // 데이터 로드
     const fetchData = async () => {
         console.log("데이터 로드 시작");
         try {
@@ -106,31 +77,13 @@ function MainPage() {
 
         setRefreshTime(intervalId);
 
-        return () => {
+        return () => { // 언마운트시 clearInterval (=타이머 초기화)
             clearInterval(intervalId);
             clearInterval(countdownId);
         };
     }, []);
 
-    /*useEffect(() => {
-        console.log("WebSocket 연결 시도");
-    
-        const socket = createWebSocketConnection(
-            (message) => {
-                // 수신된 데이터를 처리하는 기존 로직
-                console.log("수신 메시지:", message);
-            },
-            (dataChangedFlag) => {
-                // 데이터 변경 플래그 설정
-                if (dataChangedFlag) {
-                    setDataChanged(true); // 데이터 변경 감지
-                }
-            }
-        );
-        return () => {
-            socket.close(); // WebSocket 연결 종료
-        };
-    }, []); */// 웹소켓을 이용해서 데이터 변경 감지
+    /*=====================================================================*/
 
     // Visibility 토글
     const toggleFilterID = (type, id) => {
@@ -176,6 +129,8 @@ function MainPage() {
         setFilterID(memoizedFilterID);
     }, [memoizedFilterID]);
 
+    /*=====================================================================*/
+
     return (
         <ThemeProvider theme={theme}>
             <div id="main_Div" >
@@ -198,15 +153,15 @@ function MainPage() {
                         smartPoleData={smartPoleData}
                         droneData={droneData}
                         ref={mapSectionRef}
-                        isDarkMode={isDarkMode}
-                        timeRemaining={timeRemaining}
+                        isDarkMode={isDarkMode} // 다크 모드
+                        timeRemaining={timeRemaining} // 타이머 남은 시간 전달
                         onRefresh={fetchData} // MapSection에서 fetchData 호출 가능
                     />
                     <BottomSection
+                        filterID={filterID}
+                        toggleFilterID={toggleFilterID}
                         smartPoleData={smartPoleData}
                         droneData={droneData}
-                        toggleFilterID={toggleFilterID}
-                        filterID={filterID}
                         turnOnButton={turnOnButton}
                         turnOffButton={turnOffButton}
                         reposition={reposition}
