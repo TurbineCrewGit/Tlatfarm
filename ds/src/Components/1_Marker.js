@@ -36,6 +36,7 @@ const Marker = ({ type, lat, lng, imageSrc, tooltipContent, map, isVisible }) =>
         content.addEventListener("mouseover", () => {
             image.style.transform = "scale(1.2)";
             image.style.transition = "transform 0.5s";
+            image.style.zIndex = "2";
             tooltip.style.display = "block";
         });
 
@@ -43,6 +44,7 @@ const Marker = ({ type, lat, lng, imageSrc, tooltipContent, map, isVisible }) =>
             
             image.style.transform = "scale(1.0)";
             image.style.transition = "transform 0.2s";
+            image.style.zIndex = "1";
             tooltip.style.display = "none";
         });
 
