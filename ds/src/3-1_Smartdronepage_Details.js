@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom"; // useParams 가져오기
 import axios from "axios";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Draggable from "react-draggable";
+// import Draggable from "react-draggable";
 import "./Styles/App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +15,7 @@ import ThemeToggle from "./Components/ThemeToggle.js";
 import MapComponent from "./Components/MapComponents.js";
 import useMarkers from "./Components/useMarkers.js";
 import MarkerTable from "./Components/MarkerTable.js";
-import DraggableRemoteControlPanel from "./Components/DraggableRemoteControlPanel";
+// import DraggableRemoteControlPanel from "./Components/DraggableRemoteControlPanel";
 import DroneMenu from "./Components/DroneMenu.js";
 import { API_BASE_URL } from "./Components/constants.js";
 
@@ -49,10 +49,12 @@ function SmartDrone_Details() {
   const [loadingFixed, setLoadingFixed] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [isControllerOpen, setIsControllerOpen] = useState(true);
+  const [apiBaseUrl, setApiBaseUrl] = useState(""); // drone_controller의 ngrok URL을 저장할 상태
 
   const toggleControllerContent = () => {
     setIsControllerOpen((prev) => !prev);
   };
+
 
   // 서버 전송 함수
   // 좌표 전송
@@ -74,6 +76,7 @@ function SmartDrone_Details() {
       toast.error("데이터 전송에 실패했습니다. 다시 시도해주세요.");
     }
   }, [coordinates, inputPort]);
+
 
   // 명령 전송
   const sendCommandToServer = useCallback(
