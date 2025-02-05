@@ -22,6 +22,9 @@ function Clebine() {
     const fetchTableData = async () => {
       try {
         const response = await axios.get('/api/smartpoles'); // 백엔드 API 호출
+        console.log("백엔드에서 받은 전체 응답: ", response);
+        console.log("백엔드에서 받은 데이터: ", response.data);
+
         setTableData(response.data); // 상태에 데이터 설정
       } catch (error) {
         console.error('백엔드 데이터를 가져오는 중 오류 발생:', error);
@@ -105,6 +108,7 @@ function Clebine() {
       // 백엔드에 새 데이터 저장
       console.log("Uploading new data: ", newData);
       const uploadPromises = newData.map(async (data) => {
+        console.log("axios 요청 전 데이터:", JSON.stringify(data)); // 추가된 로!
         const response = await axios.post('/api/smartpoles', data);
         console.log("Response data:", response.data); // 추가된 로그
         return data; // 서버에서 처리없이 데이터 반환
