@@ -8,14 +8,14 @@ const MenuBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // 메뉴 열고 닫기 핸들러
-  const toggleMenu = useCallback(() => {
-    setIsMenuOpen(prevState => !prevState);
-  }, []);
+  // const toggleMenu = useCallback(() => {
+  //   setIsMenuOpen(prevState => !prevState);
+  // }, []);
 
   return (
     <>
       {/* 메뉴 버튼을 메뉴가 닫혀 있을 때만 표시 */}
-      {!isMenuOpen && (
+{/*       {!isMenuOpen && (
         <button
           className="menu-button"
           onClick={toggleMenu}
@@ -23,17 +23,18 @@ const MenuBar = () => {
         >
           &#x2630;
         </button>
-      )}
+)} */}
 
       {/* 메뉴바 */}
-      <div className={`menu-bar ${isMenuOpen ? 'open' : ''}`}>
-        <button
+{/*     <div className={`menu-bar ${isMenuOpen ? 'open' : ''}`}>*/}
+        <div className={`menu-bar open`}>
+{/*         <button
           className="close-button"
-          onClick={toggleMenu}
+               onClick={toggleMenu}
           aria-label="메뉴 닫기"
-        >
+        >*
           &times;
-        </button>
+        </button> */}
         <nav>
           <ul>
             <li><Link to="/">Main</Link></li>

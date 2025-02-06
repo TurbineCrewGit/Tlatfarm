@@ -1,0 +1,31 @@
+@import "./Map.css";
+@import "./MarkerTable.css";
+/* @import "./RemoteController.css"; */
+/*@import "./DraggableRemoteController.css";*/
+@import "./DroneList.css";
+
+.drone-main {
+  display: flex;
+  padding-top: 15vh;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  min-height: 85vh;
+  overflow: auto;
+  font-size: calc(10px + 2vmin);
+  color: var(--text-color);
+  transition: background var(--transition-speed) ease;
+  padding-top: 15vh;
+}
+
+.drone-contents {
+  flex: 1;
+  margin: 10px;
+}
+
+.drone-menu{
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+    margin: 10px;
+}

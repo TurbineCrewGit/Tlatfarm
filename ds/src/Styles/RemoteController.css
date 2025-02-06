@@ -1,8 +1,5 @@
 /*Drone Menu*/
 .drone-menu {
-  position: absolute;
-  top: 26%;
-  right: 27%;
   background: var(--primary-color);
   border-radius: 12px;
   padding: 10px;

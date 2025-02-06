@@ -1,5 +1,3 @@
-// planner.js
-
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useParams } from "react-router-dom"; // useParams 가져오기
 import axios from "axios";
@@ -22,8 +20,8 @@ import { API_BASE_URL } from "./Components/constants.js";
 const theme = createTheme();
 
 function SmartDrone_Details() {
+  // #region 상태 관리
   const { id } = useParams(); // URL에서 id 가져오기
-
   const mapRef = useRef(null);
   const tableRef = useRef(null);
   const mapComponentRef = useRef(null);
@@ -40,7 +38,6 @@ function SmartDrone_Details() {
     resetMap,
     updateMarkerImages,
   } = useMarkers(mapRef);
-
   const [inputLat, setInputLat] = useState("");
   const [inputLng, setInputLng] = useState("");
   const [inputAlt, setInputAlt] = useState(""); // 고도 입력 상태
@@ -49,14 +46,13 @@ function SmartDrone_Details() {
   const [loadingFixed, setLoadingFixed] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [isControllerOpen, setIsControllerOpen] = useState(true);
-  const [apiBaseUrl, setApiBaseUrl] = useState(""); // drone_controller의 ngrok URL을 저장할 상태
-
   const toggleControllerContent = () => {
     setIsControllerOpen((prev) => !prev);
   };
+  // #endregion
 
-
-  // 서버 전송 함수
+  // #region 함수
+  // #region 서버 전송 함수
   // 좌표 전송
   const sendCoordinatesToServer = useCallback(async () => {
     if (!inputPort) {
@@ -76,8 +72,6 @@ function SmartDrone_Details() {
       toast.error("데이터 전송에 실패했습니다. 다시 시도해주세요.");
     }
   }, [coordinates, inputPort]);
-
-
   // 명령 전송
   const sendCommandToServer = useCallback(
     async (command) => {
@@ -97,6 +91,7 @@ function SmartDrone_Details() {
     },
     [coordinates, inputPort]
   );
+  // #endregion
 
   // 최적화 함수
   const optimizeMarkers = useCallback(() => {
@@ -324,124 +319,117 @@ function SmartDrone_Details() {
       alert("위도, 경도, 고도를 모두 입력해주세요.");
     }
   }, [inputLat, inputLng, inputAlt, addMarker]);
+  // #endregion
 
   // return 시작
   return (
-    <ThemeProvider theme={theme}>
-      <DndProvider backend={HTML5Backend}>
-        <div className="planner">
-          <Header />
+    <DndProvider backend={HTML5Backend}>
+      <div>
+        {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
 
-          <main className="main">
-            {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
+        <MapComponent
+          ref={mapComponentRef}
+          addMarker={addMarker}
+          coordinates={coordinates}
+          mapRef={mapRef}
+          isMapOpen={isMapOpen}
+          setIsMapOpen={setIsMapOpen}
+        />
 
-            <MapComponent
-              ref={mapComponentRef}
-              addMarker={addMarker}
-              coordinates={coordinates}
-              mapRef={mapRef}
-              isMapOpen={isMapOpen}
-              setIsMapOpen={setIsMapOpen}
-            />
+        {/* 드론 경로 테이블*/}
+        <div id="coordInfo" className={isMapOpen ? "map-open" : "map-closed"}>
+          <MarkerTable
+            coordinates={coordinates}
+            moveItem={moveItem}
+            moveMarkerUp={moveMarkerUp}
+            moveMarkerDown={moveMarkerDown}
+            removeMarker={removeMarker}
+            updateFlightModes={updateFlightModes}
+            setCoordinates={setCoordinates}
+            tableRef={tableRef}
+          />
 
-            <div
-              id="coordInfo"
-              className={isMapOpen ? "map-open" : "map-closed"}
-            >
-              <MarkerTable
-                coordinates={coordinates}
-                moveItem={moveItem}
-                moveMarkerUp={moveMarkerUp}
-                moveMarkerDown={moveMarkerDown}
-                removeMarker={removeMarker}
-                updateFlightModes={updateFlightModes}
-                setCoordinates={setCoordinates}
-                tableRef={tableRef}
+          {/* **버튼들을 그룹화한 컨테이너 추가** */}
+          <div className="buttons-container">
+            <div className="input-container">
+              <input
+                id="inputLat" /* 포커스 이동을 위한 ID 추가 */
+                type="number"
+                placeholder="위도"
+                value={inputLat}
+                onChange={(e) => setInputLat(e.target.value)}
+                step="0.000001"
               />
-              {/* **버튼들을 그룹화한 컨테이너 추가** */}
-              <div className="buttons-container">
-                <div className="input-container">
-                  <input
-                    id="inputLat" /* 포커스 이동을 위한 ID 추가 */
-                    type="number"
-                    placeholder="위도"
-                    value={inputLat}
-                    onChange={(e) => setInputLat(e.target.value)}
-                    step="0.000001"
-                  />
-                  <input
-                    type="number"
-                    placeholder="경도"
-                    value={inputLng}
-                    onChange={(e) => setInputLng(e.target.value)}
-                    step="0.000001"
-                  />
-                  <input
-                    type="number"
-                    placeholder="고도"
-                    value={inputAlt}
-                    onChange={(e) => setInputAlt(e.target.value)}
-                    step="1"
-                    className="input-alt"
-                  />
-                  <button className="btn btn-add" onClick={handleAddMarker}>
-                    마커 추가
-                  </button>
-                </div>
+              <input
+                type="number"
+                placeholder="경도"
+                value={inputLng}
+                onChange={(e) => setInputLng(e.target.value)}
+                step="0.000001"
+              />
+              <input
+                type="number"
+                placeholder="고도"
+                value={inputAlt}
+                onChange={(e) => setInputAlt(e.target.value)}
+                step="1"
+                className="input-alt"
+              />
+              <button className="btn btn-add" onClick={handleAddMarker}>
+                마커 추가
+              </button>
+            </div>
 
-                {/* **버튼을 별도의 컨테이너로 이동** */}
-                <div className="optimize-button-container">
-                  <button className="btn btn-reset" onClick={resetMap}>
-                    초기화
-                  </button>
+            {/* **버튼을 별도의 컨테이너로 이동** */}
+            <div className="optimize-button-container">
+              <button className="btn btn-reset" onClick={resetMap}>
+                초기화
+              </button>
 
-                  <button
-                    className="btn btn-submit"
-                    onClick={sendCoordinatesToServer}
-                  >
-                    데이터 전송
-                  </button>
+              <button
+                className="btn btn-submit"
+                onClick={sendCoordinatesToServer}
+              >
+                데이터 전송
+              </button>
 
-                  <button
-                    className="btn btn-optimize"
-                    onClick={optimizeMarkers}
-                    disabled={isOptimizing}
-                  >
-                    최적화
-                  </button>
-                </div>
-              </div>
+              <button
+                className="btn btn-optimize"
+                onClick={optimizeMarkers}
+                disabled={isOptimizing}
+              >
+                최적화
+              </button>
             </div>
 
             <DroneMenu
-              inputPort={inputPort}
-              setInputPort={setInputPort}
-              sendCommandToServer={sendCommandToServer}
-            />
-
-            <ThemeToggle />
-
-            <ToastContainer
-              position="bottom-right" // 토스트 위치 우측 하단으로 변경
-              autoClose={2000} // 토스트 자동 닫힘 시간 (2초)
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-            {/* 로딩 인디케이터 추가 */}
-            {isOptimizing && (
-              <div className={`loading ${loadingFixed ? "fixed" : ""}`}>
-                최적화 중...
-              </div>
-            )}
-          </main>
+                inputPort={inputPort}
+                setInputPort={setInputPort}
+                sendCommandToServer={sendCommandToServer}
+              />
+          </div>
         </div>
-      </DndProvider>
-    </ThemeProvider>
+
+        {/* 토스트 */}
+        <ToastContainer
+          position="bottom-right" // 토스트 위치 우측 하단으로 변경
+          autoClose={2000} // 토스트 자동 닫힘 시간 (2초)
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+
+        {isOptimizing && (
+          <div className={`loading ${loadingFixed ? "fixed" : ""}`}>
+            최적화 중...
+          </div>
+        )}
+      </div>
+    </DndProvider>
   );
 }
 
