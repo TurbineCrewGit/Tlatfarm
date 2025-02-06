@@ -58,7 +58,7 @@ const DataTable = ({ tableData, onDelete }) => {
   console.log('isDarkMode changed: ', isDarkMode);
   return (
     <div className="clebine-container">
-      <h1 className="clebine-title">Clebine</h1>
+      <h1 className="clebine-title">Clebine list</h1>
       <table className="data-table">
         <thead>
           <tr>
