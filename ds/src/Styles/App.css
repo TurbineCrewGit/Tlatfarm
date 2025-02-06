@@ -19,13 +19,22 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
   gap: 0px 0px;
   grid-template-areas:
-    "header header header"
-    "sidemenu main main"
-    "footer footer footer";
+    "sidemenu sidemenu header header header header header header header header header header"
+    "sidemenu sidemenu header header header header header header header header header header"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main"
+    "sidemenu sidemenu main main main main main main main main main main";
 }
 
 /* div {
