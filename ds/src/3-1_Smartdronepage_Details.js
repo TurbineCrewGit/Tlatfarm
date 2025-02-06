@@ -19,7 +19,7 @@ import { API_BASE_URL } from "./Components/constants.js";
 
 const theme = createTheme();
 
-function SmartDrone_Details() {
+function SmartDrone_Details({droneId}) {
   // #region 상태 관리
   const { id } = useParams(); // URL에서 id 가져오기
   const mapRef = useRef(null);
@@ -325,7 +325,8 @@ function SmartDrone_Details() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
-        {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
+      {/* <h1>{droneId ? `${droneId}번 드론 페이지 입니다` : "드론이 선택되지 않았습니다."}</h1> */}
+
 
         <MapComponent
           ref={mapComponentRef}
@@ -350,8 +351,8 @@ function SmartDrone_Details() {
           />
 
           {/* **버튼들을 그룹화한 컨테이너 추가** */}
-          <div className="buttons-container">
-            <div className="input-container">
+          <div className="drone-controll-container">
+            <div className="drone-input-container">
               <input
                 id="inputLat" /* 포커스 이동을 위한 ID 추가 */
                 type="number"

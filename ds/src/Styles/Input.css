@@ -124,12 +124,6 @@ select:disabled {
   height: 50px;
 }
 
-.btn-toggle-map {
-  width: 200px;
-  margin-top: 5vh;
-  font-size: 20px;
-}
-
 .btn-reset-position {
   position: absolute;
   bottom: 20px; /* 화면 아래에서 20px 위 */

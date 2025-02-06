@@ -8,8 +8,7 @@ import "./Styles/App.css";
 
 const theme = createTheme();
 
-function SmartdroneLists() {
-
+function SmartdroneLists({ onDroneSelect }) {
   // #region useState
   const [drones, setDrones] = useState([]); // 초기 상태를 빈 배열로 설정
   const [editNameId, setEditNameId] = useState(null);
@@ -54,7 +53,7 @@ function SmartdroneLists() {
     } catch (error) {
       console.error("드론 추가 중 오류 발생:", error);
     }
-  };  
+  };
 
   // 이름 변경 시작
   const startEditName = (id, currentName) => {
@@ -88,85 +87,84 @@ function SmartdroneLists() {
 
   // return 시작
   return (
-      <div>
-          <h1>Smart Drone List</h1>
+    <div>
+      <h1>Smart Drone List</h1>
 
-          {/* 드론 목록 테이블 */}
-          <div className="droneListContainer">
-            <table className="droneListTable">
-              <thead>
-                <tr>
-                  <th>드론 ID</th>
-                  <th>드론 이름</th>
-                  <th>삭제</th>
+      {/* 드론 목록 테이블 */}
+      <div className="droneListContainer">
+        <table className="droneListTable">
+          <thead>
+            <tr>
+              <th>드론 ID</th>
+              <th>드론 이름</th>
+              <th>삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            {drones.length > 0 ? (
+              drones.map((drone) => (
+                <tr key={drone.id}>
+                  <td>{drone.id}</td>
+
+                  {editNameId === drone.id ? (
+                    <td>
+                      <div>
+                        <input
+                          type="text"
+                          value={tempName}
+                          onChange={(e) => setTempName(e.target.value)}
+                          className="nameInput"
+                        />
+                        <button
+                          className="btn"
+                          onClick={() => saveNameChange(drone.id)}
+                        >
+                          저장
+                        </button>
+                        <button className="btn" onClick={cancelEditName}>
+                          취소
+                        </button>
+                      </div>
+                    </td>
+                  ) : (
+                    <td onClick={() => onDroneSelect(drone.id)}>
+                      {drone.name}
+                    </td>
+                  )}
+
+                  <td>
+                    <button
+                      className="btn"
+                      onClick={() => startEditName(drone.id, drone.name)}
+                    >
+                      이름 변경
+                    </button>
+                    <button
+                      className="btn"
+                      onClick={() => deleteDrone(drone.id)}
+                    >
+                      삭제
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {drones.length > 0 ? (
-                  drones.map((drone) => (
-                    <tr key={drone.id}>
-                      <td>{drone.id}</td>
-                      <td>
-                        {editNameId === drone.id ? (
-                          <div>
-                            <input
-                              type="text"
-                              value={tempName}
-                              onChange={(e) => setTempName(e.target.value)}
-                              className="nameInput"
-                            />
-                            <button
-                              className="btn"
-                              onClick={() => saveNameChange(drone.id)}
-                            >
-                              저장
-                            </button>
-                            <button className="btn" onClick={cancelEditName}>
-                              취소
-                            </button>
-                          </div>
-                        ) : (
-                          <Link
-                            to={`/Smartdronepage/${drone.id}`}
-                            className="details-link"
-                          >
-                            {drone.name}
-                          </Link>
-                        )}
-                      </td>
-                      <td>
-                        <button
-                          className="btn"
-                          onClick={() => startEditName(drone.id, drone.name)}
-                        >
-                          이름 변경
-                        </button>
-                        <button
-                          className="btn"
-                          onClick={() => deleteDrone(drone.id)}
-                        >
-                          삭제
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr className="noDrones">
-                    <td colSpan="3">{noDronesMessage}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* 추가 및 테마 토글 버튼 */}
-          <div className="buttonGroup">
-            <button className="btn" onClick={addDrone}>
-              드론 추가
-            </button>
-            <ThemeToggle />
-          </div>
+              ))
+            ) : (
+              <tr className="noDrones">
+                <td colSpan="3">{noDronesMessage}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
+
+      {/* 추가 및 테마 토글 버튼 */}
+      <div className="buttonGroup">
+        <button className="btn" onClick={addDrone}>
+          드론 추가
+        </button>
+        <ThemeToggle />
+      </div>
+    </div>
   );
 }
 

@@ -23,9 +23,17 @@
   margin: 10px;
 }
 
+.drone-controll-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px;
+  }
+
 .drone-menu{
     display: flex;
     flex-direction: row;
     width: 20%;
     margin: 10px;
 }
+
