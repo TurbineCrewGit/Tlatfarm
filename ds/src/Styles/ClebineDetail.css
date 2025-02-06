@@ -13,8 +13,10 @@ body {
     flex-direction: row;
     align-items: stretch;
     gap: 20px;
+
 }
-/* 
+
+    /* 
 .infoContainer {
     padding-right: 50px;
     padding-left: 50px;
