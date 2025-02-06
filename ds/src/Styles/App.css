@@ -19,29 +19,30 @@ body {
 
 .grid-container {
   display: grid;
+  height: 100vh;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(12, 1fr);
   gap: 0px 0px;
   grid-template-areas:
-    "sidemenu sidemenu header header header header header header header header header header"
-    "sidemenu sidemenu header header header header header header header header header header"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main"
-    "sidemenu sidemenu main main main main main main main main main main";
+    "sidemenu header header header header header header header header header header header"
+    "sidemenu header header header header header header header header header header header"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main"
+    "sidemenu main main main main main main main main main main main";
 }
 
 /* div {
   background: #3B4346 url("images/bg01.jpg");
 } */
 .header {
-  height: 15vh;
+  grid-area: header;
   display: flex; /* Flexbox 활성화 */
   align-items: center; /* 세로 중앙 정렬 */
   justify-content: center;
@@ -52,6 +53,21 @@ body {
   width: 100%; /* 화면 전체 너비 */
   z-index: 1000; /* 헤더가 다른 요소 위에 있도록 설정 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 스크롤 시 헤더 강조 */
+}
+
+.sidemenu{
+  grid-area: sidemenu;
+}
+
+.main {
+  /* background-color: var(--main-background); */
+  grid-area:main;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: var(--text-color);
+  transition: background var(--transition-speed) ease;
 }
 
 .custom_hr {
@@ -65,20 +81,6 @@ body {
 
 hr{
   margin-top: 0px;
-}
-
-.main {
-  /* background-color: var(--main-background); */
-  padding-top: 30px;
-  min-height: 85vh;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-color);
-  transition: background var(--transition-speed) ease;
-  padding-top: 15vh;
 }
 
 .title{

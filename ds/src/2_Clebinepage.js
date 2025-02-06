@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Section from './Components/Section.js';
 import DataSection from './Components/DataSection.js';
 import Header from './Components/Header.js';
+import MenuBar from './MenuBar.js';
 import ThemeToggle from './Components/ThemeToggle.js';
 import axios from 'axios';
 
@@ -132,7 +133,10 @@ function Clebine() {
 
         {/* 헤더 */}
         <Header />
-        <body className="planner">
+
+        <MenuBar/>
+
+        <body className="main">
         {/* 데이터 섹션 */}
         <DataSection
           tableData={tableData}

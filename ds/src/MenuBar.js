@@ -37,7 +37,7 @@ const MenuBar = () => {
         >*
           &times;
         </button> */}
-      <div className={`menu-bar open`}>
+      <div className={`menu-bar open sidemenu`}>
         <nav>
           <ul>
             <li>
