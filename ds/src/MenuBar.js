@@ -6,7 +6,7 @@ import "./Styles/Menubar.css"; // 메뉴 바 스타일 임포트
 import ThemeToggle from "./Components/ThemeToggle";
 
 const MenuBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // 메뉴 열고 닫기 핸들러
   // const toggleMenu = useCallback(() => {

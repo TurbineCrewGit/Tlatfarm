@@ -129,10 +129,10 @@ function Clebine() {
 
   return (
     <ThemeProvider theme={theme}>
-      <body className="planner">
+
         {/* 헤더 */}
         <Header />
-
+        <body className="planner">
         {/* 데이터 섹션 */}
         <DataSection
           tableData={tableData}
