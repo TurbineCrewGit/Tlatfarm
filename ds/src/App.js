@@ -27,7 +27,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
+      <div className="App grid-container">
         {/* 라우트 설정 */}
         <Routes>
           <Route path="/" element={<Main />} />

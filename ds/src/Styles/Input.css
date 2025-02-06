@@ -114,10 +114,6 @@ select:disabled {
 .btn-move-up,
 .btn-move-down,
 .btn-remove,
-.btn-add,
-.btn-reset,
-.btn-submit,
-.btn-optimize,
 .btn-reset-position,
 .btn-toggle-map {
   margin-right: 5px;
@@ -143,24 +139,6 @@ select:disabled {
   transform: translateY(-4px);
 }
 
-.btn-reset,
-.btn-submit,
-.btn-optimize {
-  font-weight: bold;
-  background-color: var(--primary-color);
-  color: #ffffff;
-  margin-right: 20px;
-}
-
-.btn-optimize {
-  width: 100%;
-  max-width: 200px;
-}
-
-.btn-optimize:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
 
 /* 모바일 버전 스타일 */
 @media (max-width: 768px) {
