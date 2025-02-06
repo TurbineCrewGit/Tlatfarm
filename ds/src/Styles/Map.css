@@ -73,9 +73,22 @@
   border: none;
   cursor: pointer;
   border-radius: var(--border-radius);
-  transition: background-color var(--transition-speed);
+  margin-top: 2vh;
+  width: 150px;
+  height: 50px;
+  font-size: 20px;
+  padding: 10px;
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease,
+    transform var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
+.btn-toggle-map:hover {
+  background-color: var(--button-hover-color);
+  transform: translateY(-2px);
+}
 
 .reset-map-position{
   margin-right: 5px;

@@ -19,7 +19,7 @@ import { API_BASE_URL } from "./Components/constants.js";
 
 const theme = createTheme();
 
-function SmartDrone_Details() {
+function SmartDrone_Details({ droneId }) {
   // #region 상태 관리
   const { id } = useParams(); // URL에서 id 가져오기
   const mapRef = useRef(null);
@@ -325,7 +325,7 @@ function SmartDrone_Details() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
-        {/* <h1>{id}번 드론 페이지 입니다</h1> 드론 ID 출력 */}
+        {/* <h1>{droneId ? `${droneId}번 드론 페이지 입니다` : "드론이 선택되지 않았습니다."}</h1> */}
 
         <MapComponent
           ref={mapComponentRef}
@@ -350,8 +350,8 @@ function SmartDrone_Details() {
           />
 
           {/* **버튼들을 그룹화한 컨테이너 추가** */}
-          <div className="buttons-container">
-            <div className="input-container">
+          <div>
+            <div className="drone-input-container">
               <input
                 id="inputLat" /* 포커스 이동을 위한 ID 추가 */
                 type="number"
@@ -375,38 +375,68 @@ function SmartDrone_Details() {
                 step="1"
                 className="input-alt"
               />
-              <button className="btn btn-add" onClick={handleAddMarker}>
+              <button className="btn-add" onClick={handleAddMarker}>
                 마커 추가
               </button>
-            </div>
-
-            {/* **버튼을 별도의 컨테이너로 이동** */}
-            <div className="optimize-button-container">
-              <button className="btn btn-reset" onClick={resetMap}>
-                초기화
-              </button>
 
               <button
-                className="btn btn-submit"
-                onClick={sendCoordinatesToServer}
-              >
-                데이터 전송
-              </button>
-
-              <button
-                className="btn btn-optimize"
+                className="btn-optimize"
                 onClick={optimizeMarkers}
                 disabled={isOptimizing}
               >
                 최적화
               </button>
+              <button className="btn-reset" onClick={resetMap}>
+                초기화
+              </button>
             </div>
 
-            <DroneMenu
-                inputPort={inputPort}
-                setInputPort={setInputPort}
-                sendCommandToServer={sendCommandToServer}
-              />
+            <div className="drone-control-button-container">
+              <select
+                className="port-number"
+                value={inputPort}
+                onChange={(e) => setInputPort(e.target.value)}
+              >
+                <option value="" disabled>
+                  포트 선택
+                </option>
+                {Array.from({ length: 9 }, (_, i) => (
+                  <option key={`COM${i + 1}`} value={`COM${i + 1}`}>
+                    {`COM${i + 1}`}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                className="btn btn-submit"
+                onClick={sendCoordinatesToServer}
+              >
+                경로 전송
+              </button>
+
+              <select className="command-select
+              ">
+                <option value="" disabled>
+                  명령 선택
+                </option>
+
+                <option key="ARMING" value="ARMING">
+                  시동
+                </option>
+
+                <option key="START" value="START">
+                  비행 시작
+                </option>
+
+                <option key="STOP" value="STOP">
+                  비행 종료
+                </option>
+              </select>
+
+              <button className="btn btn-submit" onClick={sendCommandToServer}>
+                명령 전송
+              </button>
+            </div>
           </div>
         </div>
 

@@ -183,7 +183,7 @@ const MapComponent = forwardRef(({ addMarker, coordinates, markersRef, mapRef, i
       {/* 지도 열기/닫기 버튼 */}
       <div>
         <button
-          className="btn btn-toggle-map"
+          className="btn-toggle-map"
           onClick={toggleMap}
           aria-expanded={isMapOpen}
           aria-controls="kakaoMap"

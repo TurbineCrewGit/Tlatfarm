@@ -11,6 +11,9 @@ import SmartDrone_Details from "./3-1_Smartdronepage_Details.js";
 const theme = createTheme();
 
 function Smartdrone() {
+
+  const [selectedDroneId, setSelectedDroneId] = useState(null);
+
   // return 시작
   return (
     <ThemeProvider theme={theme}>
@@ -19,12 +22,13 @@ function Smartdrone() {
         <main className="drone-main">
           <div className="drone-contents">
             {/* 드론 목록 테이블 */}
-            <SmartdroneLists />
+            <SmartdroneLists onDroneSelect={setSelectedDroneId}/>
           </div>
           <div className="drone-contents">
             {/* 드론 상세 정보 */}
-            <SmartDrone_Details />
+            <SmartDrone_Details droneId={selectedDroneId}/>
           </div>
+          {/* <p>임시) 선택된 드론 ID: {selectedDroneId}</p> */}
         </main>
       </div>
     </ThemeProvider>

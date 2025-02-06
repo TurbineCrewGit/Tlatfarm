@@ -23,9 +23,45 @@
   margin: 10px;
 }
 
-.drone-menu{
-    display: flex;
-    flex-direction: row;
-    width: 20%;
-    margin: 10px;
+.drone-control-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px;
 }
+
+.drone-menu {
+  display: flex;
+  flex-direction: row;
+  width: 20%;
+  margin: 10px;
+}
+
+.btn-add, .btn-reset, .btn-submit, .btn-optimize{
+    padding: 10px;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color var(--transition-speed) ease,
+    transform var(--transition-speed) ease, color var(--transition-speed) ease;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    margin-right: 20px;
+}
+
+.btn-add:hover, .btn-reset:hover, .btn-submit:hover, .btn-optimize:hover {
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
+  }
+
+
+.btn-optimize:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+

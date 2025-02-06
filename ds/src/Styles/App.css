@@ -16,6 +16,18 @@ body {
   color: var(--text-color);
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "header header header"
+    "sidemenu main main"
+    "footer footer footer";
+}
+
 /* div {
   background: #3B4346 url("images/bg01.jpg");
 } */
