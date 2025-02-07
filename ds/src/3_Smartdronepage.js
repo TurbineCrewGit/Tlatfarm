@@ -21,12 +21,12 @@ function Smartdrone() {
 
         <Header />
         <MenuBar />
-        <main className="drone-main main">
-          <div className="drone-contents">
+        <main className="main">
+          <div className="drone-contents main1">
             {/* 드론 목록 테이블 */}
             <SmartdroneLists onDroneSelect={setSelectedDroneId}/>
           </div>
-          <div className="drone-contents">
+          <div className="drone-contents main2">
             {/* 드론 상세 정보 */}
             <SmartDrone_Details droneId={selectedDroneId}/>
           </div>

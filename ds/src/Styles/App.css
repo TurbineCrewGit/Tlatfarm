@@ -126,6 +126,8 @@ html, body {
   --button-color:var(--primary-color);
   --button-hover-color: var(--tertiary-color);
 
+  --logo: url(./image/밝은_로고.png);
+
   --map-filter:rgba(0, 0, 0, 0);
 }
 
@@ -155,6 +157,8 @@ body.dark-mode {
   --button-disabled:rgb(37, 37, 37);
   --button-color:var(--primary-color);
   --button-hover-color: var(--tertiary-color);
+
+  --logo: url(./image/어두운_로고.png);
 
   --map-filter:rgba(0, 0, 0, 0.7);
 }
