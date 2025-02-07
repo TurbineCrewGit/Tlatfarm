@@ -76,7 +76,7 @@ body {
 }
 
 .weatherColumn {
-    background-color: var(--weather-info-row) !important;
+    background-color: var(--weather-info-row) ;
 }
 
 /* 데이터 행 스타일 */
@@ -154,8 +154,7 @@ body {
     border-radius: 8px; */
     display: flex;
     padding: 20px;
-    /* margin: 20px auto; */
-    margin-top: 120px;
+    margin: 20px auto;
     width: max-content;
     background-color: transparent;
     overflow: visible;

@@ -66,8 +66,8 @@ const DataTable = ({ tableData, onDelete }) => {
             <th>전력 생산량</th>
             <th>위도</th>
             <th>경도</th>
-            <th>Weather Info</th>
-            <th>Detail</th>
+            {/* <th>Weather Info</th> 
+            <th>Detail</th> */}
             <th>작업</th>
           </tr>
         </thead>
