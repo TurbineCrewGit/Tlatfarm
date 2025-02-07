@@ -14,7 +14,7 @@ import MapComponent from "./Components/MapComponents.js";
 import useMarkers from "./Components/useMarkers.js";
 import MarkerTable from "./Components/MarkerTable.js";
 // import DraggableRemoteControlPanel from "./Components/DraggableRemoteControlPanel";
-import DroneMenu from "./Components/DroneMenu.js";
+// import DroneMenu from "./Components/DroneMenu.js";
 import { API_BASE_URL } from "./Components/constants.js";
 
 const theme = createTheme();

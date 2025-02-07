@@ -18,22 +18,11 @@
   padding-top: 15vh;
 }
 
-.drone-contents {
-  flex: 1;
-  margin: 10px;
-}
 
 .drone-control-container {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 10px;
-}
-
-.drone-menu {
-  display: flex;
-  flex-direction: row;
-  width: 20%;
   margin: 10px;
 }
 
@@ -63,21 +52,3 @@
   background-color: #cccccc;
   cursor: not-allowed;
 }
-
-.drone-main {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
-  gap: 10px;
-}
-
-.drone-contents:nth-child(1) { /* SmartdroneLists */
-  grid-row: 2 / 4;
-  grid-column: 2 / 12;
-}
-
-.drone-contents:nth-child(2) { /* SmartDrone_Details */
-  grid-row: 6 / 12;
-  grid-column: 2 / 12;
-}
-
