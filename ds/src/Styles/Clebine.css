@@ -5,12 +5,15 @@
 @import url("https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200");
 
 /* 전역 박스 사이징 설정 */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 /* 기본 여백 및 패딩 제거 */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -21,8 +24,8 @@ html, body {
   /* 주요 색상 */
   --primary-color: #a8a8a8;
 
-  --border-radius: 5px;        /* 테두리 반경 */
-  --transition-speed: 0.3s;    /* 전환 속도 */
+  --border-radius: 5px; /* 테두리 반경 */
+  --transition-speed: 0.3s; /* 전환 속도 */
 
   --table-header-background: var(--primary-color);
   --table-header-text-color: black; /* 헤더 텍스트 색상 */
@@ -43,11 +46,11 @@ html, body {
 body.dark-mode {
   --primary-color: #333;
 
-  --border-radius: 5px;        /* 테두리 반경 */
-  --transition-speed: 0.3s;    /* 전환 속도 */
+  --border-radius: 5px; /* 테두리 반경 */
+  --transition-speed: 0.3s; /* 전환 속도 */
 
   --table-header-background: var(--primary-color);
-  --table-header-text-color: #00ec20;;
+  --table-header-text-color: #00ec20;
   --table-row-background: #2b2b2b;
   --table-row-text-color: #00ec20;
 
@@ -59,61 +62,22 @@ body.dark-mode {
 
   --weather-info-row: rgb(235, 235, 235);
 
-  --background-img: #3B4346 url("images/bg01.jpg");
+  --background-img: #3b4346 url("images/bg01.jpg");
 }
 
-body.dark-mode .header {
-    background: #3B4346 url("images/bg01.jpg") !important;
-    
-  }
-  
-  /* 라이트 모드에서의 기본 헤더 스타일 */
-  .header {
-    background: #101010 url("images/ddd.png") !important;
-    transition: var(--transition-speed) ease;
-  }
-.header a img {
-    content: url('image/밝은_로고.png'); /* 기본 로고 */
-    
-    display: flex;
-    width: 400px;
-    height: auto;
-  }
-  
-  body.dark-mode .header a img {
-    content: url('image/어두운_로고.png'); /* 다크 모드에서 로고 */
-    color: #f0f0f0;
-  }
+
+body.dark-mode .header a img {
+  content: url("image/어두운_로고.png"); /* 다크 모드에서 로고 */
+  color: #f0f0f0;
+}
 
 /* 기본 레이아웃 */
 body {
-  background: #3B4346 url("images/bg01.jpg");
-}
-
-.App {
-  text-align: center;
-  font-family: 'Inter', sans-serif;
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  transition: var(--transition-speed) ease, color var(--transition-speed) ease;
-}
-
-.header {
-  height: 15vh;
-  display: flex; /* Flexbox 활성화 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center;
-  background: #3B4346 url("images/bg01.jpg");
-  position: fixed; /* 헤더를 고정 */
-  top: 0;
-  left: 0;
-  width: 100%; /* 화면 전체 너비 */
-  z-index: 1000; /* 헤더가 다른 요소 위에 있도록 설정 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 스크롤 시 헤더 강조 */
+  background: #3b4346 url("images/bg01.jpg");
 }
 
 .custom_hr {
-  border-color: #3B4346 !important; /* 기본 테두리 제거 */
+  border-color: #3b4346 !important; /* 기본 테두리 제거 */
   width: 100vw !important; /* 너비 설정 */
 }
 
@@ -128,7 +92,7 @@ body {
 }
 
 body.dark-mode .planner {
-  background: #3B4346 url("images/bg01.jpg") !important;
+  background: #3b4346 url("images/bg01.jpg") !important;
 }
 
 hr {
@@ -153,14 +117,6 @@ hr {
 }
 
 /* 추가된 스타일 */
-
-.header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  width: 100%;
-}
 
 .main-container {
   display: flex;
@@ -215,7 +171,7 @@ hr {
 }
 
 .add-all-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 8px 16px;
   border: none;
@@ -276,13 +232,13 @@ body.dark-mode .section {
 }
 
 #toggleBtn {
-  position: absolute; 
-  bottom: 5px; 
-  right: 5px; 
-  padding: 5px 5px; 
-  background-color: transparent; 
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  padding: 5px 5px;
+  background-color: transparent;
   border: none;
-  cursor: pointer; 
+  cursor: pointer;
 }
 
 #expandImg {
