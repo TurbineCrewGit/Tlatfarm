@@ -6,74 +6,15 @@
 
 /* 전역 박스 사이징 설정 */
 *,
-*::before,
-*::after {
+*::before,*::after {
   box-sizing: border-box;
 }
 
 /* 기본 여백 및 패딩 제거 */
-html,
-body {
+html,body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-}
-
-/* CSS 변수 정의: 기본 라이트 모드 */
-:root {
-  /* 주요 색상 */
-  --primary-color: #a8a8a8;
-
-  --border-radius: 5px; /* 테두리 반경 */
-  --transition-speed: 0.3s; /* 전환 속도 */
-
-  --table-header-background: var(--primary-color);
-  --table-header-text-color: black; /* 헤더 텍스트 색상 */
-  --table-row-background: rgb(235, 235, 235);
-  --table-row-text-color: rgb(10, 10, 10);
-  --bar-color: #8884d8;
-  --bar-sub-color: #82ca9d;
-
-  --button-disabled: white;
-  --detail-btn-color: blue;
-
-  --weather-info-row: rgb(235, 235, 235);
-
-  --background-img: #101010 url("images/ddd.png");
-}
-
-/* 다크 모드 변수 */
-body.dark-mode {
-  --primary-color: #333;
-
-  --border-radius: 5px; /* 테두리 반경 */
-  --transition-speed: 0.3s; /* 전환 속도 */
-
-  --table-header-background: var(--primary-color);
-  --table-header-text-color: #00ec20;
-  --table-row-background: #2b2b2b;
-  --table-row-text-color: #00ec20;
-
-  --bar-color: #00ec20;
-  --bar-sub-color: deepskyblue;
-
-  --button-disabled: rgb(37, 37, 37);
-  --detail-btn-color: deepskyblue;
-
-  --weather-info-row: rgb(235, 235, 235);
-
-  --background-img: #3b4346 url("images/bg01.jpg");
-}
-
-
-body.dark-mode .header a img {
-  content: url("image/어두운_로고.png"); /* 다크 모드에서 로고 */
-  color: #f0f0f0;
-}
-
-/* 기본 레이아웃 */
-body {
-  background: #3b4346 url("images/bg01.jpg");
 }
 
 .custom_hr {
@@ -90,7 +31,6 @@ body {
   background: #181818 url("images/ddd.png") !important;
   transition: background var(--transition-speed) ease;
 }
-
 
 
 hr {
@@ -209,13 +149,9 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--secondary-color);
+  background-color: var(--background);
 }
 
-body.dark-mode .section {
-  background-color: var(--primary-color);
-  color: var(--table-header-text-color);
-}
 
 #toggleBtn {
   position: absolute;
