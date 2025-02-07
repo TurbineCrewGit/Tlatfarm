@@ -1,13 +1,3 @@
-body.dark-mode {
-    background: #3B4346 url("images/bg01.jpg") !important;
-    transition: 0.3s ease;
-}
-
-body {
-    background: #101010 url("images/ddd.png") !important;
-    transition: 0.3s ease;
-}
-
 .infoContainer {
     display: flex;
     flex-direction: row;
@@ -16,7 +6,7 @@ body {
 
 }
 
-    /* 
+/* 
 .infoContainer {
     padding-right: 50px;
     padding-left: 50px;
